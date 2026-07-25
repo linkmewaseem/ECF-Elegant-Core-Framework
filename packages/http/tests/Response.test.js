@@ -461,3 +461,59 @@ describe("Response - fluent API (integration)", () => {
     });
 
 });
+
+describe("Response - view()", () => {
+
+    test("should throw ResponseError if no view engine is in context", async () => {
+        const { raw } = makeFakeServerResponse();
+        const res = new Response(raw); // no context
+
+        await assert.rejects(() => res.view("home"), ResponseError);
+    });
+
+    test("should render via context.view and send as HTML", async () => {
+        const { raw, calls } = makeFakeServerResponse();
+        const fakeViewEngine = {
+            render: async (name, data) => `<h1>${data.title}</h1>`
+        };
+        const res = new Response(raw, { view: fakeViewEngine });
+
+        await res.view("home", { title: "Hello" });
+
+        assert.equal(calls.headers["content-type"], "text/html; charset=utf-8");
+        assert.equal(calls.body, "<h1>Hello</h1>");
+    });
+
+});
+
+describe("Response - context", () => {
+
+    test("context should be frozen (immutable)", () => {
+        const { raw } = makeFakeServerResponse();
+        const res = new Response(raw, { view: { render: async () => "" } });
+
+        assert.throws(() => { "use strict"; res.context.view = null; }, TypeError);
+    });
+
+    test("should throw ResponseError if context.view lacks render()", () => {
+        const { raw } = makeFakeServerResponse();
+        assert.throws(() => new Response(raw, { view: {} }), ResponseError);
+    });
+
+    test("should throw ResponseError if context is not an object", () => {
+        const { raw } = makeFakeServerResponse();
+        assert.throws(() => new Response(raw, "not-an-object"), ResponseError);
+        assert.throws(() => new Response(raw, null), ResponseError);
+    });
+
+    test("has() and get() should reflect context correctly", () => {
+        const { raw } = makeFakeServerResponse();
+        const fakeView = { render: async () => "" };
+        const res = new Response(raw, { view: fakeView });
+
+        assert.equal(res.has("view"), true);
+        assert.strictEqual(res.get("view"), fakeView);
+        assert.equal(res.has("assets"), false);
+    });
+
+});

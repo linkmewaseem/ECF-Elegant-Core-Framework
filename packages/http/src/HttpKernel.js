@@ -4,22 +4,22 @@ import Response from "./Response.js";
 import Pipeline from "./Pipeline.js";
 
 export default class HttpKernel {
-    constructor(router, bodyParserManager, middlewareResolver, exceptionHandler) {
+    constructor(router, bodyParserManager, middlewareResolver, exceptionHandler = null, responseContext = {}) {
         this.validateRouter(router);
         this.validateBodyParserManager(bodyParserManager);
         this.validateMiddlewareResolver(middlewareResolver);
+        this.validateExceptionHandler(exceptionHandler);
 
         this.router = router;
         this.bodyParserManager = bodyParserManager;
         this.middlewareResolver = middlewareResolver;
-        this.exceptionHandler = exceptionHandler || null;
+        this.exceptionHandler = exceptionHandler;
+        this.responseContext = responseContext;
     }
-
-    // ---- Public API ----
 
     handle(rawRequest, rawResponse) {
         const request = new Request(rawRequest, this.bodyParserManager);
-        const response = new Response(rawResponse);
+        const response = new Response(rawResponse, this.responseContext);
 
         try {
             const route = this.router.match(request);
@@ -49,8 +49,6 @@ export default class HttpKernel {
         }
     }
 
-    // ---- Validation ----
-
     validateRouter(router) {
         if (!router || typeof router.match !== "function") {
             throw new HttpKernelError("HttpKernel requires a Router with a match() method.");
@@ -66,6 +64,12 @@ export default class HttpKernel {
     validateMiddlewareResolver(middlewareResolver) {
         if (!middlewareResolver || typeof middlewareResolver.resolve !== "function") {
             throw new HttpKernelError("HttpKernel requires a MiddlewareResolver with a resolve() method.");
+        }
+    }
+
+    validateExceptionHandler(exceptionHandler) {
+        if (exceptionHandler && typeof exceptionHandler.handle !== "function") {
+            throw new HttpKernelError("HttpKernel requires an ExceptionHandler with a handle() method.");
         }
     }
 }

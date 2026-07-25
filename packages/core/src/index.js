@@ -12,6 +12,10 @@ export { default as LoggerError } from "./errors/LoggerError.js";
 export { default as EventError } from "./errors/EventError.js";
 export { default as EnvError } from "./errors/EnvError.js";
 export { default as ExceptionManagerError } from "./errors/ExceptionManagerError.js";
+export { default as ViewContractError } from "./errors/ViewContractError.js";
+
+// ---- View ----
+export { default as ViewContract } from "./ViewContract.js";
 
 // ---- Config ----
 export { default as ConfigManager } from "./ConfigManager.js";

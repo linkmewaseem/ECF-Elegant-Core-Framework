@@ -141,14 +141,15 @@ function makeMiddlewareResolver(routerOrOptions, optionsArg) {
     return new MiddlewareResolver(router, registry);
 }
 
-function makeKernel({ router, bodyParserManager, middlewareResolver, exceptionHandler } = {}) {
+function makeKernel({ router, bodyParserManager, middlewareResolver, exceptionHandler, responseContext } = {}) {
     const r = router ?? makeFakeRouter();
     const resolver = middlewareResolver ?? makeMiddlewareResolver(r);
     return new HttpKernel(
         r,
         bodyParserManager ?? makeFakeBodyParserManager(),
         resolver,
-        exceptionHandler
+        exceptionHandler,
+        responseContext ?? {}
     );
 }
 
@@ -743,6 +744,25 @@ describe("HttpKernel - integration", () => {
 
         assert.deepEqual(log, ["auth", "logger", "dashboard-handler"]);
         assert.equal(calls.body, JSON.stringify({ page: "dashboard" }));
+    });
+
+    test("should pass responseContext to Response instance", async () => {
+        const router = makeFakeRouter();
+        let capturedContext = null;
+
+        router.addRoute("GET", "/view", (req, res) => {
+            capturedContext = res.context;
+        });
+
+        const fakeView = { render: async () => "test" };
+        const kernel = makeKernel({ router, responseContext: { view: fakeView } });
+
+        const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/view" });
+        const { raw: rawRes } = makeFakeServerResponse();
+
+        kernel.handle(rawReq, rawRes);
+
+        assert.equal(capturedContext.view, fakeView);
     });
 
 });

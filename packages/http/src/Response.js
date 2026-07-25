@@ -7,11 +7,13 @@ const DEFAULT_REDIRECT_STATUS = 302;
 export default class Response {
     #sent;
 
-    constructor(raw) {
+    constructor(raw, context = {}) {
         this.validateRaw(raw);
+        this.validateContext(context);
 
         this.raw = raw;
         this.statusCode = raw.statusCode ?? 200;
+        this.context = Object.freeze({ ...context });
         this.#sent = false;
     }
 
@@ -72,24 +74,33 @@ export default class Response {
         return this.send(serialized);
     }
 
-   send(body = null) {
-    this.assertNotSent();
-    this.validateBody(body);
+    async view(name, data = {}) {
+        if (!this.has("view")) {
+            throw new ResponseError("No view engine registered. Did you forget to register a ViewServiceProvider?");
+        }
 
-    if (body === null) {
+        const html = await this.get("view").render(name, data);
+        return this.html(html);
+    }
+
+    send(body = null) {
+        this.assertNotSent();
+        this.validateBody(body);
+
+        if (body === null) {
+            return this.sendRaw(body);
+        }
+
+        if (Buffer.isBuffer(body)) {
+            return this.sendRaw(body);
+        }
+
+        if (typeof body === "object") {
+            return this.json(body);
+        }
+
         return this.sendRaw(body);
     }
-
-    if (Buffer.isBuffer(body)) {
-        return this.sendRaw(body);
-    }
-
-    if (typeof body === "object") {
-        return this.json(body);
-    }
-
-    return this.sendRaw(body);
-}
 
     redirect(url, status = DEFAULT_REDIRECT_STATUS) {
         this.validateRedirectUrl(url);
@@ -110,6 +121,16 @@ export default class Response {
 
     get headersSent() {
         return this.#sent || this.raw.headersSent === true;
+    }
+
+    // ---- Context helpers ----
+
+    has(key) {
+        return this.context[key] !== undefined && this.context[key] !== null;
+    }
+
+    get(key) {
+        return this.context[key];
     }
 
     // ---- Internal helpers ----
@@ -154,6 +175,18 @@ export default class Response {
         }
     }
 
+    validateContext(context) {
+        if (context === null || typeof context !== "object") {
+            throw new ResponseError("Response context must be a plain object.");
+        }
+
+        if (context.view !== undefined && context.view !== null) {
+            if (typeof context.view.render !== "function") {
+                throw new ResponseError("Response context 'view' must implement render().");
+            }
+        }
+    }
+
     validateStatus(code) {
         if (typeof code !== "number" || !Number.isInteger(code) || code < MIN_STATUS || code > MAX_STATUS) {
             throw new ResponseError(`Invalid status code "${code}". Must be an integer between ${MIN_STATUS} and ${MAX_STATUS}.`);
@@ -178,13 +211,14 @@ export default class Response {
             throw new ResponseError(`${type}() requires a string body.`);
         }
     }
-validateBody(body) {
-    const unsupportedTypes = ["symbol", "function", "bigint"];
 
-    if (unsupportedTypes.includes(typeof body)) {
-        throw new ResponseError(`Response body of type "${typeof body}" is not supported.`);
+    validateBody(body) {
+        const unsupportedTypes = ["symbol", "function", "bigint"];
+        if (unsupportedTypes.includes(typeof body)) {
+            throw new ResponseError(`Response body of type "${typeof body}" is not supported.`);
+        }
     }
-}
+
     validateRedirectUrl(url) {
         if (typeof url !== "string" || url.trim() === "") {
             throw new ResponseError("Redirect URL must be a non-empty string.");

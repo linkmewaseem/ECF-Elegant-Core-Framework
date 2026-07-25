@@ -44,10 +44,15 @@ export default class HttpServiceProvider extends ServiceProvider {
 
         app.singleton("http.kernel", () => {
             const router = app.make("router");
-            const bodyParserManager = app.make("body.parser");
             const resolver = app.make("middleware.resolver");
             const exceptionHandler = app.make("exception.handler");
-            return new HttpKernel(router, bodyParserManager, resolver, exceptionHandler);
+            const bodyParser = app.make("body.parser");
+
+            const responseContext = {
+                view: app.has("view") ? app.make("view") : null
+            };
+
+            return new HttpKernel(router, bodyParser, resolver, exceptionHandler, responseContext);
         });
 
         app.singleton("http.server", () => {

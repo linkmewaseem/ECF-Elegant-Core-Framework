@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import fsSync from "node:fs";
 import path from "node:path";
 import generateId from "../utils/generateId.js";
 import ViewError from "../errors/ViewError.js";
@@ -25,6 +26,25 @@ export default class ViewLoader {
         }
     }
 
+    loadSync(filePath) {
+        this.validatePath(filePath);
+
+        try {
+            const source = fsSync.readFileSync(filePath, "utf-8");
+            const stats = fsSync.statSync(filePath);
+
+            return {
+                id: generateId(filePath),
+                path: filePath,
+                extension: path.extname(filePath),
+                source,
+                lastModified: stats.mtimeMs
+            };
+        } catch (error) {
+            throw new ViewError(`Failed to load view at "${filePath}": ${error.message}`);
+        }
+    }
+
     async exists(filePath) {
         this.validatePath(filePath);
         try {
@@ -33,6 +53,11 @@ export default class ViewLoader {
         } catch {
             return false;
         }
+    }
+
+    existsSync(filePath) {
+        this.validatePath(filePath);
+        return fsSync.existsSync(filePath);
     }
 
     validatePath(filePath) {

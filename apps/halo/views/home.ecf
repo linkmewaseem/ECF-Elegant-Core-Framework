@@ -1,34 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ name }} - ECF App</title>
-</head>
-<body>
-    @if(name)
-        <h1>Welcome, {{ name }}!</h1>
-    @endif
+@extends('layouts.app')
 
-    <p>Let's explore the features and capabilities of ECF.</p>
-    <hr>
+@section('content')
+    <h1 class="header-title">Welcome, {{ name }}!</h1>
+    <p>Let's explore the features and capabilities of ECF View Engine.</p>
 
-    @if(name)
-        <p><strong>Name:</strong> {{ name }}</p>
-    @endif
-    <p><strong>Age:</strong> {{ age }}</p>
-    <p><strong>Date:</strong> {{ date }}</p>
+    <div class="card">
+    <p><strong>Name:</strong> {{ name }}</p>
+    <p><strong>Age Status:</strong> {{ age >= 18 ? 'Adult (' + age + ')' : 'Minor (' + age + ')' }}</p>
+    <p><strong>Server Date:</strong> {{ date }}</p>
+    </div>
 
-    <h3>Active Users (Rendered via ECF loop)</h3>
-{{waseem}}
-    <ul>
     @for(users as user, i)
         @continue(user.disabled)
-        <li>
-            #{{ i }}: <a href="/users/name/{{ user.name }}"><strong>{{ user.name }}</strong></a> ({{ user.email }}) - <em>{{ user.role }}</em>
-        </li>
+        @include("partials.user-row", { user: user })
     @endfor
-    </ul>
-
-</body>
-</html>
+@endsection

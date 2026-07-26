@@ -1,33 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
+@extends('layouts.app')
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+@section('content')
+    <h1 class="header-title">Users Directory</h1>
 
-<meta name="description" content="Page description">
+    <h2>Active Users</h2>
+    @for(users as user)
+        @continue(user.disabled)
+        @include("partials.user-row", { user: user })
+    @endfor
 
-<title>Document</title>
-
-</head>
-<body>
-<h1>Users</h1>
-
-<ul>
-
-@for(users as user, i)
-
-  
-
-  <li>{{ i }}: {{ user.name }} - {{ user.email }} {{user.role}}  </li>
-
- 
-
-@endfor
-
-</ul>
-
-   
-    
-</body>
-</html>
+    <h2 style="margin-top: 2rem;">All Accounts & Status</h2>
+    @for(users as user)
+        @include("partials.user-row", { user: user })
+    @endfor
+@endsection

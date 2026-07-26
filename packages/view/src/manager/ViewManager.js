@@ -1,6 +1,9 @@
 import { ViewContract } from "@ecf/core";
 import path from "node:path";
+import fsSync from "node:fs";
 import ViewCache from "../cache/ViewCache.js";
+import ViewFinder from "../runtime/ViewFinder.js";
+import RenderContext from "../runtime/RenderContext.js";
 import generateId from "../utils/generateId.js";
 import ViewError from "../errors/ViewError.js";
 
@@ -18,11 +21,22 @@ export default class ViewManager extends ViewContract {
         this.extension = options.extension ?? ".ecf";
         this.cacheEnabled = options.cache ?? true;
         this.cache = new ViewCache();
+
+        this.finder = options.finder ?? new ViewFinder([this.basePath], this.extension);
     }
 
-    async render(name, data = {}) {
+    async render(name, data = {}, context = null) {
+        const renderContext = context ? context.pushView(name) : new RenderContext().pushView(name);
         const compiledTemplate = await this.compile(name);
-        return this.renderer.render(compiledTemplate, data);
+        const renderData = { ...data, __viewManager: this };
+        return this.renderer.render(compiledTemplate, renderData, renderContext);
+    }
+
+    renderSync(name, data = {}, context = null) {
+        const renderContext = context ? context.pushView(name) : new RenderContext().pushView(name);
+        const compiledTemplate = this.compileSync(name);
+        const renderData = { ...data, __viewManager: this };
+        return this.renderer.render(compiledTemplate, renderData, renderContext);
     }
 
     async resolve(name) {
@@ -32,7 +46,13 @@ export default class ViewManager extends ViewContract {
         return { id, name, path: resolvedPath, source, extension, lastModified };
     }
 
-    // compile-only + cache, no render — for `ecf build`
+    resolveSync(name) {
+        this.validateName(name);
+        const filePath = this.resolvePath(name);
+        const { id, path: resolvedPath, source, extension, lastModified } = this.loader.loadSync(filePath);
+        return { id, name, path: resolvedPath, source, extension, lastModified };
+    }
+
     async precompile(name) {
         return this.compile(name);
     }
@@ -41,7 +61,11 @@ export default class ViewManager extends ViewContract {
         const templateFile = await this.resolve(name);
 
         if (this.cacheEnabled && this.cache.has(templateFile.id)) {
-            return this.cache.get(templateFile.id);
+            const cached = this.cache.get(templateFile.id);
+            if (!this.isStale(templateFile, cached)) {
+                return cached;
+            }
+            this.cache.forget(templateFile.id);
         }
 
         const compiledTemplate = this.compiler.compile(templateFile);
@@ -53,8 +77,50 @@ export default class ViewManager extends ViewContract {
         return compiledTemplate;
     }
 
-    // Full diagnostic snapshot for `ecf inspect <name>` — always analyzes fresh
-    // (doesn't touch the render cache) so tokens/ast are always available.
+    compileSync(name) {
+        const templateFile = this.resolveSync(name);
+
+        if (this.cacheEnabled && this.cache.has(templateFile.id)) {
+            const cached = this.cache.get(templateFile.id);
+            if (!this.isStale(templateFile, cached)) {
+                return cached;
+            }
+            this.cache.forget(templateFile.id);
+        }
+
+        const compiledTemplate = this.compiler.compile(templateFile);
+
+        if (this.cacheEnabled) {
+            this.cache.set(templateFile.id, compiledTemplate);
+        }
+
+        return compiledTemplate;
+    }
+
+    isStale(templateFile, cachedTemplate) {
+        if (!cachedTemplate.compiledAt) return true;
+
+        if (templateFile.lastModified > cachedTemplate.compiledAt) {
+            return true;
+        }
+
+        for (const depName of cachedTemplate.dependencies ?? []) {
+            try {
+                if (this.finder.exists(depName)) {
+                    const depPath = this.finder.find(depName);
+                    const stats = fsSync.statSync(depPath);
+                    if (stats.mtimeMs > cachedTemplate.compiledAt) {
+                        return true;
+                    }
+                }
+            } catch {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     async inspect(name) {
         const templateFile = await this.resolve(name);
         const wasCached = this.cacheEnabled && this.cache.has(templateFile.id);
@@ -64,7 +130,8 @@ export default class ViewManager extends ViewContract {
         const compileTime = performance.now() - compileStartedAt;
 
         const renderStartedAt = performance.now();
-        const html = compilation.render({});
+        const renderContext = new RenderContext().pushView(name);
+        const html = compilation.render({ __viewManager: this }, renderContext);
         const renderTime = performance.now() - renderStartedAt;
 
         return {
@@ -83,13 +150,23 @@ export default class ViewManager extends ViewContract {
 
     resolvePath(name) {
         this.validateName(name);
+        if (this.finder.exists(name)) {
+            return this.finder.find(name);
+        }
         const relativePath = name.split(".").join(path.sep) + this.extension;
         return path.join(this.basePath, relativePath);
     }
 
     async exists(name) {
+        if (this.finder.exists(name)) return true;
         const filePath = this.resolvePath(name);
         return this.loader.exists(filePath);
+    }
+
+    existsSync(name) {
+        if (this.finder.exists(name)) return true;
+        const filePath = this.resolvePath(name);
+        return this.loader.existsSync ? this.loader.existsSync(filePath) : false;
     }
 
     clearCache() {
@@ -99,35 +176,31 @@ export default class ViewManager extends ViewContract {
 
     forget(name) {
         const filePath = this.resolvePath(name);
-        this.cache.invalidate(generateId(filePath));
-        return this;
-    }
-
-    warmup() {
-        throw new ViewError("warmup() is not implemented.");
+        const id = generateId(filePath);
+        return this.cache.forget(id);
     }
 
     validateLoader(loader) {
-        if (!loader || typeof loader.load !== "function" || typeof loader.exists !== "function") {
-            throw new ViewError("ViewManager requires a loader with load() and exists() methods.");
+        if (!loader || typeof loader.load !== "function") {
+            throw new ViewError("ViewManager requires a valid ViewLoader instance.");
         }
     }
 
     validateCompiler(compiler) {
-        if (!compiler || typeof compiler.compile !== "function" || typeof compiler.analyze !== "function") {
-            throw new ViewError("ViewManager requires a compiler with compile() and analyze() methods.");
+        if (!compiler || typeof compiler.compile !== "function") {
+            throw new ViewError("ViewManager requires a valid Compiler instance.");
         }
     }
 
     validateRenderer(renderer) {
         if (!renderer || typeof renderer.render !== "function") {
-            throw new ViewError("ViewManager requires a renderer with a render() method.");
+            throw new ViewError("ViewManager requires a valid Renderer instance.");
         }
     }
 
     validateName(name) {
         if (typeof name !== "string" || name.trim() === "") {
-            throw new ViewError("View name must be a non-empty string.");
+            throw new ViewError("ViewManager requires a non-empty view name string.");
         }
     }
 }

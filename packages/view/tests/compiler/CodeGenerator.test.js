@@ -112,6 +112,15 @@ describe("CodeGenerator", () => {
         );
     });
 
+    test("compiler should support @if / @elseif / @else conditional branches", () => {
+        const source = "@if(a)A@elseif(b)B@else C@endif";
+        const compiled = new Compiler().compile({ source });
+
+        assert.equal(compiled.render({ a: true, b: false }), "A");
+        assert.equal(compiled.render({ a: false, b: true }), "B");
+        assert.equal(compiled.render({ a: false, b: false }), " C");
+    });
+
     test("renderNode(ForNode) should render body once per array item with fresh scope", () => {
         const node = {
             type: "ForNode",

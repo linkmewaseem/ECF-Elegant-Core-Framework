@@ -3,7 +3,11 @@ import TextNode from "../ast/TextNode.js";
 
 export default class Optimizer {
     optimize(ast) {
-        return new RootNode(this.mergeAdjacentTextNodes(ast.children));
+        const optimizedRoot = new RootNode(this.mergeAdjacentTextNodes(ast.children));
+        if (ast.dependencies) {
+            optimizedRoot.dependencies = ast.dependencies;
+        }
+        return optimizedRoot;
     }
 
     mergeAdjacentTextNodes(nodes) {

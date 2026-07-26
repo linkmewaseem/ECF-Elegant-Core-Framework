@@ -32,6 +32,10 @@ export default class ViewCache {
         return this;
     }
 
+    forget(id) {
+        return this.invalidate(id);
+    }
+
     invalidateByDependency(dependencyName) {
         const dependentIds = this.dependents.get(dependencyName);
         if (dependentIds) {

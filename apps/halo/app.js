@@ -1,5 +1,6 @@
 import { Application, Facade, CoreServiceProvider, RouteNotFoundError, LoggerServiceProvider, HttpServiceProvider, Route, Middleware, Log, ExceptionManager } from "@ecf/http";
 import { ViewServiceProvider } from "@ecf/view";
+
 const app = new Application();
 
 app.register(CoreServiceProvider);
@@ -32,12 +33,12 @@ exceptionManager.report(Error, (err) => {
 
 // ---- 1. Global Function Middleware ----
 const requestLogger = (req, res, next) => {
-    // console.log(`[Global Logger] ${req.method} ${req.path}`);
-    Log.info(`[Global Logger] ${req.method} ${req.path}`)
+    Log.info(`[Global Logger] ${req.method} ${req.path}`);
     return next();
 };
 app.use(requestLogger);
-Log.info("Server runing")
+Log.info("Server running");
+
 // ---- 2. Global Class-Style Middleware ----
 class CustomHeaderMiddleware extends Middleware {
     handle(req, res, next) {
@@ -66,7 +67,6 @@ const users = [
     { id: 5, name: "Mike", email: "mike@gmail.com", role: "User", disabled: false },
 ];
 
-// Option A: Array inline middleware: [firstMiddleware, secondMiddleware]
 Route.get("/", [firstMiddleware, secondMiddleware], (req, res) => {
     return res.view("home", {
         name: "Ashir Awan",
@@ -77,27 +77,12 @@ Route.get("/", [firstMiddleware, secondMiddleware], (req, res) => {
 });
 
 Route.get("/about", (req, res) => {
-    return res.text("Hi i am ECF i am new use me");
+    return res.view("about");
 });
 
-// Option B: Single inline middleware: firstMiddleware
 Route.get("/users/new", firstMiddleware, (req, res) => {
-    //display error form
-
-    return res.html(`
-    <h1>New User</h1>
-    <form action="/user" method="post">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name">
-        <br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email">
-        <br>
-        <button type="submit">Create</button>
-    </form>
-    `);
+    return res.view("users.new");
 });
-
 
 Route.get("/users", (req, res) => {
     return res.view("user", { users });
@@ -108,46 +93,22 @@ Route.get("/users/name/{name}", (req, res) => {
     const searchName = req.params.name;
     console.log("Searching for user by name:", searchName);
 
-    // Case-insensitive search
     const user = users.find(
         (user) => user.name.toLowerCase() === searchName.toLowerCase()
     );
 
     if (!user) {
-        // Show suggestions
         const suggestions = users.filter((user) =>
             user.name.toLowerCase().includes(searchName.toLowerCase())
         );
 
-        let suggestionHtml = "";
-        if (suggestions.length > 0) {
-            suggestionHtml = `
-                <h2>Did you mean?</h2>
-                <ul>
-                    ${suggestions
-                    .map(
-                        (u) =>
-                            `<li><a href="/users/name/${u.name}">${u.name}</a></li>`
-                    )
-                    .join("")}
-                </ul>
-            `;
-        }
-
-        return res.html(`
-        <h1>User not found</h1>
-        <p>No user found with name: "${searchName}"</p>
-        ${suggestionHtml}
-        <p><a href="/users">View all users</a></p>
-        `);
+        return res.view("users.not-found", {
+            searchParam: searchName,
+            suggestions
+        });
     }
 
-    return res.html(`
-    <h1>User Profile</h1>
-    <p><strong>Name:</strong> ${user.name}</p>
-    <p><strong>Email:</strong> ${user.email}</p>
-    <p><a href="/users">Back to all users</a></p>
-    `);
+    return res.view("users.show", { user });
 });
 
 // Route for finding by ID - must come AFTER specific routes
@@ -157,18 +118,12 @@ Route.get("/users/{id}", (req, res) => {
 
     const user = users.find((user) => user.id === id);
     if (!user) {
-        return res.html(`
-        <h1>User not found</h1>
-        <p>No user found with ID: ${id}</p>
-        <p><a href="/users">View all users</a></p>
-        `);
+        return res.view("users.not-found", {
+            searchParam: id,
+            suggestions: []
+        });
     }
-    return res.html(`
-    <h1>User Profile</h1>
-    <p><strong>Name:</strong> ${user.name}</p>
-    <p><strong>Email:</strong> ${user.email}</p>
-    <p><a href="/users">Back to all users</a></p>
-    `);
+    return res.view("users.show", { user });
 });
 
 Route.post("/user", async (req, res) => {
@@ -183,30 +138,24 @@ Route.post("/user", async (req, res) => {
     if (existingUser) {
         return res.text("Email already exists", 422);
     }
-    users.push({ id: users.length + 1, name, email });
+    users.push({ id: users.length + 1, name, email, role: "User", disabled: false });
     return res.redirect("/users");
 });
 
 // ---- Exception Test Routes ----
 
-// Test 1: Custom error → ValidationError → 422 JSON response
 Route.get("/error", (req, res) => {
     throw new ValidationError("Name field is required");
 });
 
-// Test 2: Unknown error → fallback → 500 "Internal Server Error"
 Route.get("/crash", (req, res) => {
     throw new Error("Something unexpected happened!");
 });
 
-
-
 exceptionManager.render(RouteNotFoundError, (err, req, res) => {
-    return res.status(404).html(`
-        <h1>404 - Page Not Found</h1>
-        <p>${err.message}</p>
-        <a href="/">Go Home</a>
-    `);
+    return res.status(404).view("errors.404", {
+        message: err.message
+    });
 });
 
 app.listen(3000, () => {

@@ -5,12 +5,21 @@ import TextNode from "../../src/ast/TextNode.js";
 import ViewError from "../../src/errors/ViewError.js";
 
 describe("IfNode", () => {
-    test("should construct with condition, consequent, and null alternate", () => {
-        const node = new IfNode("user", [new TextNode("Hello")]);
+    test("should construct with condition, consequent, alternate, and elseIfs", () => {
+        const elseIfBranch = { condition: "admin", body: [new TextNode("Admin")] };
+        const node = new IfNode("user", [new TextNode("Hello")], [new TextNode("Guest")], [elseIfBranch]);
         assert.equal(node.type, "IfNode");
         assert.equal(node.condition, "user");
         assert.equal(node.consequent.length, 1);
+        assert.equal(node.alternate.length, 1);
+        assert.equal(node.elseIfs.length, 1);
+        assert.equal(node.elseIfs[0].condition, "admin");
+    });
+
+    test("should default alternate to null and elseIfs to empty array", () => {
+        const node = new IfNode("user", []);
         assert.equal(node.alternate, null);
+        assert.deepEqual(node.elseIfs, []);
     });
 
     test("should trim whitespace from condition", () => {

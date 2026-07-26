@@ -1,13 +1,13 @@
 import ViewError from "../errors/ViewError.js";
 
 export default class Renderer {
-    render(compiledTemplate, data) {
-        return this.renderToString(compiledTemplate, data);
+    render(compiledTemplate, data, context = null) {
+        return this.renderToString(compiledTemplate, data, context);
     }
 
-    renderToString(compiledTemplate, data = {}) {
+    renderToString(compiledTemplate, data = {}, context = null) {
         this.validateCompiledTemplate(compiledTemplate);
-        return compiledTemplate.render(data);
+        return compiledTemplate.render(data, context);
     }
 
     renderToStream() {

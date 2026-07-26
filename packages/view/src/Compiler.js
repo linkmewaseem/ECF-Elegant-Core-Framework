@@ -46,7 +46,7 @@ export default class Compiler {
             ast,
             render,
             assets: { css: [], js: [], fonts: [], images: [] },
-            dependencies: [],
+            dependencies: ast.dependencies ?? [],
             hash
         });
     }

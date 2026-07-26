@@ -5,9 +5,19 @@ import IfNode from "../ast/IfNode.js";
 import ForNode from "../ast/ForNode.js";
 import BreakNode from "../ast/BreakNode.js";
 import ContinueNode from "../ast/ContinueNode.js";
+import SwitchNode from "../ast/SwitchNode.js";
+import CaseNode from "../ast/CaseNode.js";
+import IncludeNode from "../ast/IncludeNode.js";
+import ExtendsNode from "../ast/ExtendsNode.js";
+import SectionNode from "../ast/SectionNode.js";
+import YieldNode from "../ast/YieldNode.js";
+import ParentNode from "../ast/ParentNode.js";
 import ViewError from "../errors/ViewError.js";
 
-const BLOCK_TERMINATORS = new Set(["IfClose", "ElseIf", "Else", "ForClose"]);
+const BLOCK_TERMINATORS = new Set([
+    "IfClose", "ElseIf", "Else", "ForClose", "Case", "Default", "SwitchClose",
+    "SectionClose", "SectionShow"
+]);
 
 export default class Parser {
     parse(tokens) {
@@ -46,11 +56,53 @@ export default class Parser {
                 continue;
             }
 
+            if (token.type === "SwitchOpen") {
+                const parsed = this.parseSwitch(tokens, i);
+                children.push(parsed.node);
+                i = parsed.index;
+                continue;
+            }
+
+            if (token.type === "SectionOpen") {
+                const parsed = this.parseSection(tokens, i);
+                children.push(parsed.node);
+                i = parsed.index;
+                continue;
+            }
+
             children.push(this.tokenToNode(token));
             i++;
         }
 
         return { children, index: i };
+    }
+
+    parseSection(tokens, sectionIndex) {
+        const sectionToken = tokens[sectionIndex];
+        let i = sectionIndex + 1;
+
+        if (sectionToken.inlineExpr !== null) {
+            return {
+                node: new SectionNode(sectionToken.nameExpr, sectionToken.inlineExpr, null, false),
+                index: i
+            };
+        }
+
+        const { children: body, index: afterBody } = this.parseBlock(tokens, i);
+        i = afterBody;
+
+        if (i >= tokens.length || (tokens[i].type !== "SectionClose" && tokens[i].type !== "SectionShow")) {
+            throw new ViewError(`Parser: unclosed @section("${sectionToken.nameExpr}") at line ${sectionToken.line} — missing @endsection or @show.`);
+        }
+
+        const terminator = tokens[i];
+        const isShown = terminator.type === "SectionShow";
+        i++;
+
+        return {
+            node: new SectionNode(sectionToken.nameExpr, null, body, isShown),
+            index: i
+        };
     }
 
     parseIf(tokens, ifIndex) {
@@ -102,6 +154,54 @@ export default class Parser {
         return { node: new ForNode(iterable, itemName, indexName, null, body), index: i };
     }
 
+    parseSwitch(tokens, switchIndex) {
+        const switchToken = tokens[switchIndex];
+        let i = switchIndex + 1;
+
+        const { index: afterPreamble } = this.parseBlock(tokens, i);
+        i = afterPreamble;
+
+        const cases = [];
+        const seenValues = [];
+        let defaultBody = null;
+        let sawDefault = false;
+
+        while (i < tokens.length && (tokens[i].type === "Case" || tokens[i].type === "Default")) {
+            const token = tokens[i];
+
+            if (token.type === "Case") {
+                if (seenValues.includes(token.value)) {
+                    throw new ViewError(`Parser: duplicate @case(${JSON.stringify(token.value)}) at line ${token.line} inside @switch("${switchToken.value}").`);
+                }
+                seenValues.push(token.value);
+
+                i++;
+                const { children: body, index: afterBody } = this.parseBlock(tokens, i);
+                i = afterBody;
+
+                cases.push(new CaseNode(token.value, body));
+            } else {
+                if (sawDefault) {
+                    throw new ViewError(`Parser: duplicate @default at line ${token.line} inside @switch("${switchToken.value}") — only one @default is allowed.`);
+                }
+                sawDefault = true;
+
+                i++;
+                const { children: body, index: afterBody } = this.parseBlock(tokens, i);
+                i = afterBody;
+
+                defaultBody = body;
+            }
+        }
+
+        if (i >= tokens.length || tokens[i].type !== "SwitchClose") {
+            throw new ViewError(`Parser: unclosed @switch("${switchToken.value}") at line ${switchToken.line} — missing @endswitch.`);
+        }
+        i++;
+
+        return { node: new SwitchNode(switchToken.value, cases, defaultBody), index: i };
+    }
+
     tokenToNode(token) {
         switch (token.type) {
             case "Text":
@@ -112,6 +212,14 @@ export default class Parser {
                 return new BreakNode(token.value);
             case "Continue":
                 return new ContinueNode(token.value);
+            case "Include":
+                return new IncludeNode(token.viewExpr, token.dataExpr, token.mode, token.conditionExpr);
+            case "Extends":
+                return new ExtendsNode(token.value);
+            case "Yield":
+                return new YieldNode(token.nameExpr, token.defaultExpr);
+            case "Parent":
+                return new ParentNode();
             default:
                 throw new ViewError(`Parser: unexpected token type "${token.type}" at line ${token.line}, column ${token.column}.`);
         }
@@ -123,6 +231,11 @@ export default class Parser {
             case "ElseIf": return "elseif";
             case "Else": return "else";
             case "ForClose": return "endfor";
+            case "Case": return "case";
+            case "Default": return "default";
+            case "SwitchClose": return "endswitch";
+            case "SectionClose": return "endsection";
+            case "SectionShow": return "show";
             default: return type;
         }
     }

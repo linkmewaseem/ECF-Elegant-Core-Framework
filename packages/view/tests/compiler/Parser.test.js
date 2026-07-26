@@ -86,6 +86,19 @@ describe("Parser", () => {
         assert.throws(() => new Parser().parse(tokens), ViewError);
     });
 
+    test("parse() should correctly populate elseIfs and alternate on IfNode", () => {
+        const tokens = new Lexer().lex("@if(a)A@elseif(b)B@else C@endif");
+        const ast = new Parser().parse(tokens);
+        const ifNode = ast.children[0];
+        assert.equal(ifNode.type, "IfNode");
+        assert.equal(ifNode.condition, "a");
+        assert.equal(ifNode.consequent[0].value, "A");
+        assert.equal(ifNode.elseIfs.length, 1);
+        assert.equal(ifNode.elseIfs[0].condition, "b");
+        assert.equal(ifNode.elseIfs[0].body[0].value, "B");
+        assert.equal(ifNode.alternate[0].value, " C");
+    });
+
     test("parse() should produce ForNode from ForOpen + body + ForClose", () => {
         const tokens = [
             { type: "ForOpen", value: { iterable: "users", itemName: "user", indexName: null }, line: 1 },

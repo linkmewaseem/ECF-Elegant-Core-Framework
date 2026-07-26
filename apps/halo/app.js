@@ -1,10 +1,11 @@
 import { Application, Facade, CoreServiceProvider, RouteNotFoundError, LoggerServiceProvider, HttpServiceProvider, Route, Middleware, Log, ExceptionManager } from "@ecf/http";
-
+import { ViewServiceProvider } from "@ecf/view";
 const app = new Application();
 
 app.register(CoreServiceProvider);
 app.register(HttpServiceProvider);
 app.register(LoggerServiceProvider);
+app.register(ViewServiceProvider);
 app.boot();
 
 Facade.setApplication(app);
@@ -58,19 +59,21 @@ const secondMiddleware = (req, res, next) => {
 };
 
 const users = [
-    { id: 1, name: "John", email: "john@gmail.com" },
-    { id: 2, name: "Jane", email: "jane@gmail.com" },
-    { id: 3, name: "Bob", email: "bob@gmail.com" },
-    { id: 4, name: "Alice", email: "alice@gmail.com" },
-    { id: 5, name: "Mike", email: "mike@gmail.com" },
+    { id: 1, name: "John", email: "john@gmail.com", role: "Admin", disabled: false },
+    { id: 2, name: "Jane", email: "jane@gmail.com", role: "User", disabled: true },
+    { id: 3, name: "Bob", email: "bob@gmail.com", role: "User", disabled: false },
+    { id: 4, name: "Alice", email: "alice@gmail.com", role: "Manager", disabled: true },
+    { id: 5, name: "Mike", email: "mike@gmail.com", role: "User", disabled: false },
 ];
 
 // Option A: Array inline middleware: [firstMiddleware, secondMiddleware]
 Route.get("/", [firstMiddleware, secondMiddleware], (req, res) => {
-    return res.html(`
-        <h1>Welcome to the ECF world!</h1>
-        <p>Let's explore the features and capabilities of ECF.</p>
-    `);
+    return res.view("home", {
+        name: "Ashir Awan",
+        age: 20,
+        date: new Date().toDateString(),
+        users
+    });
 });
 
 Route.get("/about", (req, res) => {
@@ -97,22 +100,7 @@ Route.get("/users/new", firstMiddleware, (req, res) => {
 
 
 Route.get("/users", (req, res) => {
-    return res.html(`
-    <h1>Users</h1>
-    <ul>
-    ${users
-            .map((user) => {
-                return `
-            <li>
-                <a href="/users/${user.id}"><strong>${user.name}</strong></a>
-                <p>${user.email}</p>
-            </li>
-        `;
-            })
-            .join("")}
-    </ul>
-    <p><a href="/users/new">Add New User</a></p>
-    `);
+    return res.view("user", { users });
 });
 
 // Route for finding by name (case-insensitive) - MUST come before /users/{id}
@@ -222,6 +210,5 @@ exceptionManager.render(RouteNotFoundError, (err, req, res) => {
 });
 
 app.listen(3000, () => {
-    // console.log("ecf running at http://localhost:3000");
-    Log.log("Server", "stating on Port 3000", "http://localhost:3000")
+    console.log("ecf running at http://localhost:3000");
 });

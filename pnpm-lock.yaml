@@ -13,6 +13,9 @@ importers:
       '@ecf/http':
         specifier: workspace:*
         version: link:../../packages/http
+      '@ecf/view':
+        specifier: workspace:*
+        version: link:../../packages/view
 
   packages/core:
     devDependencies:
@@ -25,3 +28,12 @@ importers:
       '@ecf/core':
         specifier: workspace:*
         version: link:../core
+
+  packages/view:
+    dependencies:
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../core
+      '@ecf/http':
+        specifier: workspace:*
+        version: link:../http

@@ -4,6 +4,7 @@
   "type": "module",
   "private": true,
   "dependencies": {
+    "@ecf/view": "workspace:*",
     "@ecf/http": "workspace:*"
   },
   "scripts": {

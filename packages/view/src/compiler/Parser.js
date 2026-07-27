@@ -14,11 +14,17 @@ import YieldNode from "../ast/YieldNode.js";
 import ParentNode from "../ast/ParentNode.js";
 import ComponentNode from "../ast/ComponentNode.js";
 import SlotNode from "../ast/SlotNode.js";
+import PushNode from "../ast/PushNode.js";
+import StackNode from "../ast/StackNode.js";
+import OnceNode from "../ast/OnceNode.js";
+import CacheNode from "../ast/CacheNode.js";
+import CustomDirectiveNode from "../ast/CustomDirectiveNode.js";
 import ViewError from "../errors/ViewError.js";
 
 const BLOCK_TERMINATORS = new Set([
     "IfClose", "ElseIf", "Else", "ForClose", "Case", "Default", "SwitchClose",
-    "SectionClose", "SectionShow", "ComponentClose", "SlotClose", "SlotOpen"
+    "SectionClose", "SectionShow", "ComponentClose", "SlotClose", "SlotOpen",
+    "PushClose", "OnceClose", "CacheClose"
 ]);
 
 export default class Parser {
@@ -74,6 +80,27 @@ export default class Parser {
 
             if (token.type === "ComponentOpen") {
                 const parsed = this.parseComponent(tokens, i);
+                children.push(parsed.node);
+                i = parsed.index;
+                continue;
+            }
+
+            if (token.type === "PushOpen") {
+                const parsed = this.parsePush(tokens, i);
+                children.push(parsed.node);
+                i = parsed.index;
+                continue;
+            }
+
+            if (token.type === "OnceOpen") {
+                const parsed = this.parseOnce(tokens, i);
+                children.push(parsed.node);
+                i = parsed.index;
+                continue;
+            }
+
+            if (token.type === "CacheOpen") {
+                const parsed = this.parseCache(tokens, i);
                 children.push(parsed.node);
                 i = parsed.index;
                 continue;
@@ -216,7 +243,7 @@ export default class Parser {
             case "Text":
                 return new TextNode(token.value);
             case "Expression":
-                return new ExpressionNode(token.value);
+                return new ExpressionNode(token.value, token.escapeMode ?? "escape");
             case "Break":
                 return new BreakNode(token.value);
             case "Continue":
@@ -229,9 +256,59 @@ export default class Parser {
                 return new YieldNode(token.nameExpr, token.defaultExpr);
             case "Parent":
                 return new ParentNode();
+            case "Stack":
+                return new StackNode(token.value);
+            case "CustomDirective":
+                return new CustomDirectiveNode(token.name, token.value);
             default:
                 throw new ViewError(`Parser: unexpected token type "${token.type}" at line ${token.line}, column ${token.column}.`);
         }
+    }
+
+    parsePush(tokens, pushIndex) {
+        const pushToken = tokens[pushIndex];
+        let i = pushIndex + 1;
+
+        const { children: body, index: afterBody } = this.parseBlock(tokens, i);
+        i = afterBody;
+
+        if (i >= tokens.length || tokens[i].type !== "PushClose") {
+            throw new ViewError(`Parser: unclosed @${pushToken.mode}("${pushToken.value}") at line ${pushToken.line} — missing @end${pushToken.mode}.`);
+        }
+        i++;
+
+        return { node: new PushNode(pushToken.value, pushToken.mode, body), index: i };
+    }
+
+    parseOnce(tokens, onceIndex) {
+        const onceToken = tokens[onceIndex];
+        let i = onceIndex + 1;
+
+        const { children: body, index: afterBody } = this.parseBlock(tokens, i);
+        i = afterBody;
+
+        if (i >= tokens.length || tokens[i].type !== "OnceClose") {
+            throw new ViewError(`Parser: unclosed @once at line ${onceToken.line} — missing @endonce.`);
+        }
+        i++;
+
+        const autoId = `once_${onceToken.line}_${onceToken.column}`;
+        return { node: new OnceNode(body, autoId), index: i };
+    }
+
+    parseCache(tokens, cacheIndex) {
+        const cacheToken = tokens[cacheIndex];
+        let i = cacheIndex + 1;
+
+        const { children: body, index: afterBody } = this.parseBlock(tokens, i);
+        i = afterBody;
+
+        if (i >= tokens.length || tokens[i].type !== "CacheClose") {
+            throw new ViewError(`Parser: unclosed @cache at line ${cacheToken.line} — missing @endcache.`);
+        }
+        i++;
+
+        return { node: new CacheNode(cacheToken.keyExpr, cacheToken.ttlExpr, body), index: i };
     }
 
     parseComponent(tokens, compIndex) {
@@ -315,6 +392,8 @@ export default class Parser {
             case "ComponentClose": return "</x-...>";
             case "SlotClose": return "</x-slot>";
             case "SlotOpen": return "<x-slot>";
+            case "PushClose": return "@endpush";
+            case "OnceClose": return "@endonce";
             default: return type;
         }
     }

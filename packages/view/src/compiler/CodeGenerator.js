@@ -92,7 +92,51 @@ export default class CodeGenerator {
 
             case "ExpressionNode": {
                 const value = CodeGenerator.evalExpr(node, "expressionAst", "expression", data);
-                return value !== undefined && value !== null ? String(value) : "";
+                if (value === undefined || value === null) return "";
+                const str = String(value);
+                const isComponentVar = node.expression && node.expression.startsWith("$");
+                if (node.escapeMode === "raw" || isComponentVar) {
+                    return str;
+                }
+                return str
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+
+            case "CacheNode":
+            case "Cache": {
+                const vm = data.__viewManager;
+                const unquote = (s) => (typeof s === "string" && ((s.startsWith("'") && s.endsWith("'")) || (s.startsWith('"') && s.endsWith('"')))) ? s.slice(1, -1) : s;
+                let keyVal = node.keyExpr;
+                if (keyVal) {
+                    try {
+                        keyVal = evaluator.evaluate(node.keyExprAst ?? node.keyExpr, data);
+                    } catch {
+                        keyVal = lookup(data, node.keyExpr) ?? node.keyExpr;
+                    }
+                }
+                keyVal = unquote(keyVal);
+                let ttlVal = null;
+                if (node.ttlExpr) {
+                    try {
+                        ttlVal = Number(evaluator.evaluate(node.ttlExprAst ?? node.ttlExpr, data));
+                    } catch {
+                        ttlVal = Number(lookup(data, node.ttlExpr) ?? node.ttlExpr);
+                    }
+                }
+
+                if (vm && vm.fragmentCache && vm.fragmentCache.has(keyVal)) {
+                    return vm.fragmentCache.get(keyVal);
+                }
+
+                const content = CodeGenerator.renderNodes(node.body, data, context, nearestLoop, nearestBreakable, parentEvaluator);
+                if (vm && vm.fragmentCache) {
+                    vm.fragmentCache.set(keyVal, content, ttlVal);
+                }
+                return content;
             }
 
             case "ExtendsNode": {
@@ -141,6 +185,46 @@ export default class CodeGenerator {
 
             case "ComponentNode":
                 return CodeGenerator.renderComponent(node, data, context);
+
+            case "PushNode":
+            case "Push": {
+                const content = CodeGenerator.renderNodes(node.children, data, context, nearestLoop, nearestBreakable, parentEvaluator);
+                context.pushStack(node.name, content, node.mode);
+                return "";
+            }
+
+            case "StackNode":
+            case "Stack": {
+                return context.renderStack(node.name);
+            }
+
+            case "OnceNode":
+            case "Once": {
+                const onceKey = node.id ?? "once_block";
+                if (context.hasOnce(onceKey)) {
+                    return "";
+                }
+                context.markOnce(onceKey);
+                return CodeGenerator.renderNodes(node.children, data, context, nearestLoop, nearestBreakable, parentEvaluator);
+            }
+
+            case "CustomDirectiveNode":
+            case "CustomDirective": {
+                const vm = data.__viewManager;
+                if (!vm || !vm.directives) {
+                    throw new ViewError(`Custom directive @${node.name} executed without ViewManager or DirectiveRegistry.`);
+                }
+                let argsEvaluated = node.expression;
+                if (argsEvaluated) {
+                    try {
+                        argsEvaluated = evaluator.evaluate(argsEvaluated, data);
+                    } catch {
+                        argsEvaluated = lookup(data, node.expression) ?? node.expression;
+                    }
+                }
+                const result = vm.directives.execute(node.name, argsEvaluated, data, context);
+                return result !== undefined && result !== null ? String(result) : "";
+            }
 
             case "IfNode": {
                 const mainCond = CodeGenerator.evalExpr(node, "conditionAst", "condition", data);
@@ -239,12 +323,39 @@ export default class CodeGenerator {
             throw new ViewError("<x-...> component tags require a ViewManager instance in render data (__viewManager).");
         }
 
-        let componentViewName = `components.${node.componentName}`;
-        if (!vm.existsSync(componentViewName)) {
-            if (vm.existsSync(node.componentName)) {
-                componentViewName = node.componentName;
-            } else {
-                throw new ViewError(`Component view "${componentViewName}" (or "${node.componentName}") not found.`);
+        let rawName = node.componentName;
+        if (vm.componentAliases && vm.componentAliases.has(rawName)) {
+            rawName = vm.componentAliases.get(rawName);
+        }
+
+        if (rawName === "dynamic") {
+            const compAttr = node.attributes.find(a => a.name === "component");
+            if (compAttr) {
+                if (compAttr.isDynamic) {
+                    rawName = compAttr.valueAst
+                        ? evaluator.evaluate(compAttr.valueAst, data)
+                        : lookup(data, compAttr.value);
+                } else {
+                    rawName = compAttr.value;
+                }
+            }
+        }
+
+        let componentViewName;
+        if (rawName.includes("::")) {
+            const [ns, name] = rawName.split("::");
+            componentViewName = `${ns}::components.${name}`;
+            if (!vm.existsSync(componentViewName)) {
+                componentViewName = `${ns}::${name}`;
+            }
+        } else {
+            componentViewName = `components.${rawName}`;
+            if (!vm.existsSync(componentViewName)) {
+                if (vm.existsSync(rawName)) {
+                    componentViewName = rawName;
+                } else {
+                    throw new ViewError(`Component view "${componentViewName}" (or "${rawName}") not found.`);
+                }
             }
         }
 

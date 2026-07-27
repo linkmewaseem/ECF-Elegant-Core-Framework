@@ -4,6 +4,8 @@ import fsSync from "node:fs";
 import ViewCache from "../cache/ViewCache.js";
 import ViewFinder from "../runtime/ViewFinder.js";
 import RenderContext from "../runtime/RenderContext.js";
+import DirectiveRegistry from "../directives/DirectiveRegistry.js";
+import FragmentCache from "../cache/FragmentCache.js";
 import generateId from "../utils/generateId.js";
 import ViewError from "../errors/ViewError.js";
 
@@ -23,19 +25,115 @@ export default class ViewManager extends ViewContract {
         this.cache = new ViewCache();
 
         this.finder = options.finder ?? new ViewFinder([this.basePath], this.extension);
+        this.directives = options.directives ?? new DirectiveRegistry();
+        this.fragmentCache = options.fragmentCache ?? new FragmentCache();
+        this.componentAliases = new Map();
+        this.sharedData = {};
+        this.composers = [];
+
+        this.registerDefaultDirectives();
+    }
+
+    component(alias, viewName) {
+        if (typeof alias !== "string" || !alias.trim()) {
+            throw new ViewError("Component alias must be a non-empty string.");
+        }
+        if (typeof viewName !== "string" || !viewName.trim()) {
+            throw new ViewError("Component view name must be a non-empty string.");
+        }
+        this.componentAliases.set(alias.trim(), viewName.trim());
+        return this;
+    }
+
+    registerDefaultDirectives() {
+        const unquote = (str) => {
+            if (!str) return str;
+            const s = String(str).trim();
+            if ((s.startsWith("'") && s.endsWith("'")) || (s.startsWith('"') && s.endsWith('"'))) {
+                return s.slice(1, -1);
+            }
+            return s;
+        };
+
+        this.directive("csrf", (args, data) => `<input type="hidden" name="_token" value="${data._token ?? ''}">`);
+        this.directive("method", (args) => `<input type="hidden" name="_method" value="${unquote(args) ?? 'POST'}">`);
+        this.directive("asset", (args, data) => {
+            const prefix = data.assetPrefix ?? "/assets";
+            const cleanPath = unquote(args ?? "").replace(/^\//, "");
+            return `${prefix}/${cleanPath}`;
+        });
+        this.directive("env", (args) => (process.env.NODE_ENV === unquote(args) ? "true" : "false"));
+    }
+
+    forgetFragmentCache(key) {
+        const unquote = (s) => (typeof s === "string" && ((s.startsWith("'") && s.endsWith("'")) || (s.startsWith('"') && s.endsWith('"')))) ? s.slice(1, -1) : s;
+        this.fragmentCache.forget(unquote(key));
+        return this;
+    }
+
+    clearFragmentCache() {
+        this.fragmentCache.clear();
+        return this;
+    }
+
+    directive(name, handler) {
+        this.directives.register(name, handler);
+        return this;
+    }
+
+    share(key, value) {
+        if (typeof key === "object" && key !== null) {
+            Object.assign(this.sharedData, key);
+        } else if (typeof key === "string" && key.trim() !== "") {
+            this.sharedData[key.trim()] = value;
+        }
+        return this;
+    }
+
+    composer(views, callback) {
+        if (typeof callback !== "function") {
+            throw new ViewError("View composer callback must be a function.");
+        }
+        const viewList = Array.isArray(views) ? views : [views];
+        for (const pattern of viewList) {
+            if (typeof pattern === "string" && pattern.trim() !== "") {
+                this.composers.push({ pattern: pattern.trim(), callback });
+            }
+        }
+        return this;
+    }
+
+    applyComposers(viewName, data) {
+        for (const { pattern, callback } of this.composers) {
+            if (this.matchesPattern(viewName, pattern)) {
+                callback({ data, viewName, manager: this });
+            }
+        }
+    }
+
+    matchesPattern(viewName, pattern) {
+        if (pattern === "*") return true;
+        if (pattern === viewName) return true;
+        if (pattern.includes("*")) {
+            const regexPattern = "^" + pattern.split("*").map(s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join(".*") + "$";
+            return new RegExp(regexPattern).test(viewName);
+        }
+        return false;
     }
 
     async render(name, data = {}, context = null) {
         const renderContext = context ? context.pushView(name) : new RenderContext().pushView(name);
         const compiledTemplate = await this.compile(name);
-        const renderData = { ...data, __viewManager: this };
+        const renderData = { ...this.sharedData, ...data, __viewManager: this };
+        this.applyComposers(name, renderData);
         return this.renderer.render(compiledTemplate, renderData, renderContext);
     }
 
     renderSync(name, data = {}, context = null) {
         const renderContext = context ? context.pushView(name) : new RenderContext().pushView(name);
         const compiledTemplate = this.compileSync(name);
-        const renderData = { ...data, __viewManager: this };
+        const renderData = { ...this.sharedData, ...data, __viewManager: this };
+        this.applyComposers(name, renderData);
         return this.renderer.render(compiledTemplate, renderData, renderContext);
     }
 

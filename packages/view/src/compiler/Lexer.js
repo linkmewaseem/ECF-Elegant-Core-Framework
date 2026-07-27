@@ -3,7 +3,7 @@ import ViewError from "../errors/ViewError.js";
 const FOR_EXPRESSION = /^(.+?)\s+as\s+([A-Za-z_$][\w$]*)\s*(?:,\s*([A-Za-z_$][\w$]*))?$/;
 
 const PATTERN =
-    /(?<extendsTok>@extends\s*\(\s*(?<extendsBody>[^)]*)\))|(?<sectionOpen>@section\s*\(\s*(?<sectionBody>[^)]*)\))|(?<sectionClose>@endsection\b|@overwrite\b)|(?<sectionShow>@show\b)|(?<yieldTok>@yield\s*\(\s*(?<yieldBody>[^)]*)\))|(?<parentTok>@parent\b)|(?<includeIfTok>@includeIf\s*\(\s*(?<includeIfBody>[^)]*)\))|(?<includeWhenTok>@includeWhen\s*\(\s*(?<includeWhenBody>[^)]*)\))|(?<includeUnlessTok>@includeUnless\s*\(\s*(?<includeUnlessBody>[^)]*)\))|(?<includeFirstTok>@includeFirst\s*\(\s*(?<includeFirstBody>[^)]*)\))|(?<includeTok>@include\s*\(\s*(?<includeBody>[^)]*)\))|(?<ifOpen>@if\s*\(\s*(?<ifCond>[^)]*)\))|(?<elseIf>@elseif\s*\(\s*(?<elseIfCond>[^)]*)\))|(?<elseTok>@else\b)|(?<ifClose>@endif)|(?<forOpen>@(?:for|foreach)\s*\(\s*(?<forExpr>[^)]*)\))|(?<forClose>@endfor|@endforeach)|(?<breakTok>@break\b(?:\s*\(\s*(?<breakCond>[^)]*)\s*\))?)|(?<continueTok>@continue\b(?:\s*\(\s*(?<continueCond>[^)]*)\s*\))?)|(?<switchOpen>@switch\s*\(\s*(?<switchExpr>[^)]*)\))|(?<caseTok>@case\s*\(\s*(?<caseExpr>[^)]*)\))|(?<defaultTok>@default\b)|(?<switchClose>@endswitch)|(?<slotClose><\/x-slot(?::[a-zA-Z0-9\.\-_]+)?\s*>)|(?<slotOpen><x-slot(?::(?<slotNameColon>[a-zA-Z0-9\.\-_]+))?(?<slotAttrs>\s+(?:[^"'>\/]|"[^"]*"|'[^']*')*?)?\s*>)|(?<compClose><\/x-(?<compCloseName>[a-zA-Z0-9\.\-_]+)\s*>)|(?<compOpen><x-(?<compName>[a-zA-Z0-9\.\-_]+)(?<compAttrs>\s+(?:[^"'>\/]|"[^"]*"|'[^']*')*?)?\s*(?<selfClosing>\/)?>)|(?<expr>\{\{(?<exprBody>[\s\S]*?)\}\})/g;
+    /(?<extendsTok>@extends\s*\(\s*(?<extendsBody>[^)]*)\))|(?<sectionOpen>@section\s*\(\s*(?<sectionBody>[^)]*)\))|(?<sectionClose>@endsection\b|@overwrite\b)|(?<sectionShow>@show\b)|(?<yieldTok>@yield\s*\(\s*(?<yieldBody>[^)]*)\))|(?<parentTok>@parent\b)|(?<includeIfTok>@includeIf\s*\(\s*(?<includeIfBody>[^)]*)\))|(?<includeWhenTok>@includeWhen\s*\(\s*(?<includeWhenBody>[^)]*)\))|(?<includeUnlessTok>@includeUnless\s*\(\s*(?<includeUnlessBody>[^)]*)\))|(?<includeFirstTok>@includeFirst\s*\(\s*(?<includeFirstBody>[^)]*)\))|(?<includeTok>@include\s*\(\s*(?<includeBody>[^)]*)\))|(?<ifOpen>@if\s*\(\s*(?<ifCond>[^)]*)\))|(?<elseIf>@elseif\s*\(\s*(?<elseIfCond>[^)]*)\))|(?<elseTok>@else\b)|(?<ifClose>@endif)|(?<forOpen>@(?:for|foreach)\s*\(\s*(?<forExpr>[^)]*)\))|(?<forClose>@endfor|@endforeach)|(?<breakTok>@break\b(?:\s*\(\s*(?<breakCond>[^)]*)\s*\))?)|(?<continueTok>@continue\b(?:\s*\(\s*(?<continueCond>[^)]*)\s*\))?)|(?<switchOpen>@switch\s*\(\s*(?<switchExpr>[^)]*)\))|(?<caseTok>@case\s*\(\s*(?<caseExpr>[^)]*)\))|(?<defaultTok>@default\b)|(?<switchClose>@endswitch)|(?<pushOpen>@push\s*\(\s*(?<pushName>[^)]*)\))|(?<pushClose>@endpush\b)|(?<prependOpen>@prepend\s*\(\s*(?<prependName>[^)]*)\))|(?<prependClose>@endprepend\b)|(?<stackTok>@stack\s*\(\s*(?<stackName>[^)]*)\))|(?<onceOpen>@once\b)|(?<onceClose>@endonce\b)|(?<cacheOpen>@cache\s*\(\s*(?<cacheExpr>[^)]*)\))|(?<cacheClose>@endcache\b)|(?<slotClose><\/x-slot(?::[a-zA-Z0-9\.\-_]+)?\s*>)|(?<slotOpen><x-slot(?::(?<slotNameColon>[a-zA-Z0-9\.\-_]+))?(?<slotAttrs>\s+(?:[^"'>\/]|"[^"]*"|'[^']*')*?)?\s*>)|(?<compClose><\/x-(?<compCloseName>[a-zA-Z0-9\.\-_:]+)\s*>)|(?<compOpen><x-(?<compName>[a-zA-Z0-9\.\-_:]+)(?<compAttrs>\s+(?:[^"'>\/]|"[^"]*"|'[^']*')*?)?\s*(?<selfClosing>\/)?>)|(?<rawExpr>\{!!\s*(?<rawBody>[\s\S]*?)\s*!!\})|(?<tripleExpr>\{\{\{\s*(?<tripleBody>[\s\S]*?)\s*\}\}\})|(?<expr>\{\{(?<exprBody>[\s\S]*?)\}\})|(?<customDir>(?<!\w)@(?<customName>[a-zA-Z_$][a-zA-Z0-9_$]*)(?:\s*\(\s*(?<customArgs>[^)]*)\s*\))?)/g;
 
 export default class Lexer {
     lex(source) {
@@ -136,6 +136,56 @@ export default class Lexer {
             } else if (groups.switchClose !== undefined) {
                 tokens.push({ type: "SwitchClose", value: null, start: matchStart, end: matchEnd, line, column });
 
+            } else if (groups.pushOpen !== undefined) {
+                const name = this.unquote(groups.pushName);
+                if (!name) {
+                    throw new ViewError(`Lexer: empty @push stack name at line ${line}, column ${column}.`);
+                }
+                tokens.push({ type: "PushOpen", value: name, mode: "push", start: matchStart, end: matchEnd, line, column });
+
+            } else if (groups.pushClose !== undefined) {
+                tokens.push({ type: "PushClose", value: null, start: matchStart, end: matchEnd, line, column });
+
+            } else if (groups.prependOpen !== undefined) {
+                const name = this.unquote(groups.prependName);
+                if (!name) {
+                    throw new ViewError(`Lexer: empty @prepend stack name at line ${line}, column ${column}.`);
+                }
+                tokens.push({ type: "PushOpen", value: name, mode: "prepend", start: matchStart, end: matchEnd, line, column });
+
+            } else if (groups.prependClose !== undefined) {
+                tokens.push({ type: "PushClose", value: null, start: matchStart, end: matchEnd, line, column });
+
+            } else if (groups.stackTok !== undefined) {
+                const name = this.unquote(groups.stackName);
+                if (!name) {
+                    throw new ViewError(`Lexer: empty @stack name at line ${line}, column ${column}.`);
+                }
+                tokens.push({ type: "Stack", value: name, start: matchStart, end: matchEnd, line, column });
+
+            } else if (groups.onceOpen !== undefined) {
+                tokens.push({ type: "OnceOpen", value: null, start: matchStart, end: matchEnd, line, column });
+
+            } else if (groups.onceClose !== undefined) {
+                tokens.push({ type: "OnceClose", value: null, start: matchStart, end: matchEnd, line, column });
+
+            } else if (groups.cacheOpen !== undefined) {
+                const expr = groups.cacheExpr.trim();
+                if (!expr) {
+                    throw new ViewError(`Lexer: empty @cache expression at line ${line}, column ${column}.`);
+                }
+                const commaIdx = this.findTopLevelComma(expr);
+                let keyExpr = expr;
+                let ttlExpr = null;
+                if (commaIdx !== -1) {
+                    keyExpr = expr.slice(0, commaIdx).trim();
+                    ttlExpr = expr.slice(commaIdx + 1).trim();
+                }
+                tokens.push({ type: "CacheOpen", keyExpr, ttlExpr, start: matchStart, end: matchEnd, line, column });
+
+            } else if (groups.cacheClose !== undefined) {
+                tokens.push({ type: "CacheClose", value: null, start: matchStart, end: matchEnd, line, column });
+
             } else if (groups.slotOpen !== undefined) {
                 const slotAttrs = this.parseAttributes(groups.slotAttrs, line, column);
                 let slotName = groups.slotNameColon || null;
@@ -172,12 +222,31 @@ export default class Lexer {
                     column
                 });
 
+            } else if (groups.rawExpr !== undefined) {
+                const exprValue = groups.rawBody.trim();
+                if (exprValue === "") {
+                    throw new ViewError(`Lexer: empty raw expression at line ${line}, column ${column}.`);
+                }
+                tokens.push({ type: "Expression", value: exprValue, escapeMode: "raw", start: matchStart, end: matchEnd, line, column });
+
+            } else if (groups.tripleExpr !== undefined) {
+                const exprValue = groups.tripleBody.trim();
+                if (exprValue === "") {
+                    throw new ViewError(`Lexer: empty triple expression at line ${line}, column ${column}.`);
+                }
+                tokens.push({ type: "Expression", value: exprValue, escapeMode: "triple", start: matchStart, end: matchEnd, line, column });
+
             } else if (groups.expr !== undefined) {
                 const exprValue = groups.exprBody.trim();
                 if (exprValue === "") {
                     throw new ViewError(`Lexer: empty expression at line ${line}, column ${column}. Did you mean to write {{ variable }}?`);
                 }
-                tokens.push({ type: "Expression", value: exprValue, start: matchStart, end: matchEnd, line, column });
+                tokens.push({ type: "Expression", value: exprValue, escapeMode: "escape", start: matchStart, end: matchEnd, line, column });
+
+            } else if (groups.customDir !== undefined) {
+                const name = groups.customName.trim();
+                const args = groups.customArgs !== undefined ? groups.customArgs.trim() : null;
+                tokens.push({ type: "CustomDirective", name, value: args, start: matchStart, end: matchEnd, line, column });
             }
 
             ({ line, column } = this.advancePosition(match[0], line, column));
@@ -375,5 +444,14 @@ export default class Lexer {
             }
         }
         return { line, column };
+    }
+
+    unquote(str) {
+        if (!str) return str;
+        const s = str.trim();
+        if ((s.startsWith("'") && s.endsWith("'")) || (s.startsWith('"') && s.endsWith('"'))) {
+            return s.slice(1, -1);
+        }
+        return s;
     }
 }

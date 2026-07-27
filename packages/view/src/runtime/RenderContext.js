@@ -5,8 +5,10 @@ export const MAX_INCLUDE_DEPTH = 100;
 export default class RenderContext {
     constructor(options = {}) {
         this.depth = options.depth ?? 0;
-        this.renderStack = options.renderStack ? [...options.renderStack] : [];
+        this.viewChain = options.viewChain ? [...options.viewChain] : [];
         this.sections = options.sections ?? new Map();
+        this.stacks = options.stacks ?? new Map();
+        this.onceKeys = options.onceKeys ?? new Set();
         this.extendedLayout = null;
     }
 
@@ -15,16 +17,53 @@ export default class RenderContext {
             throw new ViewError(`Maximum include depth exceeded (${MAX_INCLUDE_DEPTH}).`);
         }
 
-        if (this.renderStack.includes(viewName)) {
-            const chain = [...this.renderStack, viewName].join(" -> ");
+        if (this.viewChain.includes(viewName)) {
+            const chain = [...this.viewChain, viewName].join(" -> ");
             throw new ViewError(`Circular include detected: ${chain}`);
         }
 
         return new RenderContext({
             depth: this.depth + 1,
-            renderStack: [...this.renderStack, viewName],
-            sections: this.sections
+            viewChain: [...this.viewChain, viewName],
+            sections: this.sections,
+            stacks: this.stacks,
+            onceKeys: this.onceKeys
         });
+    }
+
+    pushStack(name, content, mode = "push") {
+        if (typeof name !== "string" || !name.trim()) {
+            throw new ViewError("Stack name must be a non-empty string.");
+        }
+        const stackName = name.trim();
+        if (!this.stacks.has(stackName)) {
+            this.stacks.set(stackName, []);
+        }
+        const stackList = this.stacks.get(stackName);
+        if (mode === "prepend") {
+            stackList.unshift(content);
+        } else {
+            stackList.push(content);
+        }
+    }
+
+    renderStack(name) {
+        if (typeof name !== "string" || !name.trim()) {
+            return "";
+        }
+        const stackName = name.trim();
+        if (!this.stacks.has(stackName)) {
+            return "";
+        }
+        return this.stacks.get(stackName).join("");
+    }
+
+    hasOnce(key) {
+        return this.onceKeys.has(key);
+    }
+
+    markOnce(key) {
+        this.onceKeys.add(key);
     }
 
     addSection(name, sectionContent) {

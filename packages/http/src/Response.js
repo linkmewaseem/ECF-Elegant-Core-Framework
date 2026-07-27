@@ -12,12 +12,15 @@ export default class Response {
         this.validateContext(context);
 
         this.raw = raw;
+        if (typeof this.raw.destroy !== "function") {
+            this.raw.destroy = () => {};
+        }
         this.statusCode = raw.statusCode ?? 200;
         this.context = Object.freeze({ ...context });
         this.#sent = false;
     }
 
-    // ---- Public API ----
+    // ---- Basic Response Builders ----
 
     status(code) {
         this.assertNotSent();
@@ -56,22 +59,165 @@ export default class Response {
         return this;
     }
 
+    appendHeader(name, value) {
+        this.assertNotSent();
+        const trimmedName = this.normalizeHeaderName(name);
+        this.validateHeaderValue(value);
+        const existing = this.raw.getHeader(trimmedName);
+        if (existing === undefined) {
+            this.raw.setHeader(trimmedName, value);
+        } else if (Array.isArray(existing)) {
+            this.raw.setHeader(trimmedName, [...existing, value]);
+        } else {
+            this.raw.setHeader(trimmedName, [existing, value]);
+        }
+        return this;
+    }
+
+    contentType(type) {
+        const mimeMap = {
+            json: "application/json; charset=utf-8",
+            html: "text/html; charset=utf-8",
+            text: "text/plain; charset=utf-8",
+            txt: "text/plain; charset=utf-8",
+            css: "text/css; charset=utf-8",
+            js: "application/javascript; charset=utf-8",
+            xml: "application/xml; charset=utf-8",
+            pdf: "application/pdf",
+            png: "image/png",
+            jpg: "image/jpeg",
+            jpeg: "image/jpeg",
+            svg: "image/svg+xml"
+        };
+        const mime = mimeMap[type.toLowerCase()] ?? type;
+        return this.header("Content-Type", mime);
+    }
+
+    // ---- Phase 2: Cookie API ----
+
+    cookie(name, value, options = {}) {
+        this.assertNotSent();
+        if (typeof name !== "string" || !name.trim()) {
+            throw new ResponseError("Cookie name must be a non-empty string.");
+        }
+        const serialized = this.serializeCookie(name.trim(), String(value ?? ""), options);
+        this.appendHeader("Set-Cookie", serialized);
+        return this;
+    }
+
+    clearCookie(name, options = {}) {
+        return this.cookie(name, "", {
+            ...options,
+            expires: new Date(0),
+            maxAge: 0
+        });
+    }
+
+    serializeCookie(name, value, options = {}) {
+        let cookieStr = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+
+        if (options.maxAge !== undefined && options.maxAge !== null) {
+            const maxAge = Number(options.maxAge);
+            if (!Number.isNaN(maxAge)) {
+                cookieStr += `; Max-Age=${Math.floor(maxAge)}`;
+            }
+        }
+
+        if (options.expires instanceof Date) {
+            cookieStr += `; Expires=${options.expires.toUTCString()}`;
+        } else if (typeof options.expires === "string") {
+            cookieStr += `; Expires=${options.expires}`;
+        }
+
+        const path = options.path ?? "/";
+        if (path) {
+            cookieStr += `; Path=${path}`;
+        }
+
+        if (options.domain) {
+            cookieStr += `; Domain=${options.domain}`;
+        }
+
+        if (options.secure) {
+            cookieStr += "; Secure";
+        }
+
+        if (options.httpOnly !== false) {
+            cookieStr += "; HttpOnly";
+        }
+
+        if (options.sameSite) {
+            const sameSite = String(options.sameSite).toLowerCase();
+            if (sameSite === "lax") cookieStr += "; SameSite=Lax";
+            else if (sameSite === "strict") cookieStr += "; SameSite=Strict";
+            else if (sameSite === "none") cookieStr += "; SameSite=None";
+        }
+
+        return cookieStr;
+    }
+
+    // ---- Phase 2: Cache & HTTP Header Helpers ----
+
+    cacheControl(options = {}) {
+        const directives = [];
+        if (options.private) directives.push("private");
+        else if (options.public) directives.push("public");
+
+        if (options.noCache) directives.push("no-cache");
+        if (options.noStore) directives.push("no-store");
+        if (options.mustRevalidate) directives.push("must-revalidate");
+
+        if (options.maxAge !== undefined && options.maxAge !== null) {
+            directives.push(`max-age=${Number(options.maxAge)}`);
+        }
+        if (options.sMaxAge !== undefined && options.sMaxAge !== null) {
+            directives.push(`s-maxage=${Number(options.sMaxAge)}`);
+        }
+
+        return this.header("Cache-Control", directives.join(", "));
+    }
+
+    noCache() {
+        return this.header("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    }
+
+    etag(value) {
+        const val = String(value).startsWith('"') || String(value).startsWith('W/"') ? value : `"${value}"`;
+        return this.header("ETag", val);
+    }
+
+    lastModified(date) {
+        const dateObj = date instanceof Date ? date : new Date(date);
+        return this.header("Last-Modified", dateObj.toUTCString());
+    }
+
+    vary(field) {
+        return this.appendHeader("Vary", field);
+    }
+
+    // ---- Terminal Response Body Writers ----
+
     text(body) {
         this.validateStringBody(body, "text");
-        this.header("Content-Type", "text/plain; charset=utf-8");
+        this.contentType("text");
         return this.send(body);
     }
 
     html(body) {
         this.validateStringBody(body, "html");
-        this.header("Content-Type", "text/html; charset=utf-8");
+        this.contentType("html");
         return this.send(body);
     }
 
     json(data) {
         const serialized = this.serializeJson(data);
-        this.header("Content-Type", "application/json; charset=utf-8");
+        this.contentType("json");
         return this.send(serialized);
+    }
+
+    noContent(status = 204) {
+        this.status(status);
+        return this.send(null);
     }
 
     async view(name, data = {}) {
@@ -109,6 +255,87 @@ export default class Response {
         this.status(status);
         this.header("Location", url);
         return this.send();
+    }
+
+    // ---- Streams & Files ----
+
+    stream(readableStream, options = {}) {
+        this.assertNotSent();
+        if (!readableStream || typeof readableStream.pipe !== "function") {
+            throw new ResponseError("stream() requires a valid Readable stream.");
+        }
+
+        if (options.contentType) {
+            this.contentType(options.contentType);
+        }
+
+        this.raw.statusCode = this.statusCode;
+
+        readableStream.pipe(this.raw);
+        this.#sent = true;
+
+        readableStream.on("error", (err) => {
+            if (!this.raw.headersSent) {
+                this.raw.statusCode = 500;
+            }
+            if (typeof this.raw.end === "function") {
+                this.raw.end();
+            }
+        });
+
+        this.raw.on("close", () => {
+            if (typeof readableStream.destroy === "function") {
+                readableStream.destroy();
+            }
+        });
+
+        return this;
+    }
+
+    async download(filePath, filename = null, options = {}) {
+        this.assertNotSent();
+        const path = await import("node:path");
+        const fs = await import("node:fs");
+
+        if (!fs.existsSync(filePath)) {
+            throw new ResponseError(`Download file not found at path "${filePath}".`);
+        }
+
+        const targetName = filename ?? path.basename(filePath);
+        const encodedName = encodeURIComponent(targetName);
+        const disposition = `attachment; filename="${targetName}"; filename*=UTF-8''${encodedName}`;
+
+        this.header("Content-Disposition", disposition);
+
+        const ext = path.extname(targetName).slice(1);
+        if (ext) {
+            this.contentType(ext);
+        }
+
+        const readStream = fs.createReadStream(filePath);
+        return this.stream(readStream, options);
+    }
+
+    async file(filePath, options = {}) {
+        this.assertNotSent();
+        const path = await import("node:path");
+        const fs = await import("node:fs");
+
+        if (!fs.existsSync(filePath)) {
+            throw new ResponseError(`File not found at path "${filePath}".`);
+        }
+
+        const ext = path.extname(filePath).slice(1);
+        if (ext) {
+            this.contentType(ext);
+        }
+
+        const readStream = fs.createReadStream(filePath);
+        return this.stream(readStream, options);
+    }
+
+    async sendFile(filePath, options = {}) {
+        return this.file(filePath, options);
     }
 
     end() {

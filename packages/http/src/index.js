@@ -1,12 +1,10 @@
 export { Application, Container, ServiceProvider, Facade, LoggerServiceProvider, CoreServiceProvider, ConfigManager, ConfigError, ContainerError, ECFError, ExceptionManager, Log } from "@ecf/core";
 
-// HTTP
+// HTTP Core
 
 export { default as Request } from "./Request.js";
 export { default as Response } from "./Response.js";
-
 export { default as Route } from "./facades/Route.js";
-
 export { default as Router } from "./Router.js";
 export { default as Pipeline } from "./Pipeline.js";
 export { default as Middleware } from "./Middleware.js";
@@ -22,7 +20,25 @@ export { default as FormBodyParser } from "./parsers/FormBodyParser.js";
 export { default as TextBodyParser } from "./parsers/TextBodyParser.js";
 export { default as RawBodyParser } from "./parsers/RawBodyParser.js";
 
-// Errors
+// Exception System (Phase 1)
+
+export { default as ExceptionHandler } from "./exceptions/ExceptionHandler.js";
+export { default as ExceptionRenderer } from "./exceptions/ExceptionRenderer.js";
+export { default as ExceptionReporter } from "./exceptions/ExceptionReporter.js";
+
+export { default as HttpException } from "./exceptions/HttpException.js";
+export { default as BadRequestException } from "./exceptions/BadRequestException.js";
+export { default as UnauthorizedException } from "./exceptions/UnauthorizedException.js";
+export { default as ForbiddenException } from "./exceptions/ForbiddenException.js";
+export { default as NotFoundException } from "./exceptions/NotFoundException.js";
+export { default as MethodNotAllowedException } from "./exceptions/MethodNotAllowedException.js";
+export { default as CsrfException } from "./exceptions/CsrfException.js";
+export { default as ValidationException } from "./exceptions/ValidationException.js";
+export { default as RateLimitException } from "./exceptions/RateLimitException.js";
+export { default as InternalServerException } from "./exceptions/InternalServerException.js";
+export { default as ServiceUnavailableException } from "./exceptions/ServiceUnavailableException.js";
+
+// Legacy / Framework Errors
 
 export { default as RequestError } from "./errors/RequestError.js";
 export { default as ResponseError } from "./errors/ResponseError.js";

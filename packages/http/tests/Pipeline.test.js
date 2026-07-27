@@ -69,19 +69,14 @@ describe("Pipeline - send()", () => {
         assert.throws(() => pipeline.send(null, makeResponse()), PipelineError);
     });
 
-    test("should throw PipelineError for a plain object as request", () => {
+    test("should accept plain objects as passable data (generic pipeline)", () => {
         const pipeline = new Pipeline();
-        assert.throws(() => pipeline.send({}, makeResponse()), PipelineError);
+        assert.doesNotThrow(() => pipeline.send({}, {}));
     });
 
     test("should throw PipelineError for null response", () => {
         const pipeline = new Pipeline();
         assert.throws(() => pipeline.send(makeRequest(), null), PipelineError);
-    });
-
-    test("should throw PipelineError for a plain object as response", () => {
-        const pipeline = new Pipeline();
-        assert.throws(() => pipeline.send(makeRequest(), {}), PipelineError);
     });
 
 });

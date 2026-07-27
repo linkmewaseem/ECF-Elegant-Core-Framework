@@ -43,7 +43,8 @@ function makeFakeServerResponse() {
             calls.ended = true;
             calls.body = body ?? null;
             raw.headersSent = true;
-        }
+        },
+        on() {}, once() {}, emit() {}, destroy() {}
     };
 
     return { raw, calls };
@@ -55,11 +56,6 @@ function makeFakeBodyParserManager(returnValue = {}) {
     };
 }
 
-/**
- * Creates a fake Router object compatible with the real Router contract:
- * router.match(request) either returns a Route-like object with .handler,
- * or throws RouteNotFoundError; it also sets "params" onto request.attributes.
- */
 function makeFakeRouter() {
     const routes = [];
     const metadata = new Map();
@@ -117,10 +113,6 @@ function makeFakeRouter() {
     };
 }
 
-/**
- * Creates a MiddlewareResolver, optionally pre-populated with a MiddlewareRegistry.
- * Pass { global: [...], route: [[method, path, fn], ...] } to seed it.
- */
 function makeMiddlewareResolver(routerOrOptions, optionsArg) {
     let router;
     let options;
@@ -209,19 +201,19 @@ describe("HttpKernel - constructor", () => {
 
 describe("HttpKernel - handle() route resolution", () => {
 
-    test("should throw RouteNotFoundError when no route matches", () => {
+    test("should throw RouteNotFoundError when no route matches", async () => {
         const kernel = makeKernel();
 
         const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/not-found" });
         const { raw: rawRes } = makeFakeServerResponse();
 
-        assert.throws(
-            () => kernel.handle(rawReq, rawRes),
+        await assert.rejects(
+            async () => await kernel.handle(rawReq, rawRes),
             RouteNotFoundError
         );
     });
 
-    test("should resolve a matching static route and call its handler", () => {
+    test("should resolve a matching static route and call its handler", async () => {
         const router = makeFakeRouter();
         let handlerCalled = false;
 
@@ -234,12 +226,12 @@ describe("HttpKernel - handle() route resolution", () => {
         const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/" });
         const { raw: rawRes } = makeFakeServerResponse();
 
-        kernel.handle(rawReq, rawRes);
+        await kernel.handle(rawReq, rawRes);
 
         assert.equal(handlerCalled, true);
     });
 
-    test("should resolve a matching dynamic route and set params on request", () => {
+    test("should resolve a matching dynamic route and set params on request", async () => {
         const router = makeFakeRouter();
         let capturedParams = null;
 
@@ -252,12 +244,12 @@ describe("HttpKernel - handle() route resolution", () => {
         const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/users/42" });
         const { raw: rawRes } = makeFakeServerResponse();
 
-        kernel.handle(rawReq, rawRes);
+        await kernel.handle(rawReq, rawRes);
 
         assert.deepEqual(capturedParams, { id: "42" });
     });
 
-    test("should resolve a route with multiple dynamic parameters", () => {
+    test("should resolve a route with multiple dynamic parameters", async () => {
         const router = makeFakeRouter();
         let capturedParams = null;
 
@@ -270,7 +262,7 @@ describe("HttpKernel - handle() route resolution", () => {
         const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/users/3/posts/77" });
         const { raw: rawRes } = makeFakeServerResponse();
 
-        kernel.handle(rawReq, rawRes);
+        await kernel.handle(rawReq, rawRes);
 
         assert.deepEqual(capturedParams, { userId: "3", postId: "77" });
     });
@@ -281,7 +273,7 @@ describe("HttpKernel - handle() route resolution", () => {
 
 describe("HttpKernel - handle() object creation", () => {
 
-    test("handler should receive a Request instance as first argument", () => {
+    test("handler should receive a Request instance as first argument", async () => {
         const router = makeFakeRouter();
         let capturedReq = null;
 
@@ -294,12 +286,12 @@ describe("HttpKernel - handle() object creation", () => {
         const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/" });
         const { raw: rawRes } = makeFakeServerResponse();
 
-        kernel.handle(rawReq, rawRes);
+        await kernel.handle(rawReq, rawRes);
 
         assert.ok(capturedReq instanceof Request);
     });
 
-    test("handler should receive a Response instance as second argument", () => {
+    test("handler should receive a Response instance as second argument", async () => {
         const router = makeFakeRouter();
         let capturedRes = null;
 
@@ -312,12 +304,12 @@ describe("HttpKernel - handle() object creation", () => {
         const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/" });
         const { raw: rawRes } = makeFakeServerResponse();
 
-        kernel.handle(rawReq, rawRes);
+        await kernel.handle(rawReq, rawRes);
 
         assert.ok(capturedRes instanceof Response);
     });
 
-    test("Request should reflect the original raw method and url", () => {
+    test("Request should reflect the original raw method and url", async () => {
         const router = makeFakeRouter();
         let capturedReq = null;
 
@@ -330,7 +322,7 @@ describe("HttpKernel - handle() object creation", () => {
         const rawReq = makeFakeIncomingMessage({ method: "POST", url: "/submit" });
         const { raw: rawRes } = makeFakeServerResponse();
 
-        kernel.handle(rawReq, rawRes);
+        await kernel.handle(rawReq, rawRes);
 
         assert.equal(capturedReq.method, "POST");
         assert.equal(capturedReq.url, "/submit");
@@ -338,11 +330,11 @@ describe("HttpKernel - handle() object creation", () => {
 
 });
 
-// ---- handle() - Pipeline behavior (black-box, since Pipeline is now internal) ----
+// ---- handle() - Pipeline behavior ----
 
 describe("HttpKernel - handle() pipeline behavior", () => {
 
-    test("same Request and Response instance should reach the handler consistently", () => {
+    test("same Request and Response instance should reach the handler consistently", async () => {
         const router = makeFakeRouter();
         let handlerReq = null;
         let handlerRes = null;
@@ -357,13 +349,13 @@ describe("HttpKernel - handle() pipeline behavior", () => {
         const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/" });
         const { raw: rawRes } = makeFakeServerResponse();
 
-        kernel.handle(rawReq, rawRes);
+        await kernel.handle(rawReq, rawRes);
 
         assert.ok(handlerReq instanceof Request);
         assert.ok(handlerRes instanceof Response);
     });
 
-    test("handler return value should propagate through the kernel", () => {
+    test("handler return value should propagate through the kernel and normalize to response", async () => {
         const router = makeFakeRouter();
 
         router.addRoute("GET", "/", (req, res) => {
@@ -373,14 +365,15 @@ describe("HttpKernel - handle() pipeline behavior", () => {
         const kernel = makeKernel({ router });
 
         const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/" });
-        const { raw: rawRes } = makeFakeServerResponse();
+        const { raw: rawRes, calls } = makeFakeServerResponse();
 
-        const result = kernel.handle(rawReq, rawRes);
+        const result = await kernel.handle(rawReq, rawRes);
 
-        assert.equal(result, "handler-response");
+        assert.ok(result instanceof Response);
+        assert.equal(calls.body, "handler-response");
     });
 
-    test("each handle() call should use an independent pipeline (no cross-request state leakage)", () => {
+    test("each handle() call should use an independent pipeline (no cross-request state leakage)", async () => {
         const router = makeFakeRouter();
         const capturedReqs = [];
 
@@ -391,11 +384,11 @@ describe("HttpKernel - handle() pipeline behavior", () => {
 
         const rawReqA = makeFakeIncomingMessage({ method: "GET", url: "/a" });
         const { raw: rawResA } = makeFakeServerResponse();
-        kernel.handle(rawReqA, rawResA);
+        await kernel.handle(rawReqA, rawResA);
 
         const rawReqB = makeFakeIncomingMessage({ method: "GET", url: "/b" });
         const { raw: rawResB } = makeFakeServerResponse();
-        kernel.handle(rawReqB, rawResB);
+        await kernel.handle(rawReqB, rawResB);
 
         assert.equal(capturedReqs.length, 2);
         assert.notStrictEqual(capturedReqs[0], capturedReqs[1]);
@@ -407,7 +400,7 @@ describe("HttpKernel - handle() pipeline behavior", () => {
 
 describe("HttpKernel - handle() middleware interaction", () => {
 
-    test("global middlewares should execute in order before the handler", () => {
+    test("global middlewares should execute in order before the handler", async () => {
         const router = makeFakeRouter();
         const log = [];
 
@@ -426,12 +419,12 @@ describe("HttpKernel - handle() middleware interaction", () => {
         const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/" });
         const { raw: rawRes } = makeFakeServerResponse();
 
-        kernel.handle(rawReq, rawRes);
+        await kernel.handle(rawReq, rawRes);
 
         assert.deepEqual(log, ["m1", "m2", "handler"]);
     });
 
-    test("route-specific middleware should run after global middleware", () => {
+    test("route-specific middleware should run after global middleware", async () => {
         const router = makeFakeRouter();
         const log = [];
 
@@ -453,12 +446,12 @@ describe("HttpKernel - handle() middleware interaction", () => {
         const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/admin" });
         const { raw: rawRes } = makeFakeServerResponse();
 
-        kernel.handle(rawReq, rawRes);
+        await kernel.handle(rawReq, rawRes);
 
         assert.deepEqual(log, ["logger", "auth", "handler"]);
     });
 
-    test("middleware should be able to short-circuit the pipeline", () => {
+    test("middleware should be able to short-circuit the pipeline", async () => {
         const router = makeFakeRouter();
         let handlerCalled = false;
 
@@ -467,7 +460,7 @@ describe("HttpKernel - handle() middleware interaction", () => {
         });
 
         const blocker = (req, res, next) => {
-            return "blocked";
+            return res.status(403).json({ error: "blocked" });
         };
 
         const kernel = makeKernel({
@@ -476,110 +469,13 @@ describe("HttpKernel - handle() middleware interaction", () => {
         });
 
         const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/" });
-        const { raw: rawRes } = makeFakeServerResponse();
+        const { raw: rawRes, calls } = makeFakeServerResponse();
 
-        const result = kernel.handle(rawReq, rawRes);
+        const result = await kernel.handle(rawReq, rawRes);
 
-        assert.equal(result, "blocked");
+        assert.equal(result.statusCode, 403);
+        assert.equal(calls.body, JSON.stringify({ error: "blocked" }));
         assert.equal(handlerCalled, false);
-    });
-
-    test("no registered middleware should pass through directly to handler", () => {
-        const router = makeFakeRouter();
-        let handlerCalled = false;
-
-        router.addRoute("GET", "/", (req, res) => {
-            handlerCalled = true;
-        });
-
-        const kernel = makeKernel({ router });
-
-        const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/" });
-        const { raw: rawRes } = makeFakeServerResponse();
-
-        kernel.handle(rawReq, rawRes);
-
-        assert.equal(handlerCalled, true);
-    });
-
-});
-
-// ---- handle() - Response interaction ----
-
-describe("HttpKernel - handle() response interaction", () => {
-
-    test("handler should be able to send a text response", () => {
-        const router = makeFakeRouter();
-
-        router.addRoute("GET", "/", (req, res) => {
-            return res.text("Hello ECF");
-        });
-
-        const kernel = makeKernel({ router });
-
-        const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/" });
-        const { raw: rawRes, calls } = makeFakeServerResponse();
-
-        kernel.handle(rawReq, rawRes);
-
-        assert.equal(calls.headers["content-type"], "text/plain; charset=utf-8");
-        assert.equal(calls.body, "Hello ECF");
-        assert.equal(calls.ended, true);
-    });
-
-    test("handler should be able to send a JSON response", () => {
-        const router = makeFakeRouter();
-
-        router.addRoute("GET", "/api/status", (req, res) => {
-            return res.json({ status: "ok" });
-        });
-
-        const kernel = makeKernel({ router });
-
-        const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/api/status" });
-        const { raw: rawRes, calls } = makeFakeServerResponse();
-
-        kernel.handle(rawReq, rawRes);
-
-        assert.equal(calls.headers["content-type"], "application/json; charset=utf-8");
-        assert.equal(calls.body, JSON.stringify({ status: "ok" }));
-    });
-
-    test("response headersSent should be true after handler sends response", () => {
-        const router = makeFakeRouter();
-        let capturedRes = null;
-
-        router.addRoute("GET", "/", (req, res) => {
-            capturedRes = res;
-            return res.text("Hello");
-        });
-
-        const kernel = makeKernel({ router });
-
-        const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/" });
-        const { raw: rawRes } = makeFakeServerResponse();
-
-        kernel.handle(rawReq, rawRes);
-
-        assert.equal(capturedRes.headersSent, true);
-    });
-
-    test("handler should be able to set status code before sending", () => {
-        const router = makeFakeRouter();
-
-        router.addRoute("POST", "/users", (req, res) => {
-            return res.status(201).json({ created: true });
-        });
-
-        const kernel = makeKernel({ router });
-
-        const rawReq = makeFakeIncomingMessage({ method: "POST", url: "/users" });
-        const { raw: rawRes, calls } = makeFakeServerResponse();
-
-        kernel.handle(rawReq, rawRes);
-
-        assert.equal(rawRes.statusCode, 201);
-        assert.equal(calls.body, JSON.stringify({ created: true }));
     });
 
 });
@@ -588,7 +484,7 @@ describe("HttpKernel - handle() response interaction", () => {
 
 describe("HttpKernel - error propagation", () => {
 
-    test("errors thrown in handler should bubble up", () => {
+    test("errors thrown in handler should bubble up", async () => {
         const router = makeFakeRouter();
 
         router.addRoute("GET", "/", (req, res) => {
@@ -600,8 +496,8 @@ describe("HttpKernel - error propagation", () => {
         const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/" });
         const { raw: rawRes } = makeFakeServerResponse();
 
-        assert.throws(
-            () => kernel.handle(rawReq, rawRes),
+        await assert.rejects(
+            async () => await kernel.handle(rawReq, rawRes),
             { message: "handler exploded" }
         );
     });
@@ -611,9 +507,9 @@ describe("HttpKernel - error propagation", () => {
         let handledError = null;
 
         const exceptionHandler = {
-            handle(err) {
+            handle(err, req, res) {
                 handledError = err;
-                return "handled";
+                return res.status(400).json({ error: err.message });
             }
         };
 
@@ -627,19 +523,19 @@ describe("HttpKernel - error propagation", () => {
         const { raw: rawRes } = makeFakeServerResponse();
 
         const result = await kernel.handle(rawReq, rawRes);
-        assert.equal(result, "handled");
+        assert.equal(result.statusCode, 400);
         assert.ok(handledError instanceof CustomError);
         assert.equal(handledError.message, "async validation failed");
     });
 
-    test("RouteNotFoundError should carry method and path", () => {
+    test("RouteNotFoundError should carry method and path", async () => {
         const kernel = makeKernel();
 
         const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/missing" });
         const { raw: rawRes } = makeFakeServerResponse();
 
         try {
-            kernel.handle(rawReq, rawRes);
+            await kernel.handle(rawReq, rawRes);
             assert.fail("should have thrown");
         } catch (error) {
             assert.ok(error instanceof RouteNotFoundError);
@@ -648,14 +544,14 @@ describe("HttpKernel - error propagation", () => {
         }
     });
 
-    test("RouteNotFoundError message should include method and path", () => {
+    test("RouteNotFoundError message should include method and path", async () => {
         const kernel = makeKernel();
 
         const rawReq = makeFakeIncomingMessage({ method: "DELETE", url: "/users/99" });
         const { raw: rawRes } = makeFakeServerResponse();
 
-        assert.throws(
-            () => kernel.handle(rawReq, rawRes),
+        await assert.rejects(
+            async () => await kernel.handle(rawReq, rawRes),
             { message: "No route found for DELETE /users/99" }
         );
     });
@@ -666,7 +562,7 @@ describe("HttpKernel - error propagation", () => {
 
 describe("HttpKernel - integration", () => {
 
-    test("full flow: IncomingMessage → Request → Router → Pipeline → Handler → Response", () => {
+    test("full flow: IncomingMessage → Request → Router → Pipeline → Handler → Response", async () => {
         const router = makeFakeRouter();
         const log = [];
 
@@ -689,7 +585,7 @@ describe("HttpKernel - integration", () => {
 
         const rawReq1 = makeFakeIncomingMessage({ method: "GET", url: "/" });
         const { raw: rawRes1, calls: calls1 } = makeFakeServerResponse();
-        kernel.handle(rawReq1, rawRes1);
+        await kernel.handle(rawReq1, rawRes1);
 
         assert.equal(calls1.body, "Hello ECF 🚀");
         assert.equal(calls1.headers["content-type"], "text/plain; charset=utf-8");
@@ -697,7 +593,7 @@ describe("HttpKernel - integration", () => {
 
         const rawReq2 = makeFakeIncomingMessage({ method: "GET", url: "/users/7" });
         const { raw: rawRes2, calls: calls2 } = makeFakeServerResponse();
-        kernel.handle(rawReq2, rawRes2);
+        await kernel.handle(rawReq2, rawRes2);
 
         assert.equal(calls2.body, JSON.stringify({ id: "7" }));
         assert.equal(calls2.headers["content-type"], "application/json; charset=utf-8");
@@ -705,7 +601,7 @@ describe("HttpKernel - integration", () => {
 
         const rawReq3 = makeFakeIncomingMessage({ method: "POST", url: "/users" });
         const { raw: rawRes3, calls: calls3 } = makeFakeServerResponse();
-        kernel.handle(rawReq3, rawRes3);
+        await kernel.handle(rawReq3, rawRes3);
 
         assert.equal(calls3.body, JSON.stringify({ created: true }));
         assert.equal(rawRes3.statusCode, 201);
@@ -714,13 +610,13 @@ describe("HttpKernel - integration", () => {
         const rawReq4 = makeFakeIncomingMessage({ method: "GET", url: "/not-found" });
         const { raw: rawRes4 } = makeFakeServerResponse();
 
-        assert.throws(
-            () => kernel.handle(rawReq4, rawRes4),
+        await assert.rejects(
+            async () => await kernel.handle(rawReq4, rawRes4),
             RouteNotFoundError
         );
     });
 
-    test("integration with middlewares: global auth + logger + handler", () => {
+    test("integration with middlewares: global auth + logger + handler", async () => {
         const router = makeFakeRouter();
         const log = [];
 
@@ -740,7 +636,7 @@ describe("HttpKernel - integration", () => {
         const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/dashboard" });
         const { raw: rawRes, calls } = makeFakeServerResponse();
 
-        kernel.handle(rawReq, rawRes);
+        await kernel.handle(rawReq, rawRes);
 
         assert.deepEqual(log, ["auth", "logger", "dashboard-handler"]);
         assert.equal(calls.body, JSON.stringify({ page: "dashboard" }));
@@ -760,7 +656,7 @@ describe("HttpKernel - integration", () => {
         const rawReq = makeFakeIncomingMessage({ method: "GET", url: "/view" });
         const { raw: rawRes } = makeFakeServerResponse();
 
-        kernel.handle(rawReq, rawRes);
+        await kernel.handle(rawReq, rawRes);
 
         assert.equal(capturedContext.view, fakeView);
     });

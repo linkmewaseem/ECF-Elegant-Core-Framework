@@ -52,15 +52,15 @@ describe("Request", () => {
         const raw = makeFakeIncomingMessage({ url: "/search?q=hello&page=2", headers: { host: "localhost" } });
         const req = new Request(raw, makeFakeBodyParserManager());
 
-        assert.deepEqual(req.query, { q: "hello", page: "2" });
+        assert.deepEqual(req.query(), { q: "hello", page: "2" });
     });
 
     test("query should be cached after first access", () => {
         const raw = makeFakeIncomingMessage({ url: "/search?q=hello", headers: { host: "localhost" } });
         const req = new Request(raw, makeFakeBodyParserManager());
 
-        const first = req.query;
-        const second = req.query;
+        const first = req.query();
+        const second = req.query();
         assert.strictEqual(first, second);
     });
 
@@ -214,7 +214,7 @@ test("query should return empty object for a URL with no query string", () => {
     const raw = makeFakeIncomingMessage({ url: "/", headers: { host: "localhost" } });
     const req = new Request(raw, makeFakeBodyParserManager());
 
-    assert.deepEqual(req.query, {});
+    assert.deepEqual(req.query(), {});
 });
 
 test("query, headers, cookies, and params should be frozen (immutable)", () => {
@@ -225,7 +225,7 @@ test("query, headers, cookies, and params should be frozen (immutable)", () => {
     const req = new Request(raw, makeFakeBodyParserManager());
     req.attributes.set("params", { id: "10" });
 
-    assert.throws(() => { "use strict"; req.query.q = "changed"; }, TypeError);
+    assert.throws(() => { "use strict"; req.query().q = "changed"; }, TypeError);
     assert.throws(() => { "use strict"; req.headers.host = "changed"; }, TypeError);
     assert.throws(() => { "use strict"; req.cookies.token = "changed"; }, TypeError);
     assert.throws(() => { "use strict"; req.params.id = "changed"; }, TypeError);

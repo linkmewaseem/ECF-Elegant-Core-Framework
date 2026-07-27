@@ -12,11 +12,13 @@ import ExtendsNode from "../ast/ExtendsNode.js";
 import SectionNode from "../ast/SectionNode.js";
 import YieldNode from "../ast/YieldNode.js";
 import ParentNode from "../ast/ParentNode.js";
+import ComponentNode from "../ast/ComponentNode.js";
+import SlotNode from "../ast/SlotNode.js";
 import ViewError from "../errors/ViewError.js";
 
 const BLOCK_TERMINATORS = new Set([
     "IfClose", "ElseIf", "Else", "ForClose", "Case", "Default", "SwitchClose",
-    "SectionClose", "SectionShow"
+    "SectionClose", "SectionShow", "ComponentClose", "SlotClose", "SlotOpen"
 ]);
 
 export default class Parser {
@@ -25,7 +27,7 @@ export default class Parser {
 
         if (index < tokens.length) {
             const orphan = tokens[index];
-            throw new ViewError(`Parser: unexpected @${this.describeToken(orphan.type)} without a matching opener at line ${orphan.line}.`);
+            throw new ViewError(`Parser: unexpected ${this.describeToken(orphan.type)} without a matching opener at line ${orphan.line}.`);
         }
 
         return new RootNode(children);
@@ -65,6 +67,13 @@ export default class Parser {
 
             if (token.type === "SectionOpen") {
                 const parsed = this.parseSection(tokens, i);
+                children.push(parsed.node);
+                i = parsed.index;
+                continue;
+            }
+
+            if (token.type === "ComponentOpen") {
+                const parsed = this.parseComponent(tokens, i);
                 children.push(parsed.node);
                 i = parsed.index;
                 continue;
@@ -225,17 +234,87 @@ export default class Parser {
         }
     }
 
+    parseComponent(tokens, compIndex) {
+        const compToken = tokens[compIndex];
+        let i = compIndex + 1;
+
+        if (compToken.isSelfClosing) {
+            return {
+                node: new ComponentNode(compToken.componentName, compToken.attributes, [], {}),
+                index: i
+            };
+        }
+
+        const defaultSlot = [];
+        const namedSlots = {};
+
+        while (i < tokens.length && tokens[i].type !== "ComponentClose") {
+            if (tokens[i].type === "SlotOpen") {
+                const parsedSlot = this.parseSlot(tokens, i);
+                namedSlots[parsedSlot.node.name] = parsedSlot.node.body;
+                i = parsedSlot.index;
+                continue;
+            }
+
+            const { children, index: afterBlock } = this.parseBlock(tokens, i);
+            defaultSlot.push(...children);
+            i = afterBlock;
+        }
+
+        if (i >= tokens.length || tokens[i].type !== "ComponentClose") {
+            throw new ViewError(
+                `Parser: unclosed component <x-${compToken.componentName}> at line ${compToken.line} — missing </x-${compToken.componentName}>.`
+            );
+        }
+
+        const closeToken = tokens[i];
+        if (closeToken.componentName !== compToken.componentName) {
+            throw new ViewError(
+                `Parser: mismatched component tag at line ${closeToken.line}. Expected </x-${compToken.componentName}> but found </x-${closeToken.componentName}>.`
+            );
+        }
+        i++;
+
+        return {
+            node: new ComponentNode(compToken.componentName, compToken.attributes, defaultSlot, namedSlots),
+            index: i
+        };
+    }
+
+    parseSlot(tokens, slotIndex) {
+        const slotToken = tokens[slotIndex];
+        let i = slotIndex + 1;
+
+        const { children: body, index: afterBody } = this.parseBlock(tokens, i);
+        i = afterBody;
+
+        if (i >= tokens.length || tokens[i].type !== "SlotClose") {
+            throw new ViewError(
+                `Parser: unclosed slot <x-slot:${slotToken.name}> at line ${slotToken.line} — missing </x-slot>.`
+            );
+        }
+        i++;
+
+        return {
+            node: new SlotNode(slotToken.name, body),
+            index: i
+        };
+    }
+
     describeToken(type) {
         switch (type) {
-            case "IfClose": return "endif";
-            case "ElseIf": return "elseif";
-            case "Else": return "else";
-            case "ForClose": return "endfor";
-            case "Case": return "case";
-            case "Default": return "default";
-            case "SwitchClose": return "endswitch";
-            case "SectionClose": return "endsection";
-            case "SectionShow": return "show";
+            case "IfClose": return "@endif";
+            case "ElseIf": return "@elseif";
+            case "Else": return "@else";
+            case "ForClose": return "@endfor";
+            case "Case": return "@case";
+            case "Default": return "@default";
+            case "SwitchClose": return "@endswitch";
+            case "SectionClose": return "@endsection";
+            case "SectionShow": return "@show";
+            case "ComponentClose": return "</x-...>";
+            case "SlotClose": return "</x-slot>";
+            case "SlotOpen": return "<x-slot>";
             default: return type;
         }
     }

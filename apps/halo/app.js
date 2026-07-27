@@ -69,7 +69,8 @@ const users = [
 
 Route.get("/", [firstMiddleware, secondMiddleware], (req, res) => {
     return res.view("home", {
-        name: "Ashir Awan",
+        title: "ECF View Engine",
+        name: "ECF View Engine",
         age: 20,
         date: new Date().toDateString(),
         users
@@ -77,15 +78,22 @@ Route.get("/", [firstMiddleware, secondMiddleware], (req, res) => {
 });
 
 Route.get("/about", (req, res) => {
-    return res.view("about");
+    return res.view("about", {
+        title: "About",
+    });
 });
 
 Route.get("/users/new", firstMiddleware, (req, res) => {
-    return res.view("users.new");
+    return res.view("users.new", {
+        title: "New User",
+    });
 });
 
 Route.get("/users", (req, res) => {
-    return res.view("user", { users });
+    return res.view("user", {
+        title: "Users",
+        users
+    });
 });
 
 // Route for finding by name (case-insensitive) - MUST come before /users/{id}
@@ -103,6 +111,7 @@ Route.get("/users/name/{name}", (req, res) => {
         );
 
         return res.view("users.not-found", {
+            title: "User Not Found",
             searchParam: searchName,
             suggestions
         });
@@ -119,11 +128,15 @@ Route.get("/users/{id}", (req, res) => {
     const user = users.find((user) => user.id === id);
     if (!user) {
         return res.view("users.not-found", {
+            title: "User Not Found",
             searchParam: id,
             suggestions: []
         });
     }
-    return res.view("users.show", { user });
+    return res.view("users.show", {
+        user
+
+    });
 });
 
 Route.post("/user", async (req, res) => {
@@ -154,9 +167,12 @@ Route.get("/crash", (req, res) => {
 
 exceptionManager.render(RouteNotFoundError, (err, req, res) => {
     return res.status(404).view("errors.404", {
+        title: "404",
         message: err.message
     });
 });
+
+
 
 app.listen(3000, () => {
     console.log("ecf running at http://localhost:3000");

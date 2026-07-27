@@ -13,6 +13,9 @@ export { default as TextNode } from "./ast/TextNode.js";
 export { default as ExpressionNode } from "./ast/ExpressionNode.js";
 export { default as IfNode } from "./ast/IfNode.js";
 export { default as IncludeNode } from "./ast/IncludeNode.js";
+export { default as ComponentNode } from "./ast/ComponentNode.js";
+export { default as SlotNode } from "./ast/SlotNode.js";
+export { default as AttributeBag } from "./runtime/AttributeBag.js";
 export { default as ViewError } from "./errors/ViewError.js";
 export { default as ViewServiceProvider } from "./providers/ViewServiceProvider.js";
 

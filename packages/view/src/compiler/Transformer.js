@@ -131,6 +131,35 @@ export default class Transformer {
                 }
                 break;
 
+            case "ComponentNode":
+                if (node.componentName) {
+                    dependencies.add(`components.${node.componentName}`);
+                }
+                if (Array.isArray(node.attributes)) {
+                    node.attributes.forEach(attr => {
+                        if (attr.isDynamic && attr.value) {
+                            attr.valueAst = this.engine.parse(attr.value);
+                        }
+                    });
+                }
+                if (Array.isArray(node.defaultSlot)) {
+                    node.defaultSlot.forEach(child => this.transformNode(child, dependencies));
+                }
+                if (node.namedSlots && typeof node.namedSlots === "object") {
+                    Object.values(node.namedSlots).forEach(slotBody => {
+                        if (Array.isArray(slotBody)) {
+                            slotBody.forEach(child => this.transformNode(child, dependencies));
+                        }
+                    });
+                }
+                break;
+
+            case "SlotNode":
+                if (Array.isArray(node.body)) {
+                    node.body.forEach(child => this.transformNode(child, dependencies));
+                }
+                break;
+
             default:
                 break;
         }

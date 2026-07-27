@@ -14,6 +14,9 @@ export default class Evaluator {
             case "MemberExpression":
                 return this.evaluateMember(node, scope);
 
+            case "CallExpression":
+                return this.evaluateCall(node, scope);
+
             case "UnaryExpression":
                 return this.evaluateUnary(node, scope);
 
@@ -68,6 +71,33 @@ export default class Evaluator {
             return obj[key];
         }
 
+        return undefined;
+    }
+
+    evaluateCall(node, scope) {
+        const args = node.arguments.map(arg => this.evaluate(arg, scope));
+
+        if (node.callee.type === "MemberExpression") {
+            const targetObj = this.evaluate(node.callee.object, scope);
+            if (targetObj != null) {
+                let key;
+                if (node.callee.computed) {
+                    key = this.evaluate(node.callee.property, scope);
+                } else {
+                    key = node.callee.property.name;
+                }
+                const method = targetObj[key];
+                if (typeof method === "function") {
+                    return method.apply(targetObj, args);
+                }
+            }
+            return undefined;
+        }
+
+        const fn = this.evaluate(node.callee, scope);
+        if (typeof fn === "function") {
+            return fn(...args);
+        }
         return undefined;
     }
 

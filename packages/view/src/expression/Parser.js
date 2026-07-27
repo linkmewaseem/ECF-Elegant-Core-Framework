@@ -3,6 +3,7 @@ import ExpressionError from "./errors/ExpressionError.js";
 import LiteralNode from "./ast/LiteralNode.js";
 import IdentifierNode from "./ast/IdentifierNode.js";
 import MemberExpressionNode from "./ast/MemberExpressionNode.js";
+import CallExpressionNode from "./ast/CallExpressionNode.js";
 import UnaryExpressionNode from "./ast/UnaryExpressionNode.js";
 import BinaryExpressionNode from "./ast/BinaryExpressionNode.js";
 import LogicalExpressionNode from "./ast/LogicalExpressionNode.js";
@@ -164,6 +165,16 @@ export default class Parser {
                 const property = this.parseExpression();
                 this.expect(TokenType.RBRACKET, "Expected \"]\" after computed property");
                 object = new MemberExpressionNode(object, property, true, false);
+            } else if (this.match(TokenType.LPAREN)) {
+                const args = [];
+                if (this.peek().type !== TokenType.RPAREN) {
+                    while (true) {
+                        args.push(this.parseExpression());
+                        if (!this.match(TokenType.COMMA)) break;
+                    }
+                }
+                this.expect(TokenType.RPAREN, "Expected \")\" after arguments");
+                object = new CallExpressionNode(object, args);
             } else {
                 break;
             }

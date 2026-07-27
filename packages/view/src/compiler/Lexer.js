@@ -3,7 +3,7 @@ import ViewError from "../errors/ViewError.js";
 const FOR_EXPRESSION = /^(.+?)\s+as\s+([A-Za-z_$][\w$]*)\s*(?:,\s*([A-Za-z_$][\w$]*))?$/;
 
 const PATTERN =
-    /(?<extendsTok>@extends\s*\(\s*(?<extendsBody>[^)]*)\))|(?<sectionOpen>@section\s*\(\s*(?<sectionBody>[^)]*)\))|(?<sectionClose>@endsection\b|@overwrite\b)|(?<sectionShow>@show\b)|(?<yieldTok>@yield\s*\(\s*(?<yieldBody>[^)]*)\))|(?<parentTok>@parent\b)|(?<includeIfTok>@includeIf\s*\(\s*(?<includeIfBody>[^)]*)\))|(?<includeWhenTok>@includeWhen\s*\(\s*(?<includeWhenBody>[^)]*)\))|(?<includeUnlessTok>@includeUnless\s*\(\s*(?<includeUnlessBody>[^)]*)\))|(?<includeFirstTok>@includeFirst\s*\(\s*(?<includeFirstBody>[^)]*)\))|(?<includeTok>@include\s*\(\s*(?<includeBody>[^)]*)\))|(?<ifOpen>@if\s*\(\s*(?<ifCond>[^)]*)\))|(?<elseIf>@elseif\s*\(\s*(?<elseIfCond>[^)]*)\))|(?<elseTok>@else\b)|(?<ifClose>@endif)|(?<forOpen>@(?:for|foreach)\s*\(\s*(?<forExpr>[^)]*)\))|(?<forClose>@endfor|@endforeach)|(?<breakTok>@break\b(?:\s*\(\s*(?<breakCond>[^)]*)\s*\))?)|(?<continueTok>@continue\b(?:\s*\(\s*(?<continueCond>[^)]*)\s*\))?)|(?<switchOpen>@switch\s*\(\s*(?<switchExpr>[^)]*)\))|(?<caseTok>@case\s*\(\s*(?<caseExpr>[^)]*)\))|(?<defaultTok>@default\b)|(?<switchClose>@endswitch)|(?<expr>\{\{(?<exprBody>[\s\S]*?)\}\})/g;
+    /(?<extendsTok>@extends\s*\(\s*(?<extendsBody>[^)]*)\))|(?<sectionOpen>@section\s*\(\s*(?<sectionBody>[^)]*)\))|(?<sectionClose>@endsection\b|@overwrite\b)|(?<sectionShow>@show\b)|(?<yieldTok>@yield\s*\(\s*(?<yieldBody>[^)]*)\))|(?<parentTok>@parent\b)|(?<includeIfTok>@includeIf\s*\(\s*(?<includeIfBody>[^)]*)\))|(?<includeWhenTok>@includeWhen\s*\(\s*(?<includeWhenBody>[^)]*)\))|(?<includeUnlessTok>@includeUnless\s*\(\s*(?<includeUnlessBody>[^)]*)\))|(?<includeFirstTok>@includeFirst\s*\(\s*(?<includeFirstBody>[^)]*)\))|(?<includeTok>@include\s*\(\s*(?<includeBody>[^)]*)\))|(?<ifOpen>@if\s*\(\s*(?<ifCond>[^)]*)\))|(?<elseIf>@elseif\s*\(\s*(?<elseIfCond>[^)]*)\))|(?<elseTok>@else\b)|(?<ifClose>@endif)|(?<forOpen>@(?:for|foreach)\s*\(\s*(?<forExpr>[^)]*)\))|(?<forClose>@endfor|@endforeach)|(?<breakTok>@break\b(?:\s*\(\s*(?<breakCond>[^)]*)\s*\))?)|(?<continueTok>@continue\b(?:\s*\(\s*(?<continueCond>[^)]*)\s*\))?)|(?<switchOpen>@switch\s*\(\s*(?<switchExpr>[^)]*)\))|(?<caseTok>@case\s*\(\s*(?<caseExpr>[^)]*)\))|(?<defaultTok>@default\b)|(?<switchClose>@endswitch)|(?<slotClose><\/x-slot(?::[a-zA-Z0-9\.\-_]+)?\s*>)|(?<slotOpen><x-slot(?::(?<slotNameColon>[a-zA-Z0-9\.\-_]+))?(?<slotAttrs>\s+(?:[^"'>\/]|"[^"]*"|'[^']*')*?)?\s*>)|(?<compClose><\/x-(?<compCloseName>[a-zA-Z0-9\.\-_]+)\s*>)|(?<compOpen><x-(?<compName>[a-zA-Z0-9\.\-_]+)(?<compAttrs>\s+(?:[^"'>\/]|"[^"]*"|'[^']*')*?)?\s*(?<selfClosing>\/)?>)|(?<expr>\{\{(?<exprBody>[\s\S]*?)\}\})/g;
 
 export default class Lexer {
     lex(source) {
@@ -136,6 +136,42 @@ export default class Lexer {
             } else if (groups.switchClose !== undefined) {
                 tokens.push({ type: "SwitchClose", value: null, start: matchStart, end: matchEnd, line, column });
 
+            } else if (groups.slotOpen !== undefined) {
+                const slotAttrs = this.parseAttributes(groups.slotAttrs, line, column);
+                let slotName = groups.slotNameColon || null;
+                if (!slotName) {
+                    const nameAttr = slotAttrs.find(a => a.name === "name");
+                    slotName = nameAttr ? String(nameAttr.value) : "default";
+                }
+                tokens.push({ type: "SlotOpen", name: slotName, start: matchStart, end: matchEnd, line, column });
+
+            } else if (groups.slotClose !== undefined) {
+                tokens.push({ type: "SlotClose", value: null, start: matchStart, end: matchEnd, line, column });
+
+            } else if (groups.compOpen !== undefined) {
+                const attributes = this.parseAttributes(groups.compAttrs, line, column);
+                const isSelfClosing = groups.selfClosing === "/";
+                tokens.push({
+                    type: "ComponentOpen",
+                    componentName: groups.compName,
+                    attributes,
+                    isSelfClosing,
+                    start: matchStart,
+                    end: matchEnd,
+                    line,
+                    column
+                });
+
+            } else if (groups.compClose !== undefined) {
+                tokens.push({
+                    type: "ComponentClose",
+                    componentName: groups.compCloseName,
+                    start: matchStart,
+                    end: matchEnd,
+                    line,
+                    column
+                });
+
             } else if (groups.expr !== undefined) {
                 const exprValue = groups.exprBody.trim();
                 if (exprValue === "") {
@@ -154,6 +190,37 @@ export default class Lexer {
         }
 
         return tokens;
+    }
+
+    parseAttributes(attrString, line, column) {
+        if (!attrString || attrString.trim() === "") return [];
+
+        const attributes = [];
+        const ATTR_REGEX = /(?::(?<dynName>[a-zA-Z0-9\-_]+)|(?<statName>[a-zA-Z0-9\-_]+))(?:=(?:"(?<valDouble>[^"]*)"|'(?<valSingle>[^']*)'|(?<valBare>[^\s/>]+)))?/g;
+
+        let match;
+        while ((match = ATTR_REGEX.exec(attrString)) !== null) {
+            const { groups } = match;
+            const isDynamic = groups.dynName !== undefined;
+            const name = isDynamic ? groups.dynName : groups.statName;
+            let value;
+            let isBoolean = false;
+
+            if (groups.valDouble !== undefined) {
+                value = groups.valDouble;
+            } else if (groups.valSingle !== undefined) {
+                value = groups.valSingle;
+            } else if (groups.valBare !== undefined) {
+                value = groups.valBare;
+            } else {
+                isBoolean = true;
+                value = true;
+            }
+
+            attributes.push({ name, isDynamic, isBoolean, value });
+        }
+
+        return attributes;
     }
 
     parseSectionBody(bodyStr, line, column) {

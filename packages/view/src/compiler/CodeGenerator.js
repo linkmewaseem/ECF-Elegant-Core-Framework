@@ -2,6 +2,7 @@ import ViewError from "../errors/ViewError.js";
 import lookup from "../utils/lookup.js";
 import Evaluator from "../expression/Evaluator.js";
 import RenderContext from "../runtime/RenderContext.js";
+import AttributeBag from "../runtime/AttributeBag.js";
 
 const evaluator = new Evaluator();
 
@@ -138,6 +139,9 @@ export default class CodeGenerator {
             case "IncludeNode":
                 return CodeGenerator.renderInclude(node, data, context);
 
+            case "ComponentNode":
+                return CodeGenerator.renderComponent(node, data, context);
+
             case "IfNode": {
                 const mainCond = CodeGenerator.evalExpr(node, "conditionAst", "condition", data);
                 if (mainCond) {
@@ -227,6 +231,64 @@ export default class CodeGenerator {
             default:
                 throw new ViewError(`Unknown include mode "${node.mode}".`);
         }
+    }
+
+    static renderComponent(node, data, context) {
+        const vm = data.__viewManager;
+        if (!vm) {
+            throw new ViewError("<x-...> component tags require a ViewManager instance in render data (__viewManager).");
+        }
+
+        let componentViewName = `components.${node.componentName}`;
+        if (!vm.existsSync(componentViewName)) {
+            if (vm.existsSync(node.componentName)) {
+                componentViewName = node.componentName;
+            } else {
+                throw new ViewError(`Component view "${componentViewName}" (or "${node.componentName}") not found.`);
+            }
+        }
+
+        const props = {};
+        const unhandledAttrs = {};
+
+        for (const attr of node.attributes) {
+            let val;
+            if (attr.isBoolean) {
+                val = true;
+            } else if (attr.isDynamic) {
+                val = attr.valueAst
+                    ? evaluator.evaluate(attr.valueAst, data)
+                    : lookup(data, attr.value);
+            } else {
+                val = attr.value;
+            }
+
+            props[attr.name] = val;
+            unhandledAttrs[attr.name] = val;
+        }
+
+        const attributeBag = AttributeBag.create(unhandledAttrs);
+
+        const defaultSlotHtml = CodeGenerator.renderNodes(node.defaultSlot, data, context);
+        const namedSlotsHtml = {};
+
+        for (const [slotName, slotNodes] of Object.entries(node.namedSlots)) {
+            namedSlotsHtml[slotName] = CodeGenerator.renderNodes(slotNodes, data, context);
+        }
+
+        const componentScope = {
+            ...props,
+            $attributes: attributeBag,
+            $slot: defaultSlotHtml,
+            __viewManager: vm,
+            __renderContext: context
+        };
+
+        for (const [slotName, slotHtml] of Object.entries(namedSlotsHtml)) {
+            componentScope[`$${slotName}`] = slotHtml;
+        }
+
+        return vm.renderSync(componentViewName, componentScope, context);
     }
 
     static renderFor(node, data, context, parentEvaluator) {

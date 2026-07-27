@@ -7,9 +7,83 @@ import Route from "./Route.js";
 const VALID_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"];
 
 export default class Router {
+    #groupStack = [];
+
     constructor() {
         this.routes = new Map();
         this.metadata = new Map();
+        this.namedRoutes = new Map();
+        this.fallbackRoute = null;
+    }
+
+    // ---- Group Stack Engine ----
+
+    group(options, callback) {
+        if (typeof options === "string") {
+            options = { prefix: options };
+        } else if (typeof options !== "object" || options === null) {
+            throw new RouterError("Group options must be a string prefix or configuration object.");
+        }
+
+        if (typeof callback !== "function") {
+            throw new RouterError("Group requires a callback function.");
+        }
+
+        const parentGroup = this.#groupStack[this.#groupStack.length - 1] ?? {
+            prefix: "",
+            middleware: [],
+            domain: null,
+            as: ""
+        };
+
+        let rawPrefix = (parentGroup.prefix + "/" + (options.prefix ?? "")).replace(/\/+/g, "/");
+        if (rawPrefix.length > 1 && rawPrefix.endsWith("/")) {
+            rawPrefix = rawPrefix.slice(0, -1);
+        }
+        const formattedPrefix = rawPrefix.startsWith("/") ? rawPrefix : "/" + rawPrefix;
+
+        const parentMw = parentGroup.middleware ?? [];
+        const groupMw = options.middleware ? (Array.isArray(options.middleware) ? options.middleware : [options.middleware]) : [];
+        const middleware = [...parentMw, ...groupMw];
+
+        const domain = options.domain ?? parentGroup.domain ?? null;
+        const as = (parentGroup.as ?? "") + (options.as ?? "");
+
+        const groupState = { prefix: formattedPrefix === "/" ? "" : formattedPrefix, middleware, domain, as };
+
+        this.#groupStack.push(groupState);
+        try {
+            callback(this);
+        } finally {
+            this.#groupStack.pop();
+        }
+
+        return this;
+    }
+
+    registerNamedRoute(name, route) {
+        if (this.namedRoutes.has(name) && this.namedRoutes.get(name) !== route) {
+            throw new RouterError(`Route name "${name}" is already registered.`);
+        }
+        this.namedRoutes.set(name, route);
+    }
+
+    syncMetadata(route) {
+        this.setMetadata(route.method, route.path, {
+            middleware: route.middleware()
+        });
+    }
+
+    findByName(name) {
+        return this.namedRoutes.get(name) ?? null;
+    }
+
+    url(name, params = {}, query = {}) {
+        const route = this.findByName(name);
+        if (!route) {
+            throw new RouterError(`Route with name "${name}" not found.`);
+        }
+        return route.compileUrl(params, query);
     }
 
     // ---- Helper Methods ----
@@ -38,7 +112,7 @@ export default class Router {
         };
     }
 
-    // ---- Public API ----
+    // ---- Public HTTP Registration API ----
 
     get(path, ...args) {
         return this.addRoute("GET", path, ...args);
@@ -76,6 +150,56 @@ export default class Router {
         return this;
     }
 
+    // ---- Resource & Fallback API ----
+
+    resource(name, ControllerClass, options = {}) {
+        const resourceName = name.replace(/^\//, "").replace(/\/$/, "");
+        const paramName = resourceName.split("/").pop().replace(/s$/, ""); // e.g. "photos" -> "photo"
+
+        const routes = {
+            index: { method: "GET", path: `/${resourceName}`, action: "index" },
+            create: { method: "GET", path: `/${resourceName}/create`, action: "create" },
+            store: { method: "POST", path: `/${resourceName}`, action: "store" },
+            show: { method: "GET", path: `/${resourceName}/{${paramName}}`, action: "show" },
+            edit: { method: "GET", path: `/${resourceName}/{${paramName}}/edit`, action: "edit" },
+            update: { method: "PUT", path: `/${resourceName}/{${paramName}}`, action: "update" },
+            destroy: { method: "DELETE", path: `/${resourceName}/{${paramName}}`, action: "destroy" }
+        };
+
+        const only = options.only ? new Set(options.only) : null;
+        const except = options.except ? new Set(options.except) : null;
+
+        for (const [actionKey, spec] of Object.entries(routes)) {
+            if (only && !only.has(actionKey)) continue;
+            if (except && except.has(actionKey)) continue;
+
+            const instance = typeof ControllerClass === "function" ? ControllerClass : null;
+            if (instance && typeof instance.prototype[spec.action] === "function") {
+                const route = this.addRoute(spec.method, spec.path, [ControllerClass, spec.action]);
+                route.name(`${resourceName}.${actionKey}`);
+            }
+        }
+        return this;
+    }
+
+    apiResource(name, ControllerClass, options = {}) {
+        const except = new Set(options.except ?? []);
+        except.add("create");
+        except.add("edit");
+        return this.resource(name, ControllerClass, { ...options, except: Array.from(except) });
+    }
+
+    fallback(handler) {
+        this.fallbackRoute = new Route("GET", "/{__fallback__}", handler, { router: this });
+        return this.fallbackRoute;
+    }
+
+    redirect(from, to, status = 302) {
+        return this.get(from, (req, res) => {
+            return res.redirect(to, status);
+        });
+    }
+
     match(request) {
         this.validateRequest(request);
 
@@ -96,12 +220,36 @@ export default class Router {
         return route.route;
     }
 
-    // ---- Registration engine ----
+    // ---- Registration Engine ----
 
     addRoute(method, path, ...args) {
-        const { middleware, handler } = this.normalizeArgs(args);
+        const currentGroup = this.#groupStack[this.#groupStack.length - 1];
 
-        const route = new Route(method, path, handler);
+        let fullPath = path;
+        let groupMw = [];
+        let groupDomain = null;
+        let groupAs = "";
+
+        if (currentGroup) {
+            groupMw = currentGroup.middleware ?? [];
+            groupDomain = currentGroup.domain ?? null;
+            groupAs = currentGroup.as ?? "";
+
+            if (currentGroup.prefix) {
+                const p = currentGroup.prefix.endsWith("/") ? currentGroup.prefix.slice(0, -1) : currentGroup.prefix;
+                const rel = path.startsWith("/") ? path : "/" + path;
+                fullPath = p + rel;
+            }
+        }
+
+        const { middleware, handler } = this.normalizeArgs(args);
+        const combinedMiddleware = [...groupMw, ...middleware];
+
+        const route = new Route(method, fullPath, handler, {
+            router: this,
+            middleware: combinedMiddleware,
+            domain: groupDomain
+        });
 
         this.assertNotDuplicate(route);
 
@@ -111,10 +259,31 @@ export default class Router {
 
         this.routes.get(route.method).push(route);
 
-        this.setMetadata(method, path, {
-            middleware
+        this.setMetadata(method, fullPath, {
+            middleware: route.middleware()
         });
 
+        this.lastRoute = route;
+
+        if (groupAs) {
+            const defaultName = groupAs + fullPath.replace(/\//g, ".").replace(/^\./, "");
+            route.name(defaultName);
+        }
+
+        return this;
+    }
+
+    name(routeName) {
+        if (this.lastRoute) {
+            this.lastRoute.name(routeName);
+        }
+        return this;
+    }
+
+    where(nameOrObj, pattern = null) {
+        if (this.lastRoute) {
+            this.lastRoute.where(nameOrObj, pattern);
+        }
         return this;
     }
 
@@ -136,31 +305,37 @@ export default class Router {
         };
     }
 
-    // ---- Internal helpers ----
+    // ---- Internal Helpers ----
 
     resolve(method, path) {
         const upperMethod = method.toUpperCase();
-        const candidates = this.routes.get(upperMethod);
+        let candidates = this.routes.get(upperMethod);
 
-        if (!candidates || candidates.length === 0) {
-            return { matched: false };
+        if ((!candidates || candidates.length === 0) && upperMethod === "HEAD") {
+            candidates = this.routes.get("GET");
         }
 
-        const segmentCount = this.countSegments(path);
+        if (candidates && candidates.length > 0) {
+            const segmentCount = this.countSegments(path);
 
-        for (const route of candidates) {
-            if (route.segmentCount !== segmentCount) {
-                continue;
-            }
+            for (const route of candidates) {
+                if (route.segmentCount !== segmentCount) {
+                    continue;
+                }
 
-            if (!path.startsWith(route.staticPrefix)) {
-                continue;
-            }
+                if (!path.startsWith(route.staticPrefix)) {
+                    continue;
+                }
 
-            const params = route.match(path);
-            if (params !== null) {
-                return { matched: true, route, params };
+                const params = route.match(path);
+                if (params !== null) {
+                    return { matched: true, route, params };
+                }
             }
+        }
+
+        if (this.fallbackRoute) {
+            return { matched: true, route: this.fallbackRoute, params: {} };
         }
 
         return { matched: false };

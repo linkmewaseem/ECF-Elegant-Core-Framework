@@ -1,4 +1,4 @@
-import { Application, Facade, CoreServiceProvider, RouteNotFoundError, LoggerServiceProvider, HttpServiceProvider, Route, Middleware, Log, ExceptionManager } from "@ecf/http";
+import { Application, Facade, CoreServiceProvider, RouteNotFoundError, LoggerServiceProvider, HttpServiceProvider, Route, Middleware, Log } from "@ecf/http";
 import { ViewServiceProvider } from "@ecf/view";
 
 const app = new Application();
@@ -21,44 +21,30 @@ class ValidationError extends Error {
 
 const exceptionManager = app.make("exception.manager");
 
-// Custom renderer: ValidationError → 422 JSON response
 exceptionManager.render(ValidationError, (err, req, res) => {
     return res.status(422).json({ error: err.message, type: "ValidationError" });
 });
 
-// Custom reporter: log every error to console
 exceptionManager.report(Error, (err) => {
     Log.error(`[ExceptionReporter] ${err.name}: ${err.message}`);
 });
 
-// ---- 1. Global Function Middleware ----
+// ---- Global Middleware ----
 const requestLogger = (req, res, next) => {
     Log.info(`[Global Logger] ${req.method} ${req.path}`);
     return next();
 };
 app.use(requestLogger);
-Log.info("Server running");
 
-// ---- 2. Global Class-Style Middleware ----
 class CustomHeaderMiddleware extends Middleware {
     handle(req, res, next) {
-        res.header("X-Powered-By", "ECF Framework");
+        res.header("X-Powered-By", "ECF Enterprise Framework v1.0");
         return next();
     }
 }
 app.use(new CustomHeaderMiddleware());
 
-// ---- 3. Inline Middleware Functions ----
-const firstMiddleware = (req, res, next) => {
-    console.log("[Route Middleware] Executing firstMiddleware for this route");
-    return next();
-};
-
-const secondMiddleware = (req, res, next) => {
-    console.log("[Route Middleware] Executing secondMiddleware for this route");
-    return next();
-};
-
+// ---- In-Memory Data Store ----
 const users = [
     { id: 1, name: "John", email: "john@gmail.com", role: "Admin", disabled: false },
     { id: 2, name: "Jane", email: "jane@gmail.com", role: "User", disabled: true },
@@ -67,113 +53,135 @@ const users = [
     { id: 5, name: "Mike", email: "mike@gmail.com", role: "User", disabled: false },
 ];
 
-Route.get("/", [firstMiddleware, secondMiddleware], (req, res) => {
+// ---- Route Definitions using New Enterprise Features ----
+
+// 1. Home Page
+Route.get("/", (req, res) => {
     return res.view("home", {
-        title: "ECF View Engine",
-        name: "ECF View Engine",
-        age: 20,
+        title: "ECF Framework",
+        name: "ECF Enterprise Web Framework",
         date: new Date().toDateString(),
         users
     });
-});
+}).name("home");
 
+// 2. About Page
 Route.get("/about", (req, res) => {
     return res.view("about", {
-        title: "About",
+        title: "About ECF",
     });
-});
+}).name("about");
 
-Route.get("/users/new", firstMiddleware, (req, res) => {
+// 3. User Listing with Input Helpers
+Route.get("/users", async (req, res) => {
+    const roleFilter = req.query("role", null);
+    const filteredUsers = roleFilter
+        ? users.filter(u => u.role.toLowerCase() === String(roleFilter).toLowerCase())
+        : users;
+
+    if (req.expectsJson()) {
+        return res.json({ users: filteredUsers });
+    }
+
+    return res.view("user", {
+        title: "Users List",
+        users: filteredUsers
+    });
+}).name("users.index");
+
+// 4. Create User Form Page
+Route.get("/users/new", (req, res) => {
     return res.view("users.new", {
         title: "New User",
     });
-});
+}).name("users.create");
 
-Route.get("/users", (req, res) => {
-    return res.view("user", {
-        title: "Users",
-        users
-    });
-});
-
-// Route for finding by name (case-insensitive) - MUST come before /users/{id}
-Route.get("/users/name/{name}", (req, res) => {
-    const searchName = req.params.name;
-    console.log("Searching for user by name:", searchName);
-
-    const user = users.find(
-        (user) => user.name.toLowerCase() === searchName.toLowerCase()
-    );
+// 5. User Detail Page with Parameter Regex Constraint (.where) & Input Helper
+Route.get("/users/{id}", async (req, res) => {
+    const id = req.integer("id");
+    const user = users.find(u => u.id === id);
 
     if (!user) {
-        const suggestions = users.filter((user) =>
-            user.name.toLowerCase().includes(searchName.toLowerCase())
-        );
-
-        return res.view("users.not-found", {
-            title: "User Not Found",
-            searchParam: searchName,
-            suggestions
-        });
-    }
-
-    return res.view("users.show", { user });
-});
-
-// Route for finding by ID - must come AFTER specific routes
-Route.get("/users/{id}", (req, res) => {
-    const id = parseInt(req.params.id);
-    console.log("Searching for user by ID:", id);
-
-    const user = users.find((user) => user.id === id);
-    if (!user) {
-        return res.view("users.not-found", {
+        return res.status(404).view("users.not-found", {
             title: "User Not Found",
             searchParam: id,
             suggestions: []
         });
     }
-    return res.view("users.show", {
-        user
 
-    });
-});
+    if (req.expectsJson()) {
+        return res.json({ user });
+    }
 
+    return res.view("users.show", { user });
+}).name("users.show").where("id", /^\d+$/);
+
+// 6. User Creation Handler (POST) using req.input(), req.filled(), req.boolean()
 Route.post("/user", async (req, res) => {
-    const { name, email } = await req.body();
-    if (!name || !email) {
-        return res.text("Name and email are required", 422);
+    const name = await req.input("name");
+    const email = await req.input("email");
+    const role = await req.input("role", "User");
+    const disabled = await req.boolean("disabled", false);
+
+    if (!(await req.filled("name")) || !(await req.filled("email"))) {
+        throw new ValidationError("Name and email are required fields.");
     }
+
     if (!email.includes("@")) {
-        return res.text("Email is invalid", 422);
+        throw new ValidationError("Valid email address is required.");
     }
-    const existingUser = users.find((user) => user.email === email);
+
+    const existingUser = users.find(u => u.email === email);
     if (existingUser) {
-        return res.text("Email already exists", 422);
+        throw new ValidationError("User with this email already exists.");
     }
-    users.push({ id: users.length + 1, name, email, role: "User", disabled: false });
-    return res.redirect("/users");
+
+    const newUser = { id: users.length + 1, name, email, role, disabled };
+    users.push(newUser);
+
+    if (req.expectsJson()) {
+        return res.status(201).json({ message: "User created successfully", user: newUser });
+    }
+
+    return res.redirect(Route.url("users.index"));
+}).name("users.store");
+
+// 7. Route Groups: API v1 Group (/api/v1/...)
+Route.group({ prefix: "/api/v1" }, (router) => {
+    router.get("/status", (req, res) => {
+        return res.json({
+            status: "online",
+            framework: "ECF Enterprise",
+            ip: req.ip,
+            secure: req.secure,
+            ajax: req.ajax()
+        });
+    });
+
+    router.get("/users", (req, res) => res.json({ users }));
 });
 
-// ---- Exception Test Routes ----
-
+// 8. Exception Demonstration Routes
 Route.get("/error", (req, res) => {
-    throw new ValidationError("Name field is required");
+    throw new ValidationError("Demonstrating custom ValidationError handler!");
 });
 
 Route.get("/crash", (req, res) => {
-    throw new Error("Something unexpected happened!");
+    throw new Error("Demonstrating unexpected 500 error reporting!");
 });
 
-exceptionManager.render(RouteNotFoundError, (err, req, res) => {
+// 9. Fallback Route (404 Not Found)
+Route.fallback((req, res) => {
+    if (req.expectsJson()) {
+        return res.status(404).json({ error: "Route not found", path: req.path });
+    }
     return res.status(404).view("errors.404", {
-        title: "404",
-        message: err.message
+        title: "404 Not Found",
+        message: `No route matching ${req.method} ${req.path}`
     });
 });
 
-
-
-app.listen(3000, () => {
-    console.log("ecf running at http://localhost:3000");
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+    Log.info(`Halo Application running at http://localhost:${PORT}`);
 });

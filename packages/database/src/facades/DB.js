@@ -1,4 +1,4 @@
-import Facade from "../Facade.js";
+import { Facade } from "@ecf/core";
 
 class DB extends Facade {
     static accessor() {

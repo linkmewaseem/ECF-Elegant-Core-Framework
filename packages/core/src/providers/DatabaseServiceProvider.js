@@ -1,15 +1,19 @@
 import ServiceProvider from "../ServiceProvider.js";
+
 class Database {
     constructor() {
         this.connected = false;
     }
 }
+
 export default class DatabaseServiceProvider extends ServiceProvider {
-    register(app) {
-        // Register the database service with the application container
-        app.singleton("database", () => new Database());
+    register(app = this.app) {
+        const container = app || this.app;
+        if (!container) return;
+
+        container.singleton("database", () => new Database());
+        container.singleton("db", (c) => c.make("database"));
     }
-    boot(app) {
-        // Perform any bootstrapping tasks for the database service
-    }
+
+    boot(app = this.app) {}
 }

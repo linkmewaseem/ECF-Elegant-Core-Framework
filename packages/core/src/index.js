@@ -46,7 +46,4 @@ export { default as CoreServiceProvider } from "./providers/CoreServiceProvider.
 
 // ---- Database ----
 export { default as DatabaseServiceProvider } from "./providers/DatabaseServiceProvider.js";
-
-// ---- NOT exported yet ----
-// facade/DB.js is an empty file — implement it, then add:
-// export { default as DB } from "./facade/DB.js";
+export { default as DB } from "./facade/DB.js";

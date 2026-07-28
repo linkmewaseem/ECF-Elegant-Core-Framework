@@ -26,6 +26,12 @@ importers:
         specifier: workspace:*
         version: link:../http
 
+  packages/database:
+    dependencies:
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../core
+
   packages/http:
     dependencies:
       '@ecf/core':

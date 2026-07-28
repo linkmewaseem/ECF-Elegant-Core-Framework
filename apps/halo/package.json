@@ -5,7 +5,8 @@
   "private": true,
   "dependencies": {
     "@ecf/view": "workspace:*",
-    "@ecf/http": "workspace:*"
+    "@ecf/http": "workspace:*",
+    "@ecf/validation": "workspace:*"
   },
   "scripts": {
     "start": "node app.js"

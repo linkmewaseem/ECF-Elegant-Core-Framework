@@ -13,6 +13,9 @@ importers:
       '@ecf/http':
         specifier: workspace:*
         version: link:../../packages/http
+      '@ecf/validation':
+        specifier: workspace:*
+        version: link:../../packages/validation
       '@ecf/view':
         specifier: workspace:*
         version: link:../../packages/view
@@ -28,6 +31,11 @@ importers:
       '@ecf/core':
         specifier: workspace:*
         version: link:../core
+      '@ecf/validation':
+        specifier: workspace:*
+        version: link:../validation
+
+  packages/validation: {}
 
   packages/view:
     dependencies:

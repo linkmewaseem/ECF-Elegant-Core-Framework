@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/http",
+  "name": "@ecf/validation",
   "version": "0.1.0-alpha.1",
   "type": "module",
   "main": "./src/index.js",
@@ -11,9 +11,5 @@
   },
   "engines": {
     "node": ">=22"
-  },
-  "dependencies": {
-    "@ecf/core": "workspace:*",
-    "@ecf/validation": "workspace:*"
   }
 }

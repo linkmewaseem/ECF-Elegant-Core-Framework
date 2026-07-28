@@ -1,5 +1,6 @@
-import { Application, Facade, CoreServiceProvider, RouteNotFoundError, LoggerServiceProvider, HttpServiceProvider, Route, Middleware, Log } from "@ecf/http";
+import { Application, Facade, CoreServiceProvider, RouteNotFoundError, LoggerServiceProvider, HttpServiceProvider, Route, Middleware, Log, ValidationException } from "@ecf/http";
 import { ViewServiceProvider } from "@ecf/view";
+import { Rule } from "@ecf/validation";
 
 const app = new Application();
 
@@ -23,6 +24,10 @@ const exceptionManager = app.make("exception.manager");
 
 exceptionManager.render(ValidationError, (err, req, res) => {
     return res.status(422).json({ error: err.message, type: "ValidationError" });
+});
+
+exceptionManager.render(ValidationException, (err, req, res) => {
+    return res.status(422).json({ error: err.message, errors: err.errors, type: "ValidationException" });
 });
 
 exceptionManager.report(Error, (err) => {
@@ -116,27 +121,30 @@ Route.get("/users/{id}", async (req, res) => {
     return res.view("users.show", { user });
 }).name("users.show").where("id", /^\d+$/);
 
-// 6. User Creation Handler (POST) using req.input(), req.filled(), req.boolean()
+// 6. User Creation Handler (POST) using fluent Rule builder & conditional validation
 Route.post("/user", async (req, res) => {
-    const name = await req.input("name");
-    const email = await req.input("email");
-    const role = await req.input("role", "User");
-    const disabled = await req.boolean("disabled", false);
+    // Perform validation using @ecf/validation engine with fluent Rule builder & Phase 2/3 rules
+    const validated = await req.validate({
+        name: [Rule.required(), Rule.alphaDash(), Rule.min(2)],
+        email: [Rule.required(), Rule.email()],
+        role: "nullable|in:Admin,User,Manager",
+        admin_code: "required_if:role,Admin|alphanum",
+        website: "sometimes|nullable|url",
+        disabled: "nullable|boolean"
+    });
 
-    if (!(await req.filled("name")) || !(await req.filled("email"))) {
-        throw new ValidationError("Name and email are required fields.");
-    }
-
-    if (!email.includes("@")) {
-        throw new ValidationError("Valid email address is required.");
-    }
-
-    const existingUser = users.find(u => u.email === email);
+    const existingUser = users.find(u => u.email === validated.email);
     if (existingUser) {
         throw new ValidationError("User with this email already exists.");
     }
 
-    const newUser = { id: users.length + 1, name, email, role, disabled };
+    const newUser = {
+        id: users.length + 1,
+        name: validated.name,
+        email: validated.email,
+        role: validated.role || "User",
+        disabled: Boolean(validated.disabled)
+    };
     users.push(newUser);
 
     if (req.expectsJson()) {
@@ -159,6 +167,25 @@ Route.group({ prefix: "/api/v1" }, (router) => {
     });
 
     router.get("/users", (req, res) => res.json({ users }));
+
+    // Advanced Registration Endpoint showcasing Extended Rules, Same confirmation, & RequiredIf
+    router.post("/register", async (req, res) => {
+        const data = await req.validate({
+            username: [Rule.required(), Rule.alphaDash(), Rule.between(3, 20)],
+            email: [Rule.required(), Rule.email()],
+            password: [Rule.required(), Rule.min(8)],
+            password_confirmation: [Rule.required(), Rule.same("password")],
+            dob: [Rule.sometimes(), Rule.date()],
+            ip: [Rule.sometimes(), Rule.ip("v4")],
+            account_type: [Rule.required(), Rule.in(["personal", "business"])],
+            tax_id: [Rule.requiredIf("account_type", "business"), Rule.alphaNum()]
+        });
+
+        return res.status(201).json({
+            message: "Account registered successfully",
+            validated: data
+        });
+    });
 });
 
 // 8. Exception Demonstration Routes

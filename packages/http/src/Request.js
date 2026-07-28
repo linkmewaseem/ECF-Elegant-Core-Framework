@@ -35,6 +35,29 @@ export default class Request {
         return this;
     }
 
+    /**
+     * Validate incoming request input against specified rules.
+     * @param {Object} rules 
+     * @param {Object} customMessages 
+     * @param {Object} customAttributes 
+     * @returns {Promise<Object>} Returns validated input data or throws ValidationException(422)
+     */
+    async validate(rules, customMessages = {}, customAttributes = {}) {
+        let Validator;
+        try {
+            Validator = (await import("@ecf/validation")).Validator;
+        } catch {
+            Validator = (await import("../../validation/src/index.js")).Validator;
+        }
+        const ValidationException = (await import("./exceptions/ValidationException.js")).default;
+
+        const data = await this.all();
+        const validator = new Validator();
+        const result = await validator.validate(data, rules, customMessages, customAttributes);
+
+        return result.throwIfFailed(ValidationException);
+    }
+
     // ---- Basic request info ----
 
     get method() {

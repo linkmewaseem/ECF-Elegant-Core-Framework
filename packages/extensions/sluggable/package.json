@@ -1,0 +1,13 @@
+{
+  "name": "@ecf/sluggable",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "keywords": [
+    "ecf",
+    "orm",
+    "sluggable"
+  ],
+  "author": "ECF Team",
+  "license": "MIT"
+}

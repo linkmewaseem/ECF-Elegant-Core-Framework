@@ -221,19 +221,17 @@ export default class ModelRepository {
         const conn = this.getConnection();
         const inTx = conn ? conn.inTransaction() : false;
         const original = model.getOriginal() || {};
-        const changes = isNew ? model.getAttributeManager().getRawAttributes() : model.getChanges();
 
         // 1. Pre-event: saving
         const savingCtx = new EventContext({
             event: "saving",
             model,
-            changes,
+            changes: model.getChanges(),
             original,
             connection: conn,
             inTransaction: inTx
         });
         const canSave = await ModelEventBus.dispatch(savingCtx);
-        await PluginManager.dispatch(model, "saving");
         if (canSave === false) return false;
 
         // 2. Pre-event: creating / updating
@@ -241,14 +239,16 @@ export default class ModelRepository {
         const actionCtx = new EventContext({
             event: actionEvent,
             model,
-            changes,
+            changes: isNew ? model.getAttributeManager().getRawAttributes() : model.getChanges(),
             original,
             connection: conn,
             inTransaction: inTx
         });
         const canAction = await ModelEventBus.dispatch(actionCtx);
-        await PluginManager.dispatch(model, actionEvent);
         if (canAction === false) return false;
+
+        // 3. Compute final changes payload after pre-event hooks mutated attributes
+        const changes = isNew ? model.getAttributeManager().getRawAttributes() : model.getChanges();
 
         if (Object.keys(changes).length > 0) {
             if (isNew) {
@@ -275,7 +275,6 @@ export default class ModelRepository {
             inTransaction: inTx
         });
         await ModelEventBus.dispatch(postActionCtx);
-        await PluginManager.dispatch(model, postActionEvent);
 
         const savedCtx = new EventContext({
             event: "saved",
@@ -286,7 +285,6 @@ export default class ModelRepository {
             inTransaction: inTx
         });
         await ModelEventBus.dispatch(savedCtx);
-        await PluginManager.dispatch(model, "saved");
 
         return model;
     }
@@ -309,7 +307,6 @@ export default class ModelRepository {
             inTransaction: inTx
         });
         const canDelete = await ModelEventBus.dispatch(deletingCtx);
-        await PluginManager.dispatch(model, "deleting");
         if (canDelete === false) return false;
 
         await conn.table(this.getTable()).where(pk, id).delete();
@@ -323,7 +320,6 @@ export default class ModelRepository {
             inTransaction: inTx
         });
         await ModelEventBus.dispatch(deletedCtx);
-        await PluginManager.dispatch(model, "deleted");
 
         return true;
     }

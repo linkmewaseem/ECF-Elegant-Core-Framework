@@ -55,7 +55,7 @@ export default class Model {
 
         // Wrap instance in ES6 Proxy for seamless property access & mutation
         return new Proxy(this, {
-            get(target, prop) {
+            get(target, prop, receiver) {
                 if (typeof prop === "symbol" || prop.startsWith("#")) {
                     return Reflect.get(target, prop);
                 }
@@ -78,7 +78,7 @@ export default class Model {
                 // 2. Base Model methods & constructor
                 if (prop in target) {
                     if (prop === "constructor") {
-                        return Object.getPrototypeOf(target)?.constructor || Reflect.get(target, "constructor");
+                        return target.constructor;
                     }
                     const val = Reflect.get(target, prop);
                     if (typeof val === "function") {
@@ -309,6 +309,7 @@ export default class Model {
         }
 
         this.boot();
+        PluginManager.boot(this);
     }
 
     static boot() {
@@ -464,13 +465,59 @@ export default class Model {
         return this;
     }
 
+    static install(plugin, options = {}) {
+        PluginManager.register(this, plugin, options);
+        return this;
+    }
+
+    static async uninstall(pluginName) {
+        await PluginManager.uninstall(this, pluginName);
+        return this;
+    }
+
+    static enablePlugin(pluginName, enable = true) {
+        PluginManager.enablePlugin(this, pluginName, enable);
+        return this;
+    }
+
+    static disablePlugin(pluginName) {
+        PluginManager.disablePlugin(this, pluginName);
+        return this;
+    }
+
+    static isPluginEnabled(pluginName) {
+        return PluginManager.isPluginEnabled(this, pluginName);
+    }
+
+    static plugins() {
+        this.bootIfNeeded();
+        return PluginManager.plugins(this);
+    }
+
+    static capabilities() {
+        this.bootIfNeeded();
+        return PluginManager.capabilities(this);
+    }
+
+    static async pluginDoctor() {
+        this.bootIfNeeded();
+        return await PluginManager.pluginDoctor(this);
+    }
+
+    static pluginMetrics(pluginName) {
+        return PluginManager.pluginMetrics(this, pluginName);
+    }
+
+    static extensionGraph() {
+        return PluginManager.extensionGraph(this);
+    }
+
     static observe(observer, priority = 10) {
         ModelEventBus.observe(this, observer, priority);
         return this;
     }
 
     static on(event, callback, priority = 10) {
-        PluginManager.addListener(this, event, callback);
         ModelEventBus.on(this, event, callback, priority);
         return this;
     }

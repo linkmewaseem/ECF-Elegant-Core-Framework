@@ -25,6 +25,15 @@ const LIFECYCLE_METHODS = [
     "forceDeleted"
 ];
 
+function getModelClassName(modelClass) {
+    if (!modelClass) return "Model";
+    let name = modelClass.name || "Model";
+    while (name.startsWith("bound ")) {
+        name = name.slice(6);
+    }
+    return name;
+}
+
 export default class ModelEventBus {
     static #listeners = new Map();
     static #transactionBuffers = new Map();
@@ -32,7 +41,7 @@ export default class ModelEventBus {
 
     static on(modelClass, eventPattern, callback, priority = 10) {
         if (!modelClass) return;
-        const className = modelClass.name || "Model";
+        const className = getModelClassName(modelClass);
         const key = `${className}:${eventPattern}`;
 
         if (!this.#listeners.has(key)) {
@@ -100,7 +109,7 @@ export default class ModelEventBus {
     static async executeDispatch(eventContext) {
         const { event, model } = eventContext;
         const modelClass = typeof model === "function" ? model : (model?.constructor || Object.getPrototypeOf(model)?.constructor);
-        const className = modelClass ? modelClass.name : "Model";
+        const className = getModelClassName(modelClass);
 
         // Collect matching listeners (exact match, wildcard *, namespace created:*)
         const matchingEntries = [];

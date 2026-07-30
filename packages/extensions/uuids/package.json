@@ -1,0 +1,13 @@
+{
+  "name": "@ecf/uuids",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "keywords": [
+    "ecf",
+    "orm",
+    "uuids"
+  ],
+  "author": "ECF Team",
+  "license": "MIT"
+}

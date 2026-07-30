@@ -1,0 +1,14 @@
+{
+  "name": "@ecf/audit",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "keywords": [
+    "ecf",
+    "orm",
+    "audit",
+    "auditing"
+  ],
+  "author": "ECF Team",
+  "license": "MIT"
+}

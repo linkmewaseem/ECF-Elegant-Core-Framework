@@ -1,0 +1,13 @@
+{
+  "name": "@ecf/soft-deletes",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "keywords": [
+    "ecf",
+    "orm",
+    "soft-delete"
+  ],
+  "author": "ECF Team",
+  "license": "MIT"
+}

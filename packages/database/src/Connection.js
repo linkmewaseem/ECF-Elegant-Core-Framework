@@ -1,8 +1,19 @@
 import { TransactionException } from "./exceptions/DatabaseExceptions.js";
+import QueryBuilder from "./query/QueryBuilder.js";
+import SQLiteGrammar from "./query/grammars/SQLiteGrammar.js";
+import MySQLGrammar from "./query/grammars/MySQLGrammar.js";
+import PostgreSQLGrammar from "./query/grammars/PostgreSQLGrammar.js";
+
+import SchemaBuilder from "./schema/SchemaBuilder.js";
+import SQLiteSchemaGrammar from "./schema/grammars/SQLiteSchemaGrammar.js";
+import MySQLSchemaGrammar from "./schema/grammars/MySQLSchemaGrammar.js";
+import PostgreSQLSchemaGrammar from "./schema/grammars/PostgreSQLSchemaGrammar.js";
 
 export default class Connection {
     #driver;
     #name;
+    #grammar;
+    #schemaGrammar;
     #transactionLevel = 0;
     #eventDispatcher = null;
 
@@ -10,6 +21,8 @@ export default class Connection {
         this.#name = name;
         this.#driver = driver;
         this.#eventDispatcher = eventDispatcher;
+        this.#grammar = this.resolveGrammar(driver);
+        this.#schemaGrammar = this.resolveSchemaGrammar(driver);
     }
 
     get name() {
@@ -18,6 +31,42 @@ export default class Connection {
 
     get driver() {
         return this.#driver;
+    }
+
+    get grammar() {
+        return this.#grammar;
+    }
+
+    get schemaGrammar() {
+        return this.#schemaGrammar;
+    }
+
+    resolveGrammar(driver) {
+        const driverName = driver.constructor.name.toLowerCase();
+        if (driverName.includes("mysql")) return new MySQLGrammar();
+        if (driverName.includes("postgres")) return new PostgreSQLGrammar();
+        return new SQLiteGrammar();
+    }
+
+    resolveSchemaGrammar(driver) {
+        const driverName = driver.constructor.name.toLowerCase();
+        if (driverName.includes("mysql")) return new MySQLSchemaGrammar();
+        if (driverName.includes("postgres")) return new PostgreSQLSchemaGrammar();
+        return new SQLiteSchemaGrammar();
+    }
+
+    // Query & Schema Builder Factories
+
+    queryBuilder() {
+        return new QueryBuilder(this, this.#grammar);
+    }
+
+    getSchemaBuilder() {
+        return new SchemaBuilder(this, this.#schemaGrammar);
+    }
+
+    table(tableName) {
+        return this.queryBuilder().from(tableName);
     }
 
     // Connection State Inspection

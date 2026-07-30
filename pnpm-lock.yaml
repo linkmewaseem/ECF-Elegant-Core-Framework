@@ -20,6 +20,24 @@ importers:
         specifier: workspace:*
         version: link:../../packages/view
 
+  apps/nexus:
+    dependencies:
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@ecf/database':
+        specifier: workspace:*
+        version: link:../../packages/database
+      '@ecf/http':
+        specifier: workspace:*
+        version: link:../../packages/http
+      '@ecf/validation':
+        specifier: workspace:*
+        version: link:../../packages/validation
+      '@ecf/view':
+        specifier: workspace:*
+        version: link:../../packages/view
+
   packages/core:
     devDependencies:
       '@ecf/http':

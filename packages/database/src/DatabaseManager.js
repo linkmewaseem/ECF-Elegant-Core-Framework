@@ -1,3 +1,7 @@
+import Expression from "./query/Expression.js";
+import MigrationRepository from "./migrations/MigrationRepository.js";
+import Migrator from "./migrations/Migrator.js";
+
 export default class DatabaseManager {
     #manager;
 
@@ -11,6 +15,29 @@ export default class DatabaseManager {
 
     connection(name = null) {
         return this.#manager.connection(name);
+    }
+
+    table(tableName) {
+        return this.connection().table(tableName);
+    }
+
+    schema(name = null) {
+        return this.connection(name).getSchemaBuilder();
+    }
+
+    getSchemaBuilder(name = null) {
+        return this.schema(name);
+    }
+
+    migrator(options = {}) {
+        const conn = this.connection(options.connection || null);
+        const table = options.table || "migrations";
+        const repository = new MigrationRepository(conn, table);
+        return new Migrator(repository, conn);
+    }
+
+    raw(value) {
+        return new Expression(value);
     }
 
     registerDriver(name, DriverClass) {

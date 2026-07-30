@@ -1,0 +1,16 @@
+{
+  "name": "nexus-app",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@ecf/core": "workspace:*",
+    "@ecf/http": "workspace:*",
+    "@ecf/view": "workspace:*",
+    "@ecf/validation": "workspace:*",
+    "@ecf/database": "workspace:*"
+  },
+  "scripts": {
+    "start": "node app.js"
+  }
+}

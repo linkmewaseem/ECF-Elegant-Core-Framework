@@ -1,0 +1,48 @@
+@extends('layouts.app')
+@section('content')
+    <div class="glass-card" style="max-width: 600px; margin: 0 auto;">
+    <h2 style="margin-bottom: 0.5rem;">Add New Product</h2>
+    <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
+    Form inputs are validated using <code>req.validate()</code> with rules: 
+    <code>Rule.required()</code>, <code>Rule.min()</code>, <code>Rule.in()</code>.
+    </p>
+
+    <form action="/products" method="POST">
+    <div class="form-group">
+    <label class="form-label">Product Name</label>
+    <input type="text" name="name" class="form-input" placeholder="e.g. Mechanical Keyboard v2" required>
+    </div>
+
+    <div class="form-group">
+    <label class="form-label">Category</label>
+    <select name="category" class="form-select" required>
+    <option value="Electronics">Electronics</option>
+    <option value="Peripherals">Peripherals</option>
+    <option value="Hardware">Hardware</option>
+    <option value="Accessories">Accessories</option>
+    </select>
+    </div>
+
+    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+    <div>
+    <label class="form-label">Price ($)</label>
+    <input type="number" name="price" step="0.01" class="form-input" placeholder="149.99" required>
+    </div>
+    <div>
+    <label class="form-label">Initial Stock</label>
+    <input type="number" name="stock" class="form-input" placeholder="50" required>
+    </div>
+    </div>
+
+    <div class="form-group">
+    <label class="form-label">Product SKU Code</label>
+    <input type="text" name="sku" class="form-input" placeholder="e.g. SK-MECH-001" required>
+    </div>
+
+    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+    <button type="submit" class="btn btn-primary" style="flex: 1;">Save Product to Database</button>
+    <a href="/products" class="btn" style="background: rgba(255,255,255,0.06); color: var(--text-muted);">Cancel</a>
+    </div>
+    </form>
+    </div>
+@endsection

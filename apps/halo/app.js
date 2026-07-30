@@ -1,4 +1,4 @@
-import { Application, Facade, CoreServiceProvider, RouteNotFoundError, LoggerServiceProvider, HttpServiceProvider, Route, Middleware, Log, ValidationException } from "@ecf/http";
+import { Application, Facade, CoreServiceProvider, LoggerServiceProvider, HttpServiceProvider, Route, Middleware, Log, ValidationException } from "@ecf/http";
 import { ViewServiceProvider } from "@ecf/view";
 import { Rule } from "@ecf/validation";
 

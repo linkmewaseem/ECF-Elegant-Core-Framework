@@ -30,9 +30,9 @@ export default class Facade {
         return new Proxy(FacadeClass, {
             get(target, prop, receiver) {
 
-                // If the property exists on the facade itself,
+                // If the property exists directly on the subclass (not inherited from Facade base class),
                 // return it normally.
-                if (Reflect.has(target, prop)) {
+                if (Object.prototype.hasOwnProperty.call(target, prop) || prop === "accessor" || prop === "getRoot" || prop === "setApplication") {
                     return Reflect.get(target, prop, receiver);
                 }
 

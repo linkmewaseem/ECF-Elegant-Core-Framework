@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECF — Elegant Composable Framework Documentation</title>
+  <meta name="description" content="Official documentation for ECF (Elegant Composable Framework) - Modular Node.js web framework built on IoC container, expressive routing, type-safe database queries, and validation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="brand-section">
+      <div class="logo-badge">ECF</div>
+      <span class="brand-title">ECF Framework</span>
+      <span class="version-badge">v0.1.0-alpha</span>
+    </div>
+
+    <div class="header-actions">
+      <button class="search-trigger" id="search-trigger">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span>Search docs...</span>
+        <span class="kbd">Ctrl K</span>
+      </button>
+
+      <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle theme">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Documentation Layout -->
+  <div class="layout-container">
+    
+    <!-- Left Navigation Sidebar -->
+    <aside class="sidebar" id="sidebar-nav">
+      <!-- Dynamically populated by app.js -->
+    </aside>
+
+    <!-- Main Content Document View -->
+    <main class="content-wrapper">
+      <article class="doc-article" id="doc-content">
+        <!-- Dynamically rendered markdown content -->
+      </article>
+
+      <!-- Pagination Cards Footer -->
+      <nav class="doc-footer-nav">
+        <a class="nav-card" id="prev-nav-card">
+          <span class="nav-card-label">← Previous</span>
+          <span class="nav-card-title">Topic Title</span>
+        </a>
+        <a class="nav-card" id="next-nav-card" style="margin-left: auto;">
+          <span class="nav-card-label" style="text-align: right;">Next →</span>
+          <span class="nav-card-title" style="text-align: right;">Topic Title</span>
+        </a>
+      </nav>
+    </main>
+
+    <!-- Right Table of Contents (On This Page) -->
+    <aside class="toc-sidebar">
+      <div class="toc-title">On This Page</div>
+      <ul class="toc-list" id="toc-list">
+        <!-- Dynamically populated headings -->
+      </ul>
+    </aside>
+
+  </div>
+
+  <!-- Search Modal overlay -->
+  <div class="modal-overlay" id="search-modal">
+    <div class="search-modal">
+      <div class="search-modal-header">
+        <input type="text" class="search-modal-input" id="search-input" placeholder="Search topics, syntax, APIs, or guides..." />
+      </div>
+      <ul class="search-results-list" id="search-results">
+        <!-- Search result items -->
+      </ul>
+    </div>
+  </div>
+
+  <!-- Documentation Scripts -->
+  <script src="assets/docs-data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

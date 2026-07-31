@@ -3,6 +3,17 @@ export { default as ConnectionManager } from "./ConnectionManager.js";
 export { default as Connection } from "./Connection.js";
 export { default as Driver } from "./Driver.js";
 
+// Contracts
+export { default as IGrammarCompiler } from "./contracts/IGrammarCompiler.js";
+export { default as IQueryCache } from "./contracts/IQueryCache.js";
+export { default as ICacheStore } from "./contracts/ICacheStore.js";
+export { default as IProfiler } from "./contracts/IProfiler.js";
+export { default as IMetrics } from "./contracts/IMetrics.js";
+export { default as IBulkExecutor } from "./contracts/IBulkExecutor.js";
+export { default as ICursorPaginator } from "./contracts/ICursorPaginator.js";
+export { default as IExplainEngine } from "./contracts/IExplainEngine.js";
+export { default as IHydrator } from "./contracts/IHydrator.js";
+
 // Query & Grammars
 export { default as QueryBuilder } from "./query/QueryBuilder.js";
 export { default as Expression, isExpression } from "./query/Expression.js";
@@ -11,6 +22,26 @@ export { default as Grammar } from "./query/Grammar.js";
 export { default as SQLiteGrammar } from "./query/grammars/SQLiteGrammar.js";
 export { default as MySQLGrammar } from "./query/grammars/MySQLGrammar.js";
 export { default as PostgreSQLGrammar } from "./query/grammars/PostgreSQLGrammar.js";
+export { default as MSSQLGrammar } from "./query/grammars/MSSQLGrammar.js";
+
+// Cache & Performance Infrastructure
+export { default as QueryCache } from "./query/cache/QueryCache.js";
+export { default as MemoryCacheStore } from "./query/cache/stores/MemoryCacheStore.js";
+export { default as RedisCacheStore } from "./query/cache/stores/RedisCacheStore.js";
+export { default as FileCacheStore } from "./query/cache/stores/FileCacheStore.js";
+export { default as CustomCacheStore } from "./query/cache/stores/CustomCacheStore.js";
+export { default as CompiledSqlCache } from "./query/cache/CompiledSqlCache.js";
+export { default as PreparedStatementCache } from "./query/cache/PreparedStatementCache.js";
+
+// Profiler & Telemetry Metrics
+export { default as QueryProfiler } from "./profiler/QueryProfiler.js";
+export { default as QueryEventStream } from "./profiler/QueryEventStream.js";
+export { default as QueryMetrics } from "./profiler/QueryMetrics.js";
+
+// Enterprise Query Extensions
+export { default as BulkOperations } from "./query/BulkOperations.js";
+export { default as CursorPagination } from "./query/CursorPagination.js";
+export { default as ExplainEngine } from "./query/ExplainEngine.js";
 
 // Drivers
 export { default as SQLiteDriver } from "./drivers/SQLiteDriver.js";
@@ -58,6 +89,8 @@ export { default as MigrationCreator } from "./migrations/MigrationCreator.js";
 export { default as Model } from "./orm/Model.js";
 export { default as ModelRepository } from "./orm/ModelRepository.js";
 export { default as AttributeManager } from "./orm/AttributeManager.js";
+export { default as Hydrator } from "./orm/Hydrator.js";
+export { default as RelationCache } from "./orm/relations/RelationCache.js";
 export { default as PluginManager } from "./orm/PluginManager.js";
 export { default as Plugin } from "./orm/extensions/Plugin.js";
 export { default as PluginContext } from "./orm/extensions/PluginContext.js";

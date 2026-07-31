@@ -19,11 +19,19 @@ describe("Renderer", () => {
         assert.throws(() => new Renderer().render({ render: "not-a-function" }), ViewError);
     });
 
-    test("renderToStream() should throw ViewError (not implemented)", () => {
-        assert.throws(() => new Renderer().renderToStream(), ViewError);
+    test("renderToStream() should return a Readable stream of HTML content", async () => {
+        const renderer = new Renderer();
+        const stream = renderer.renderToStream(makeTemplate("<h1>Stream HTML</h1>"), {});
+        let content = "";
+        for await (const chunk of stream) {
+            content += chunk;
+        }
+        assert.equal(content, "<h1>Stream HTML</h1>");
     });
 
-    test("renderStatic() should throw ViewError (not implemented)", () => {
-        assert.throws(() => new Renderer().renderStatic(), ViewError);
+    test("renderStatic() should return static HTML content string", () => {
+        const renderer = new Renderer();
+        const result = renderer.renderStatic(makeTemplate("<div>Static</div>"), {});
+        assert.equal(result, "<div>Static</div>");
     });
 });

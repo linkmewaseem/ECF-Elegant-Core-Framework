@@ -1,20 +1,64 @@
 import Expression from "./query/Expression.js";
 import MigrationRepository from "./migrations/MigrationRepository.js";
 import Migrator from "./migrations/Migrator.js";
+import QueryCache from "./query/cache/QueryCache.js";
+import QueryProfiler from "./profiler/QueryProfiler.js";
+import QueryMetrics from "./profiler/QueryMetrics.js";
 
 export default class DatabaseManager {
     #manager;
+    #metrics;
+    #profiler;
+    #queryCache;
 
     constructor(connectionManager) {
         this.#manager = connectionManager;
+        this.#metrics = new QueryMetrics();
+        this.#profiler = new QueryProfiler();
+        this.#queryCache = new QueryCache("memory", this.#metrics);
     }
 
     get manager() {
         return this.#manager;
     }
 
+    get metrics() {
+        return this.#metrics;
+    }
+
+    get profiler() {
+        return this.#profiler;
+    }
+
+    get queryCache() {
+        return this.#queryCache;
+    }
+
+    cacheStore(name = null) {
+        return this.#queryCache.store(name);
+    }
+
+    getMetrics(category = null) {
+        return this.#metrics.getMetrics(category);
+    }
+
+    resetMetrics(category = null) {
+        return this.#metrics.resetMetrics(category);
+    }
+
+    enableProfiler() {
+        this.#profiler.enable();
+    }
+
+    disableProfiler() {
+        this.#profiler.disable();
+    }
+
     connection(name = null) {
-        return this.#manager.connection(name);
+        const conn = this.#manager.connection(name);
+        conn.setProfiler(this.#profiler);
+        conn.setMetrics(this.#metrics);
+        return conn;
     }
 
     table(tableName) {

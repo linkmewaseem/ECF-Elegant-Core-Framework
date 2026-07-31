@@ -734,60 +734,58 @@ import {
 
 ---
 
-## Roadmap
+---
 
-### Phase 1 — Core Foundation ✅ Complete
+## Roadmap & Ecosystem Milestones
 
-- IoC Container with circular dependency detection
-- Application bootstrapping lifecycle
-- Service Providers
-- ConfigManager with dot-notation paths
-- LoggerManager with pluggable transports (ConsoleTransport)
-- EventManager with error-isolated dispatch
-- EnvManager + DotEnvLoader (`.env` file support)
-- Facade system
+### Completed Milestones (v1.0-RC Core Stack) ✅
 
-### Phase 2 — HTTP Layer ✅ Complete
+- **Milestone 1 — `@ecf/core`**: IoC Container, Service Providers, Application Lifecycle, Config, Logger, Events, Env Manager.
+- **Milestone 2 — `@ecf/database` (Part 1)**: Connection & Multi-Driver Grammar Engine (SQLite, MySQL, Postgres).
+- **Milestone 3 — `@ecf/database` (Part 2)**: AST QueryBuilder Engine & Active Record + Data Mapper ORM.
+- **Milestone 4 — `@ecf/database` (Part 3)**: Relationship Engine, Identity Map, Eager Loading (`with`), Scope Intelligence, Observers.
+- **Milestone 5 — `@ecf/validation`**: Standalone & FormRequest validation engine, built-in & custom rules.
+- **Milestone 6 — `@ecf/http`**: Dynamic Router, Request, Response, Middleware Pipeline, HttpKernel, HttpServer, Event Bus.
+- **Milestone 7 — `@ecf/extensions`**: Modular extensions platform (`@ecf/soft-deletes`, `@ecf/timestamps`, `@ecf/uuids`, `@ecf/sluggable`, `@ecf/audit`).
+- **Milestone 8 — `@ecf/view` (Part 1)**: AST View Engine, Directives (`@if`, `@for`, `@switch`), Expression Engine, ViewCache.
+- **Milestone 9 — `@ecf/view` (Part 2)**: Layouts (`@extends`, `@section`), Components (`@component`), Stacks (`@push`, `@stack`), Composers.
+- **Milestone 10 — `@ecf/skeleton`**: Full-stack framework skeleton boilerplate.
+- **Milestone 11 — `@ecf/cli` (Part 1)**: Code Generators, Signature Parser, Stub Compiler, `ecf doctor` Diagnostics.
+- **Milestone 12 — `@ecf/cli` (Part 2)**: Full interactive CLI tooling suite.
 
-- Router (static + dynamic routes, all HTTP methods)
-- Request (params, query, headers, cookies, body, IP)
-- Response (text, html, json, redirect, status, headers)
-- Middleware Pipeline
-- MiddlewareRegistry (global + per-route)
-- HttpKernel
-- HttpServer
-- HttpServiceProvider
+---
 
-### Phase 3 — Application Layer 🔲 Planned
+### ⭐ Milestone 12.5 — ECF Ecosystem Governance & Architecture Freeze ✅ Complete
 
-- Controller base class
-- View Engine (`.ecf` template syntax)
-- Request Validation
-- Session handling
-- Cookie writing on Response
-- CSRF protection
+- 📘 **[ECOSYSTEM_ARCHITECTURE.md](docs/governance/ECOSYSTEM_ARCHITECTURE.md)**: Master Ecosystem Architecture & Layer Boundaries.
+- 📊 **[COMPATIBILITY_MATRIX.md](docs/governance/COMPATIBILITY_MATRIX.md)**: Cross-Package Compatibility Grid & Node `>=22` ESM Standards.
+- 🔄 **[PACKAGE_LIFECYCLE.md](docs/governance/PACKAGE_LIFECYCLE.md)**: 7-Stage Package Maturity & Development Standard.
+- 🚫 **[DEPENDENCY_RULES.md](docs/governance/DEPENDENCY_RULES.md)**: Allowed vs Forbidden Dependency Directions & Circular Import Elimination.
+- 🛡️ **[PUBLIC_API_GUIDE.md](docs/governance/PUBLIC_API_GUIDE.md)**: Public API Surface & Hiding Internal Subdirectories (`src/internal/`, `src/compiler/`).
+- ⚡ **[PERFORMANCE_CONTRACT.md](docs/governance/PERFORMANCE_CONTRACT.md)**: Official SLAs (>300k req/sec HTTP, <10ms View, >6M/sec ORM).
+- 🚀 **[CI_RELEASE_PIPELINE.md](docs/governance/CI_RELEASE_PIPELINE.md)**: Quality Gates & Automated Release Pipeline.
+- 🧪 **[CROSS_PACKAGE_TEST_MATRIX.md](docs/governance/CROSS_PACKAGE_TEST_MATRIX.md)**: Pairwise Cross-Package Integration Matrix.
+- 🏷️ **[API_STABILITY_POLICY.md](docs/governance/API_STABILITY_POLICY.md)**: SemVer Policy & Deprecation Directives.
+- 🌟 **[ECF_IDENTITY.md](docs/governance/ECF_IDENTITY.md)**: ECF Identity & Ecosystem Manifesto.
+- 🆕 **`@ecf/support`**: Utility package added for shared primitives (`Collection`, `Str`, `Arr`, `Macroable`, `Fluent`, `UUID/ULID`).
 
-### Phase 4 — Database Layer 🔲 Planned
+---
 
-- Database abstraction
-- Query Builder
-- ORM
-- Migrations
-- Seeders
+### Upcoming Milestones 🔲
 
-### Phase 5 — Developer Tools 🔲 Planned
-
-- CLI (`ecf make:controller`, `ecf make:provider`, etc.)
-- Job Queue
-- Cache layer
-- Task Scheduler
-- Mail sending
+- 🚀 **Milestone 13 — `@ecf/console`**: Artisan-grade interactive CLI command framework.
+- 🛠️ **Milestone 14 — `@ecf/devtools`**: Debug bar, profiler, query timeline, route inspector.
+- ⚡ **Milestone 15 — `@ecf/queue`**: Jobs, workers, scheduler, event-driven queues, Redis / DB drivers.
+- 📚 **Milestone 16 — Production Documentation & Release Candidate**: Documentation Website, API Reference, Benchmarks & v1.0.0 Stable Release.
 
 ---
 
 ## Documentation
 
+See [docs/README.md](docs/README.md) for the master documentation index and architecture freezes.
+
 See [docs/ecf-framework.md](docs/ecf-framework.md) for the full framework architecture overview.
+
 
 See [issues.md](issues.md) for known bugs, missing features, and improvement opportunities.
 

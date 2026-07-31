@@ -44,6 +44,7 @@ export default class Route {
     get method() { return this.#method; }
     get path() { return this.#path; }
     get handler() { return this.#handler; }
+    get action() { return this.#handler; }
     get router() { return this.#router; }
     get nameVal() { return this.#name; }
     get domain() { return this.#domain; }

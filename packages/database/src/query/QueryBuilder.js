@@ -2,6 +2,13 @@ import Expression, { isExpression } from "./Expression.js";
 import { WhereClause, OrderClause, JoinClause, AggregateClause } from "./Clause.js";
 import SQLiteGrammar from "./grammars/SQLiteGrammar.js";
 import PluginManager from "../orm/PluginManager.js";
+import CompiledSqlCache from "./cache/CompiledSqlCache.js";
+
+import BulkOperations from "./BulkOperations.js";
+import CursorPagination from "./CursorPagination.js";
+import ExplainEngine from "./ExplainEngine.js";
+
+const globalCompiledCache = new CompiledSqlCache();
 
 export default class QueryBuilder {
     static #macros = new Map();
@@ -15,6 +22,7 @@ export default class QueryBuilder {
         this._scopeState = new Map();
         this._scopesApplied = false;
         this._removeAllGlobalScopes = false;
+        this._cacheOptions = null;
 
         this._ast = {
             table: null,
@@ -83,6 +91,143 @@ export default class QueryBuilder {
         return this;
     }
 
+    // Enterprise Subsystems
+
+    get bulk() {
+        return new BulkOperations(this);
+    }
+
+    get paginator() {
+        return new CursorPagination(this);
+    }
+
+    get explainEngine() {
+        return new ExplainEngine(this);
+    }
+
+    // Bulk Operations API Delegation
+
+    insertMany(records, chunkSize = 500) {
+        return this.bulk.insertMany(records, chunkSize);
+    }
+
+    insertIgnore(records, chunkSize = 500) {
+        return this.bulk.insertIgnore(records, chunkSize);
+    }
+
+    replace(records, chunkSize = 500) {
+        return this.bulk.replace(records, chunkSize);
+    }
+
+    updateMany(records, keyColumn = "id", chunkSize = 500) {
+        return this.bulk.updateMany(records, keyColumn, chunkSize);
+    }
+
+    upsert(records, uniqueKeys = ["id"], updateColumns = null, chunkSize = 500) {
+        return this.bulk.upsert(records, uniqueKeys, updateColumns, chunkSize);
+    }
+
+    sync(records, keyColumn = "id") {
+        return this.bulk.sync(records, keyColumn);
+    }
+
+    deleteMany(idsArray, chunkSize = 500) {
+        return this.bulk.deleteMany(idsArray, chunkSize);
+    }
+
+    chunkInsert(records, chunkSize, callback) {
+        return this.bulk.chunkInsert(records, chunkSize, callback);
+    }
+
+    chunkUpdate(criteria, values, chunkSize = 500) {
+        return this.bulk.chunkUpdate(criteria, values, chunkSize);
+    }
+
+    // Cursor Pagination & Streaming API Delegation
+
+    paginate(perPage = 15, page = 1) {
+        return this.paginator.paginate(perPage, page);
+    }
+
+    cursorPaginate(perPage = 15, cursor = null, cursorColumn = "id") {
+        return this.paginator.cursorPaginate(perPage, cursor, cursorColumn);
+    }
+
+    cursor(cursorColumn = "id") {
+        return this.paginator.cursor(cursorColumn);
+    }
+
+    lazy(chunkSize = 100, cursorColumn = "id") {
+        return this.paginator.lazy(chunkSize, cursorColumn);
+    }
+
+    stream(chunkSize = 100, cursorColumn = "id") {
+        return this.paginator.stream(chunkSize, cursorColumn);
+    }
+
+    each(callback, chunkSize = 100, cursorColumn = "id") {
+        return this.paginator.each(callback, chunkSize, cursorColumn);
+    }
+
+    chunk(chunkSize, callback, cursorColumn = "id") {
+        return this.paginator.chunk(chunkSize, callback, cursorColumn);
+    }
+
+    // EXPLAIN Engine API Delegation
+
+    explain() {
+        return this.explainEngine.explain();
+    }
+
+    explainAnalyze() {
+        return this.explainEngine.explainAnalyze();
+    }
+
+    explainJson() {
+        return this.explainEngine.explainJson();
+    }
+
+    explainWithSuggestions() {
+        return this.explainEngine.explainWithSuggestions();
+    }
+
+    // Cache Builder Methods
+
+    cache(options = {}) {
+        const copy = this.clone();
+        if (typeof options === "number") {
+            copy._cacheOptions = { ttl: options, store: null, tags: [] };
+        } else {
+            copy._cacheOptions = {
+                ttl: options.ttl || 60,
+                store: options.store || null,
+                tags: Array.isArray(options.tags) ? options.tags : [],
+                key: options.key || null
+            };
+        }
+        return copy;
+    }
+
+    async remember(key, ttlSeconds, callback) {
+        const copy = this.cache({ key, ttl: ttlSeconds });
+        return copy.get();
+    }
+
+    async rememberForever(key, callback) {
+        return this.remember(key, null, callback);
+    }
+
+    toCacheKey() {
+        const { sql, bindings } = this.toSql();
+        const payload = JSON.stringify({ sql, bindings });
+        let hash = 0;
+        for (let i = 0; i < payload.length; i++) {
+            hash = ((hash << 5) - hash) + payload.charCodeAt(i);
+            hash |= 0;
+        }
+        return `qb_${Math.abs(hash).toString(36)}`;
+    }
+
     // Immutable Cloning
 
     clone() {
@@ -93,6 +238,7 @@ export default class QueryBuilder {
         copy._scopeState = new Map(this._scopeState || []);
         copy._scopesApplied = this._scopesApplied || false;
         copy._removeAllGlobalScopes = this._removeAllGlobalScopes || false;
+        copy._cacheOptions = this._cacheOptions ? { ...this._cacheOptions } : null;
         copy._ast = {
             table: this._ast.table,
             columns: [...this._ast.columns],
@@ -163,7 +309,6 @@ export default class QueryBuilder {
         for (const scopeObj of sortedScopes) {
             const name = scopeObj.name || "anonymous";
 
-            // 1. Removed Scope
             if (activeBuilder._removedScopes.has(name) || activeBuilder._removeAllGlobalScopes) {
                 activeBuilder._scopeState.set(name, "Removed");
                 if (typeof scopeObj.remove === "function") {
@@ -178,7 +323,6 @@ export default class QueryBuilder {
                 continue;
             }
 
-            // 2. Conditional Scope (when)
             if (typeof scopeObj.when === "function") {
                 const condition = scopeObj.when(activeBuilder);
                 if (!condition) {
@@ -193,7 +337,6 @@ export default class QueryBuilder {
                 }
             }
 
-            // 3. Apply Scope
             if (activeBuilder._modelRepository) {
                 PluginManager.dispatchSync(activeBuilder._modelRepository.modelClass, "scopeApplying", {
                     scope: name,
@@ -253,8 +396,6 @@ export default class QueryBuilder {
         return copy;
     }
 
-    // AST Mutators (Return Cloned Instances)
-
     from(table) {
         const copy = this.clone();
         copy._ast.table = table;
@@ -278,11 +419,8 @@ export default class QueryBuilder {
         return copy;
     }
 
-    // Where Clauses
-
     where(column, operator = null, value = null, boolean = "AND") {
         if (typeof column === "function") {
-            // Nested where closure
             const nestedBuilder = column(new QueryBuilder(this._connection, this._grammar));
             if (nestedBuilder && nestedBuilder._ast.wheres.length > 0) {
                 const copy = this.clone();
@@ -373,8 +511,6 @@ export default class QueryBuilder {
         return copy;
     }
 
-    // Joins
-
     join(table, first, operator = "=", second = null, type = "INNER") {
         if (!second) {
             second = operator;
@@ -392,8 +528,6 @@ export default class QueryBuilder {
     rightJoin(table, first, operator = "=", second = null) {
         return this.join(table, first, operator, second, "RIGHT");
     }
-
-    // Order, Limit, Offset
 
     orderBy(column, direction = "ASC") {
         const copy = this.clone();
@@ -413,11 +547,9 @@ export default class QueryBuilder {
         return copy;
     }
 
-    // Query Compilers & SQL Inspection
-
     toSql() {
         const compiled = this.applyScopes();
-        return compiled._grammar.compileSelect(compiled._ast);
+        return globalCompiledCache.getOrCompile(compiled._ast, compiled._grammar);
     }
 
     // Terminal Execution Methods
@@ -426,8 +558,10 @@ export default class QueryBuilder {
         if (this._modelRepository) {
             return this._modelRepository.get(this);
         }
+
         const compiled = this.applyScopes();
         const { sql, bindings } = compiled.toSql();
+
         return compiled._connection.select(sql, bindings);
     }
 

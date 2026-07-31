@@ -1,92 +1,59 @@
-import { describe, test, beforeEach, afterEach } from "node:test";
+import { describe, test, beforeEach } from "node:test";
 import assert from "node:assert/strict";
-import http from "node:http";
 import Application from "../src/Application.js";
-import Facade from "../src/Facade.js";
-import {HttpServiceProvider, CoreServiceProvider, Route, HttpServerError } from "@ecf/http";
+import ServiceProvider from "../src/ServiceProvider.js";
+import ContainerError from "../src/errors/ContainerError.js";
 
+class MockHttpServiceProvider extends ServiceProvider {
+    register(app) {
+        app.registerListenHandler((appInstance, args) => {
+            const [portOrOptions, callback] = args;
+            if (portOrOptions === -1) {
+                const err = new Error("Invalid port");
+                err.name = "HttpServerError";
+                throw err;
+            }
+            if (typeof callback === "function") {
+                callback();
+            }
+        });
+    }
+    boot() {}
+}
 
 let app;
-let server;
 
 function bootApp() {
     app = new Application();
-    app.register(CoreServiceProvider);
-    app.register(HttpServiceProvider);
+    app.register(MockHttpServiceProvider);
     app.boot();
-    Facade.setApplication(app);
     return app;
 }
 
-function closeServer() {
-    return new Promise((resolve) => {
-        const s = app.make("http.server");
-        if (s.listening) {
-            s.close(resolve);
-        } else {
-            resolve();
-        }
-    });
-}
-
-describe("Application.listen() - integration", () => {
+describe("Application.listen() - unit contract", () => {
 
     beforeEach(() => {
         bootApp();
     });
 
-    afterEach(async () => {
-        await closeServer();
+    test("app.listen() should throw ContainerError if no listen handler is registered", () => {
+        const rawApp = new Application();
+        assert.throws(() => rawApp.listen(3000), ContainerError);
     });
 
-    test("app.listen() should return the Application instance for chaining", async () => {
-        const result = await new Promise((resolve) => {
-            const r = app.listen(0, () => resolve(r));
-        });
-
+    test("app.listen() should return the Application instance for chaining", () => {
+        const result = app.listen(0);
         assert.strictEqual(result, app);
     });
 
-    test("app.listen(-1) should bubble up HttpServerError without Application validating it", () => {
-        assert.throws(() => app.listen(-1), HttpServerError);
+
+    test("app.listen(-1) should bubble up error thrown by listen handler", () => {
+        assert.throws(() => app.listen(-1), (err) => err.name === "HttpServerError");
     });
 
-    test("full flow: Route.get() + app.listen() should serve a real HTTP request", async () => {
-        Route.get("/", (req, res) => {
-            return res.text("Hello ECF");
-        });
-
-        await new Promise((resolve) => app.listen(0, resolve));
-        const address = app.make("http.server").address();
-
-        const body = await new Promise((resolve, reject) => {
-            http.get(`http://127.0.0.1:${address.port}/`, (res) => {
-                let data = "";
-                res.on("data", (chunk) => { data += chunk; });
-                res.on("end", () => resolve(data));
-            }).on("error", reject);
-        });
-
-        assert.equal(body, "Hello ECF");
+    test("app.registerListenHandler() should validate handler is a function", () => {
+        const testApp = new Application();
+        assert.throws(() => testApp.registerListenHandler("invalid"), ContainerError);
     });
 
-    test("full flow: dynamic route /users/{id} should return params as JSON", async () => {
-        Route.get("/users/{id}", (req, res) => {
-            return res.json(req.params);
-        });
-
-        await new Promise((resolve) => app.listen(0, resolve));
-        const address = app.make("http.server").address();
-
-        const body = await new Promise((resolve, reject) => {
-            http.get(`http://127.0.0.1:${address.port}/users/25`, (res) => {
-                let data = "";
-                res.on("data", (chunk) => { data += chunk; });
-                res.on("end", () => resolve(data));
-            }).on("error", reject);
-        });
-
-        assert.deepEqual(JSON.parse(body), { id: "25" });
-    });
-
-});
+});

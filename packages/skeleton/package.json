@@ -1,0 +1,19 @@
+{
+  "name": "@ecf/skeleton",
+  "version": "1.0.0-alpha.1",
+  "type": "module",
+  "main": "./v1/full/bootstrap/app.js",
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@ecf/core": "workspace:*",
+    "@ecf/database": "workspace:*",
+    "@ecf/http": "workspace:*",
+    "@ecf/validation": "workspace:*",
+    "@ecf/view": "workspace:*"
+  }
+}

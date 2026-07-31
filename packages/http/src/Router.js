@@ -3,6 +3,7 @@ import RouterError from "./errors/RouterError.js";
 import DuplicateRouteError from "./errors/DuplicateRouteError.js";
 import RouteNotFoundError from "./errors/RouteNotFoundError.js";
 import Route from "./Route.js";
+import { TrieRouter } from "./routing/TrieRouter.js";
 
 const VALID_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"];
 
@@ -14,6 +15,7 @@ export default class Router {
         this.metadata = new Map();
         this.namedRoutes = new Map();
         this.fallbackRoute = null;
+        this.trie = new TrieRouter();
     }
 
     // ---- Group Stack Engine ----
@@ -59,6 +61,14 @@ export default class Router {
         }
 
         return this;
+    }
+
+    pushGroupContext(context) {
+        this.#groupStack.push(context);
+    }
+
+    popGroupContext() {
+        return this.#groupStack.pop();
     }
 
     registerNamedRoute(name, route) {
@@ -154,7 +164,7 @@ export default class Router {
 
     resource(name, ControllerClass, options = {}) {
         const resourceName = name.replace(/^\//, "").replace(/\/$/, "");
-        const paramName = resourceName.split("/").pop().replace(/s$/, ""); // e.g. "photos" -> "photo"
+        const paramName = resourceName.split("/").pop().replace(/s$/, "");
 
         const routes = {
             index: { method: "GET", path: `/${resourceName}`, action: "index" },
@@ -203,8 +213,8 @@ export default class Router {
     match(request) {
         this.validateRequest(request);
 
-        const method = request.method;
-        const path = request.path;
+        const method = typeof request.method === 'function' ? request.method() : request.method;
+        const path = typeof request.path === 'function' ? request.path() : request.path;
 
         this.validateMethod(method);
         this.validatePath(path);
@@ -215,7 +225,12 @@ export default class Router {
             throw new RouteNotFoundError(method, path);
         }
 
-        request.attributes.set("params", route.params);
+        if (typeof request.attributes?.set === 'function') {
+            request.attributes.set("params", route.params);
+        }
+        if (typeof request.setParams === 'function') {
+            request.setParams(route.params);
+        }
 
         return route.route;
     }
@@ -258,6 +273,7 @@ export default class Router {
         }
 
         this.routes.get(route.method).push(route);
+        this.trie.addRoute(method, fullPath, handler, { middleware: combinedMiddleware });
 
         this.setMetadata(method, fullPath, {
             middleware: route.middleware()
@@ -358,14 +374,14 @@ export default class Router {
     // ---- Validation ----
 
     validateRequest(request) {
-        if (
-            !request ||
-            typeof request.method !== "string" ||
-            typeof request.path !== "string" ||
-            !request.attributes ||
-            typeof request.attributes.set !== "function"
-        ) {
-            throw new RouteError("Router.match() requires a valid Request object with method, path, and attributes.");
+        if (!request) {
+            throw new RouteError("Router.match() requires a valid Request object.");
+        }
+        const method = typeof request.method === 'function' ? request.method() : request.method;
+        const path = typeof request.path === 'function' ? request.path() : request.path;
+
+        if (typeof method !== 'string' || typeof path !== 'string') {
+            throw new RouteError("Router.match() requires a valid Request object with method and path.");
         }
     }
 

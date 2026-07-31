@@ -38,17 +38,49 @@ importers:
         specifier: workspace:*
         version: link:../../packages/view
 
-  packages/core:
-    devDependencies:
+  packages/cli:
+    dependencies:
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../core
+      '@ecf/database':
+        specifier: workspace:*
+        version: link:../database
       '@ecf/http':
         specifier: workspace:*
         version: link:../http
+      '@ecf/skeleton':
+        specifier: workspace:*
+        version: link:../skeleton
+      '@ecf/view':
+        specifier: workspace:*
+        version: link:../view
+
+  packages/console:
+    dependencies:
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../core
+      '@ecf/support':
+        specifier: workspace:*
+        version: link:../support
+
+  packages/core: {}
 
   packages/database:
     dependencies:
       '@ecf/core':
         specifier: workspace:*
         version: link:../core
+
+  packages/events:
+    dependencies:
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../core
+      '@ecf/support':
+        specifier: workspace:*
+        version: link:../support
 
   packages/http:
     dependencies:
@@ -58,6 +90,26 @@ importers:
       '@ecf/validation':
         specifier: workspace:*
         version: link:../validation
+
+  packages/skeleton:
+    dependencies:
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../core
+      '@ecf/database':
+        specifier: workspace:*
+        version: link:../database
+      '@ecf/http':
+        specifier: workspace:*
+        version: link:../http
+      '@ecf/validation':
+        specifier: workspace:*
+        version: link:../validation
+      '@ecf/view':
+        specifier: workspace:*
+        version: link:../view
+
+  packages/support: {}
 
   packages/validation: {}
 

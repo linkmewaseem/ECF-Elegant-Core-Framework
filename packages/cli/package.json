@@ -1,0 +1,22 @@
+{
+  "name": "@ecf/cli",
+  "version": "1.0.0-alpha.1",
+  "type": "module",
+  "main": "./src/index.js",
+  "bin": {
+    "ecf": "./bin/ecf.js"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@ecf/core": "workspace:*",
+    "@ecf/database": "workspace:*",
+    "@ecf/http": "workspace:*",
+    "@ecf/skeleton": "workspace:*",
+    "@ecf/view": "workspace:*"
+  }
+}

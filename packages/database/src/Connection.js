@@ -9,6 +9,8 @@ import SQLiteSchemaGrammar from "./schema/grammars/SQLiteSchemaGrammar.js";
 import MySQLSchemaGrammar from "./schema/grammars/MySQLSchemaGrammar.js";
 import PostgreSQLSchemaGrammar from "./schema/grammars/PostgreSQLSchemaGrammar.js";
 
+import PreparedStatementCache from "./query/cache/PreparedStatementCache.js";
+
 export default class Connection {
     #driver;
     #name;
@@ -16,6 +18,9 @@ export default class Connection {
     #schemaGrammar;
     #transactionLevel = 0;
     #eventDispatcher = null;
+    #statementCache;
+    #profiler = null;
+    #metrics = null;
 
     constructor(name, driver, eventDispatcher = null) {
         this.#name = name;
@@ -23,6 +28,7 @@ export default class Connection {
         this.#eventDispatcher = eventDispatcher;
         this.#grammar = this.resolveGrammar(driver);
         this.#schemaGrammar = this.resolveSchemaGrammar(driver);
+        this.#statementCache = new PreparedStatementCache(this);
     }
 
     get name() {
@@ -39,6 +45,18 @@ export default class Connection {
 
     get schemaGrammar() {
         return this.#schemaGrammar;
+    }
+
+    get statementCache() {
+        return this.#statementCache;
+    }
+
+    setProfiler(profiler) {
+        this.#profiler = profiler;
+    }
+
+    setMetrics(metrics) {
+        this.#metrics = metrics;
     }
 
     resolveGrammar(driver) {
@@ -107,10 +125,30 @@ export default class Connection {
             await this.connect();
         }
 
+        if (this.#metrics) {
+            this.#metrics.increment("Queries", "total");
+            this.#metrics.increment("Drivers", "statementExecutions");
+        }
+
+        let traceId = null;
+        if (this.#profiler && this.#profiler.isEnabled()) {
+            traceId = this.#profiler.startQuery(sql, bindings, { connection: this.#name });
+        }
+
         const start = performance.now();
         try {
+            // Check prepared statement cache
+            let stmt = this.#statementCache.get(sql);
+            if (!stmt) {
+                stmt = this.#statementCache.put(sql, { sql });
+            }
+
             const result = await this.#driver.query(sql, bindings);
             const timeMs = Number((performance.now() - start).toFixed(2));
+
+            if (this.#profiler && traceId) {
+                this.#profiler.stopQuery(traceId, result);
+            }
 
             this.dispatchEvent("QueryExecuted", {
                 connection: this.#name,
@@ -123,6 +161,9 @@ export default class Connection {
             return result;
         } catch (err) {
             const timeMs = Number((performance.now() - start).toFixed(2));
+            if (this.#profiler && traceId) {
+                this.#profiler.stopQuery(traceId, null, err);
+            }
             this.dispatchEvent("QueryFailed", {
                 connection: this.#name,
                 sql,

@@ -1,6 +1,7 @@
 import Expression, { isExpression } from "./Expression.js";
+import IGrammarCompiler from "../contracts/IGrammarCompiler.js";
 
-export default class Grammar {
+export default class Grammar extends IGrammarCompiler {
     /**
      * Wrap identifier in driver-specific quotes (`"col"` or `` `col` ``).
      * @param {string|Expression} value 
@@ -112,6 +113,13 @@ export default class Grammar {
     }
 
     /**
+     * Alias for compileInsert with multiple records.
+     */
+    compileBulkInsert(ast, records) {
+        return this.compileInsert(ast, records);
+    }
+
+    /**
      * Compile UPDATE query into { sql, bindings }.
      */
     compileUpdate(ast, values = {}) {
@@ -159,6 +167,38 @@ export default class Grammar {
      */
     compileTruncate(ast) {
         return { sql: `TRUNCATE TABLE ${this.wrap(ast.table)}`, bindings: [] };
+    }
+
+    /**
+     * Compile EXPLAIN query for standard SQL AST.
+     */
+    compileExplain(ast, mode = "plain") {
+        const selectRes = this.compileSelect(ast);
+        let prefix = "EXPLAIN ";
+        if (mode === "analyze") prefix = "EXPLAIN ANALYZE ";
+        if (mode === "json") prefix = "EXPLAIN FORMAT=JSON ";
+        return {
+            sql: `${prefix}${selectRes.sql}`,
+            bindings: selectRes.bindings
+        };
+    }
+
+    /**
+     * Compile UPSERT query.
+     */
+    compileUpsert(ast, records, uniqueKeys = ["id"], updateColumns = null) {
+        const insertRes = this.compileInsert(ast, records);
+        if (!insertRes.sql) return insertRes;
+
+        const recordList = Array.isArray(records) ? records : [records];
+        const columns = Object.keys(recordList[0]);
+        const updates = updateColumns || columns.filter(c => !uniqueKeys.includes(c));
+
+        const keysConflict = uniqueKeys.map(k => this.wrap(k)).join(", ");
+        const updateSet = updates.map(u => `${this.wrap(u)} = EXCLUDED.${this.wrap(u)}`).join(", ");
+
+        const sql = `${insertRes.sql} ON CONFLICT(${keysConflict}) DO UPDATE SET ${updateSet}`;
+        return { sql, bindings: insertRes.bindings };
     }
 
     compileWheres(wheres = []) {

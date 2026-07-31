@@ -9,4 +9,12 @@ export default class SQLiteGrammar extends Grammar {
     compileTruncate(ast) {
         return { sql: `DELETE FROM ${this.wrap(ast.table)}`, bindings: [] };
     }
+
+    compileExplain(ast, mode = "plain") {
+        const selectRes = this.compileSelect(ast);
+        return {
+            sql: `EXPLAIN QUERY PLAN ${selectRes.sql}`,
+            bindings: selectRes.bindings
+        };
+    }
 }

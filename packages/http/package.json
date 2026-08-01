@@ -17,6 +17,7 @@
     "node": ">=22"
   },
   "dependencies": {
+    "@ecf/auth": "workspace:*",
     "@ecf/core": "workspace:*",
     "@ecf/validation": "workspace:*"
   }

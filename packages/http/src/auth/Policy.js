@@ -1,7 +1,6 @@
-/**
- * Base Policy class for resource authorization checks.
- */
-export class Policy {
+import { IPolicy } from "@ecf/auth";
+
+export class Policy extends IPolicy {
   async viewAny(user) {
     return true;
   }
@@ -22,3 +21,6 @@ export class Policy {
     return true;
   }
 }
+
+export default Policy;
+

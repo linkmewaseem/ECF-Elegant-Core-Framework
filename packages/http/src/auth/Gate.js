@@ -1,60 +1,32 @@
+import { Gate as CoreGate } from "@ecf/auth";
+
 /**
- * Authorization Gate Manager.
+ * Authorization Gate Manager bridge delegating to @ecf/auth.
  */
 export class Gate {
   constructor() {
-    this.abilities = new Map();
-    this.policies = new Map();
+    this._gate = new CoreGate();
+    this.abilities = this._gate.abilities;
   }
 
-  /**
-   * Define an authorization ability callback.
-   * @param {string} ability
-   * @param {Function} callback
-   */
   define(ability, callback) {
-    this.abilities.set(ability, callback);
+    this._gate.define(ability, callback);
     return this;
   }
 
-  /**
-   * Register a Resource Policy class.
-   * @param {Function|class} ModelClass
-   * @param {object} policyInstance
-   */
   policy(ModelClass, policyInstance) {
-    this.policies.set(ModelClass, policyInstance);
+    this._gate.policy(ModelClass, policyInstance);
     return this;
   }
 
-  /**
-   * Determine if user has given ability.
-   * @param {string} ability
-   * @param {object} user
-   * @param {...any} args
-   * @returns {Promise<boolean>}
-   */
   async allows(ability, user, ...args) {
-    if (this.abilities.has(ability)) {
-      const callback = this.abilities.get(ability);
-      return Boolean(await callback(user, ...args));
-    }
-
-    if (args.length > 0 && args[0]) {
-      const resource = args[0];
-      const PolicyClass = resource.constructor;
-      if (this.policies.has(PolicyClass)) {
-        const policy = this.policies.get(PolicyClass);
-        if (typeof policy[ability] === 'function') {
-          return Boolean(await policy[ability](user, resource, ...args.slice(1)));
-        }
-      }
-    }
-
-    return false;
+    return this._gate.allows(user, ability, ...args);
   }
 
   async denies(ability, user, ...args) {
-    return !(await this.allows(ability, user, ...args));
+    return this._gate.denies(user, ability, ...args);
   }
 }
+
+export default Gate;
+

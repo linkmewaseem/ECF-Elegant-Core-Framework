@@ -72,9 +72,11 @@ This document defines the **Master Ecosystem Architecture** for the ECF (Elegant
 | **Utilities** | `@ecf/support` | Collections (`Collection`, `LazyCollection`), `Str`, `Arr`, `Macroable`, `Fluent`, `UUID/ULID`, Date Abstractions. | `@ecf/core` (Optional / Lean) |
 | **Data & Persistence** | `@ecf/database` | Connection Manager, Multi-Driver AST QueryBuilder (SQLite, MySQL, Postgres), Hybrid ORM, Scopes, Observers, Relations. | `@ecf/core`, `@ecf/support` |
 | **Validation** | `@ecf/validation` | Pipeline & Rule-based Validator (`required`, `email`, `min`, `max`, `custom`), RuleRegistry, ValidationErrorBag. | *Standalone / @ecf/support* |
+| **Authentication** | `@ecf/auth` | Driver-based Authentication (Session, JWT, API Keys, Tokens), Password Hashing, Gates/Policies, MFA. | `@ecf/core`, `@ecf/support` |
 | **HTTP Transport** | `@ecf/http` | Request/Response abstraction, Trie-based Router, Middleware Pipeline, HttpKernel, Event Bus, Session & Cookie handling. | `@ecf/core`, `@ecf/validation` |
 | **Templating** | `@ecf/view` | AST Directive Parser (`@if`, `@for`, `@switch`, `@component`), Lexer, Compiler, ViewCache, Dependency Tracking, Custom Directives. | `@ecf/core`, `@ecf/http` |
-| **Extensions** | `@ecf/extensions` | Official modular plugins (`@ecf/soft-deletes`, `@ecf/timestamps`, `@ecf/uuids`, `@ecf/sluggable`, `@ecf/audit`). | `@ecf/database`, `@ecf/core` |
+| **Extensions Platform** | `@ecf/extensions` | Modular plugins platform (`@ecf/soft-deletes`, `@ecf/timestamps`, `@ecf/uuids`, `@ecf/sluggable`, `@ecf/audit`). | `@ecf/database`, `@ecf/core` |
+| **Official First-Party Extensions** | `@ecf/commerce` | E-commerce utilities, cart management, currency handling, and payment gateway adapters. | `@ecf/core`, `@ecf/support` |
 | **App Skeleton** | `@ecf/skeleton` | Full-stack project blueprint, Directory Layout (`app/`, `config/`, `routes/`, `views/`), App Bootstrap. | Core, DB, HTTP, View, Validation |
 | **Tooling & CLI** | `@ecf/cli` | Code Generators, Signature Parsing, Stub Compilers, Diagnostics (`ecf doctor`). | All core engines |
 | **Console Engine** | `@ecf/console` | Artisan-grade interactive CLI framework, command definitions, options/args validation, tables & progress bars. | `@ecf/core`, `@ecf/support` |

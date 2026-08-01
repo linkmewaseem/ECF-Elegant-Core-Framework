@@ -2,3 +2,5 @@ packages:
   - "packages/*"
   - "apps/*"
   - "tools/*"
+allowBuilds:
+  sharp: set this to true or false

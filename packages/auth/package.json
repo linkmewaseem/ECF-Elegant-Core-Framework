@@ -1,0 +1,35 @@
+{
+  "name": "@ecf/auth",
+  "version": "1.0.0-rc.1",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    }
+  },
+  "scripts": {
+    "test": "node --test tests/**/*.test.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@ecf/core": "workspace:*",
+    "@ecf/support": "workspace:*"
+  },
+  "peerDependencies": {
+    "@ecf/events": "workspace:*",
+    "@ecf/config": "workspace:*",
+    "@ecf/cache": "workspace:*",
+    "@ecf/database": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "@ecf/events": { "optional": true },
+    "@ecf/config": { "optional": true },
+    "@ecf/cache": { "optional": true },
+    "@ecf/database": { "optional": true }
+  }
+}

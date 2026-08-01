@@ -1,0 +1,25 @@
+{
+  "name": "@ecf/cache",
+  "version": "1.0.0-rc.1",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    }
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@ecf/config": "workspace:*",
+    "@ecf/core": "workspace:*",
+    "@ecf/events": "workspace:*",
+    "@ecf/support": "workspace:*"
+  }
+}

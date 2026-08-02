@@ -38,6 +38,63 @@ importers:
         specifier: workspace:*
         version: link:../../packages/view
 
+  examples/ai-agent-rag:
+    dependencies:
+      '@ecf/ai':
+        specifier: workspace:*
+        version: link:../../packages/ai
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@ecf/search':
+        specifier: workspace:*
+        version: link:../../packages/search
+      '@ecf/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+
+  examples/realtime-chat:
+    dependencies:
+      '@ecf/broadcast':
+        specifier: workspace:*
+        version: link:../../packages/broadcast
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@ecf/events':
+        specifier: workspace:*
+        version: link:../../packages/events
+      '@ecf/http':
+        specifier: workspace:*
+        version: link:../../packages/http
+      '@ecf/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+
+  examples/rest-api:
+    dependencies:
+      '@ecf/api':
+        specifier: workspace:*
+        version: link:../../packages/api
+      '@ecf/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@ecf/database':
+        specifier: workspace:*
+        version: link:../../packages/database
+      '@ecf/http':
+        specifier: workspace:*
+        version: link:../../packages/http
+      '@ecf/logging':
+        specifier: workspace:*
+        version: link:../../packages/logging
+      '@ecf/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+
   packages/ai:
     dependencies:
       '@ecf/contracts':

@@ -1,0 +1,46 @@
+name: ECF CI/CD Quality Pipeline
+
+on:
+  push:
+    branches: [ main, release/* ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Test & Audit (Node ${{ matrix.node-version }} - ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: ['22.x', '24.x']
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 11
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Type Check (TypeScript Declarations)
+        run: npx tsc --noEmit
+
+      - name: Run Full Workspace Tests
+        run: pnpm test
+
+      - name: Run Ecosystem Benchmarks
+        run: node --test packages/testing/tests/benchmarks/EcosystemBenchmark.test.js
+
+      - name: Package Bundle Dry-Run Audit
+        run: pnpm publish --dry-run

@@ -2,5 +2,7 @@ packages:
   - "packages/*"
   - "apps/*"
   - "tools/*"
+  - "examples/*"
+
 allowBuilds:
   sharp: set this to true or false

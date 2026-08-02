@@ -106,6 +106,16 @@ export class FakesOrchestrator {
     return null;
   }
 
+  ai() {
+    if (globalThis.__ECF_AI__) {
+      const fake = globalThis.__ECF_AI__.fake();
+      this.activeFakes.set('ai', fake);
+      return fake;
+    }
+    return null;
+  }
+
+
   getFake(name) {
     return this.activeFakes.get(name) || null;
   }

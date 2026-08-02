@@ -1,6 +1,8 @@
 {
   "name": "ecf",
+  "version": "1.0.0-rc.1",
   "private": true,
+
   "scripts": {
     "test": "pnpm -r test",
     "lint": "pnpm -r lint"

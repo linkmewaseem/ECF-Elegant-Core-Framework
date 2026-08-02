@@ -1,0 +1,16 @@
+{
+  "name": "ecf-example-ai-agent-rag",
+  "version": "1.0.0-rc.1",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "node --test tests/**/*.test.js"
+  },
+  "dependencies": {
+    "@ecf/ai": "workspace:*",
+    "@ecf/core": "workspace:*",
+    "@ecf/search": "workspace:*",
+    "@ecf/testing": "workspace:*"
+  }
+}

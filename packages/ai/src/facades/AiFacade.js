@@ -23,4 +23,6 @@ export const AiFacade = new Proxy(
 );
 
 export const AI = AiFacade;
+globalThis.__ECF_AI__ = AiFacade;
 export default AiFacade;
+

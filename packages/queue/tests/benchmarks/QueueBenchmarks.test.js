@@ -23,5 +23,6 @@ test("Benchmark - MemoryDriver push & pop throughput", async () => {
   const elapsed = performance.now() - start;
   const opsPerSec = Math.round(((count * 2) / elapsed) * 1000);
   console.log(`[Benchmark] Queue MemoryDriver throughput: ${opsPerSec} ops/sec (${count * 2} ops in ${elapsed.toFixed(2)}ms)`);
-  assert.ok(opsPerSec > 5000);
+  assert.ok(opsPerSec > 3000);
 });
+

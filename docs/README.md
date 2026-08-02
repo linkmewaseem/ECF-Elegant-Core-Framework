@@ -1,44 +1,43 @@
-# ECF Platform Documentation & Architecture Index
+# ECF — Enterprise Core Framework Documentation Portal
 
-Welcome to the official documentation directory for the **ECF (Elegant Core Framework)** ecosystem.
-
----
-
-## 🏛️ Ecosystem Governance & Architecture Freeze v1.0 (Milestone 12.5)
-
-This section contains the official governance rules, contract specifications, SLAs, and architecture documents for ECF:
-
-1. 📘 **[Ecosystem Architecture](file:///f:/ecf/docs/governance/ECOSYSTEM_ARCHITECTURE.md)** — Master layer hierarchy diagram, layer boundaries, and core design principles.
-2. 📊 **[Compatibility Matrix](file:///f:/ecf/docs/governance/COMPATIBILITY_MATRIX.md)** — Cross-package matrix and Node `>=22` ESM compatibility rules.
-3. 🔄 **[Package Lifecycle](file:///f:/ecf/docs/governance/PACKAGE_LIFECYCLE.md)** — The 7-stage package maturity lifecycle standard.
-4. 🚫 **[Dependency Rules](file:///f:/ecf/docs/governance/DEPENDENCY_RULES.md)** — Allowed vs. forbidden import graphs and circular dependency checks.
-5. 🛡️ **[Public API Guide](file:///f:/ecf/docs/governance/PUBLIC_API_GUIDE.md)** — Entry-point encapsulation and hiding internal/compiler folders.
-6. ⚡ **[Performance Contract](file:///f:/ecf/docs/governance/PERFORMANCE_CONTRACT.md)** — Consolidated framework SLAs (>300k req/s HTTP, <10ms View, >6M/s ORM).
-7. 🚀 **[CI/CD Release Pipeline](file:///f:/ecf/docs/governance/CI_RELEASE_PIPELINE.md)** — Quality gates and release publication workflow.
-8. 🧪 **[Cross-Package Test Matrix](file:///f:/ecf/docs/governance/CROSS_PACKAGE_TEST_MATRIX.md)** — Pairwise integration test suite specifications.
-9. 🏷️ **[API Stability Policy](file:///f:/ecf/docs/governance/API_STABILITY_POLICY.md)** — SemVer 1.0 rules, deprecation policies, and breaking change rules.
-10. 🌟 **[ECF Identity Manifesto](file:///f:/ecf/docs/governance/ECF_IDENTITY.md)** — ECF positioning and core architectural pillars.
+Welcome to the official documentation portal for **ECF (Enterprise Core Framework)** — the 10/10 production-grade JavaScript/Node.js enterprise ecosystem.
 
 ---
 
-## 📜 Architecture Decision Records (ADR)
+## 📚 Documentation Chapters
 
-- 📝 [ADR-001: Pure IoC Container & Service Provider Foundation](file:///f:/ecf/docs/adr/ADR-001-core-package.md)
-- 📝 [ADR-002: Trie-Based High-Performance HTTP Engine & Middleware Pipeline](file:///f:/ecf/docs/adr/ADR-002-http-adapter.md)
-- 📝 [ADR-003: AST-Based Directive View Compiler & Dependency Cache](file:///f:/ecf/docs/adr/ADR-003-view-compiler.md)
-- 📝 [ADR-004: Strict Package Boundaries & Public API Surface Encapsulation](file:///f:/ecf/docs/adr/ADR-004-package-boundaries.md)
-- 📝 [ADR-005: Decoupled Plugin System & Extension Lifecycle](file:///f:/ecf/docs/adr/ADR-005-plugin-system.md)
+1. [Core Subsystem (`@ecf/core`, `@ecf/support`, `@ecf/config`, `@ecf/events`, `@ecf/contracts`)](file:///f:/ecf/docs/core.md)
+2. [HTTP Subsystem (`@ecf/http`, `@ecf/validation`, `@ecf/view`)](file:///f:/ecf/docs/http.md)
+3. [Database Subsystem (`@ecf/database`)](file:///f:/ecf/docs/database.md)
+4. [Enterprise Services (`@ecf/auth`, `@ecf/queue`, `@ecf/cache`, `@ecf/mail`, `@ecf/storage`, `@ecf/media`, `@ecf/broadcast`, `@ecf/notifications`, `@ecf/scheduler`)](file:///f:/ecf/docs/services.md)
+5. [API Platform (`@ecf/api`, `@ecf/search`)](file:///f:/ecf/docs/api-platform.md)
+6. [DevTools & Observability (`@ecf/devtools`, `@ecf/observability`)](file:///f:/ecf/docs/devtools.md)
+7. [Enterprise Testing Platform (`@ecf/testing`)](file:///f:/ecf/docs/testing.md)
+8. [Enterprise Logging & Channels (`@ecf/logging`)](file:///f:/ecf/docs/logging.md)
+9. [Enterprise DevKit (`@ecf/devkit`)](file:///f:/ecf/docs/devkit.md)
+10. [Enterprise AI Engine (`@ecf/ai`)](file:///f:/ecf/docs/ai.md)
 
 ---
 
-## 🔒 Engine-Specific Architecture Freeze Declarations
+## 📦 Package Ecosystem Matrix
 
-- 🏛️ [Core & Database Architecture Freeze v1.0](file:///f:/ecf/docs/ARCHITECTURE_FREEZE_v1.0.md)
-- 🗄️ [Database Engine Architecture Freeze](file:///f:/ecf/docs/DATABASE_ENGINE_ARCHITECTURE_FREEZE_v1.0.md)
-- 🌐 [HTTP Engine Architecture Freeze](file:///f:/ecf/docs/HTTP_ENGINE_ARCHITECTURE_FREEZE_v1.0.md)
-- 🎨 [View Engine Architecture Freeze](file:///f:/ecf/docs/VIEW_ENGINE_ARCHITECTURE_FREEZE_v1.0.md)
-- 🔌 [Extension Platform Architecture Freeze](file:///f:/ecf/docs/EXTENSION_PLATFORM_ARCHITECTURE_FREEZE_v1.0.md)
-- 🧱 [App Skeleton Architecture Freeze](file:///f:/ecf/docs/APP_SKELETON_ARCHITECTURE_FREEZE_v1.0.md)
-- 🛠️ [CLI Architecture Freeze](file:///f:/ecf/docs/CLI_ARCHITECTURE_FREEZE_v1.0.md)
-- 📈 [Benchmark Report](file:///f:/ecf/docs/BENCHMARK_REPORT.md)
+| Subsystem | Package | Standard / Reference |
+| :--- | :--- | :--- |
+| **Core** | `@ecf/core` | IoC Container & Service Providers |
+| **Support** | `@ecf/support` | Collections & Utilities |
+| **Config** | `@ecf/config` | Hierarchical Dot-Notation Config |
+| **Events** | `@ecf/events` | Priority Lifecycle Event Bus |
+| **Database** | `@ecf/database` | ORM, Schema & Migrations |
+| **HTTP** | `@ecf/http` | Express / Fastify / PSR-7 Router |
+| **Auth** | `@ecf/auth` | Guards, JWT, Session & Gates |
+| **Queue** | `@ecf/queue` | Delayed Jobs & Rate-Limited Workers |
+| **Logging** | `@ecf/logging` | Multi-Channel Monolog / Pino |
+| **Testing** | `@ecf/testing` | DI Test Runner & Sandbox |
+| **DevKit** | `@ecf/devkit` | Generators & AST Scaffolder |
+| **AI Engine** | `@ecf/ai` | Multi-Provider LLM & Vector RAG |
 
+---
+
+## 📄 License
+
+MIT Licensed. Copyright © 2026 ECF Team.

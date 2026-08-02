@@ -4,6 +4,7 @@ import MailChannel from "../channels/MailChannel.js";
 import DatabaseChannel from "../channels/DatabaseChannel.js";
 import SlackChannel, { LogChannel, NullChannel } from "../channels/SlackChannel.js";
 import WebhookChannel from "../channels/WebhookChannel.js";
+import BroadcastChannel from "../channels/BroadcastChannel.js";
 import PreferenceEngine from "../preferences/PreferenceEngine.js";
 import NotificationPipeline from "../middleware/NotificationPipeline.js";
 import NotificationTestingFake from "../testing/NotificationTestingFake.js";
@@ -27,6 +28,7 @@ export class NotificationManager extends INotificationManager {
     this.registry.register("webhook", new WebhookChannel());
     this.registry.register("log", new LogChannel());
     this.registry.register("null", new NullChannel());
+    this.registry.register("broadcast", new BroadcastChannel(this.app?.has("broadcast") ? this.app.make("broadcast") : null));
   }
 
   channel(name) {

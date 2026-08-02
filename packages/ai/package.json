@@ -1,0 +1,36 @@
+{
+  "name": "@ecf/ai",
+  "version": "1.0.0-rc.1",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    }
+  },
+  "scripts": {
+    "test": "node --test tests/**/*.test.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@ecf/contracts": "workspace:*",
+    "@ecf/core": "workspace:*",
+    "@ecf/support": "workspace:*"
+  },
+  "peerDependencies": {
+    "@ecf/devtools": "workspace:*",
+    "@ecf/logging": "workspace:*",
+    "@ecf/media": "workspace:*",
+    "@ecf/search": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "@ecf/devtools": { "optional": true },
+    "@ecf/logging": { "optional": true },
+    "@ecf/media": { "optional": true },
+    "@ecf/search": { "optional": true }
+  }
+}

@@ -43,9 +43,14 @@ export { MediaSecurityValidator } from './security/MediaSecurityValidator.js';
 // ─── Image Engine ─────────────────────────────────────────────────────────────
 export { ImageProcessor } from './image/ImageProcessor.js';
 
+// ─── Video & Audio Engine ──────────────────────────────────────────────────────
+export { VideoProcessor } from './video/VideoProcessor.js';
+export { AudioProcessor } from './audio/AudioProcessor.js';
+
 // ─── Drivers ─────────────────────────────────────────────────────────────────
 export { NullDriver } from './drivers/NullDriver.js';
 export { SharpDriver } from './drivers/SharpDriver.js';
+export { FFmpegDriver } from './drivers/FFmpegDriver.js';
 
 // ─── Events ───────────────────────────────────────────────────────────────────
 export {

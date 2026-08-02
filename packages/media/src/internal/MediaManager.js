@@ -1,25 +1,16 @@
 import { MediaFile } from '../core/MediaFile.js';
 import { ImageProcessor } from '../image/ImageProcessor.js';
+import { VideoProcessor } from '../video/VideoProcessor.js';
+import { AudioProcessor } from '../audio/AudioProcessor.js';
 import { NullDriver } from '../drivers/NullDriver.js';
 import { SharpDriver } from '../drivers/SharpDriver.js';
+import { FFmpegDriver } from '../drivers/FFmpegDriver.js';
 import { MediaDriverNotFoundException, UnsupportedMediaTypeException } from '../exceptions/MediaException.js';
 import { ProfileRegistry } from '../profiles/ProfileRegistry.js';
 import { MediaProfile, BuiltInProfiles } from '../profiles/MediaProfile.js';
 
 /**
  * MediaManager — Central driver registry and factory.
- *
- * Plugin-based driver registration:
- *   Media.extend("imagick", new ImagickDriver())
- *   Media.extend("cloudinary", new CloudinaryDriver())
- *
- * Profile registration:
- *   Media.profile("product").addVariant("thumb", { width: 200 })
- *
- * Primary factory method:
- *   Media.image(file)     → ImageProcessor
- *   Media.video(file)     → VideoProcessor (Phase 21B)
- *   Media.audio(file)     → AudioProcessor (Phase 21B)
  */
 export class MediaManager {
   #drivers = new Map();
@@ -42,7 +33,10 @@ export class MediaManager {
   #registerBuiltInDrivers() {
     this.#drivers.set("null", new NullDriver());
     this.#drivers.set("sharp", new SharpDriver());
+    this.#drivers.set("ffmpeg", new FFmpegDriver());
     this.#defaultImageDriver = "sharp";
+    this.#defaultVideoDriver = "ffmpeg";
+    this.#defaultAudioDriver = "ffmpeg";
   }
 
   /**
@@ -150,6 +144,24 @@ export class MediaManager {
     const mediaFile = this.#resolveMediaFile(source, "image");
     const driver = this.driver(this.#defaultImageDriver);
     return await driver.getMetadata(mediaFile);
+  }
+
+  /**
+   * Create a VideoProcessor for video transcoding, thumbnailing, sprite & streaming manifests.
+   */
+  video(source, driverName = null) {
+    const mediaFile = this.#resolveMediaFile(source, "video");
+    const driver = this.driver(driverName ?? this.#defaultVideoDriver);
+    return new VideoProcessor(driver, mediaFile);
+  }
+
+  /**
+   * Create an AudioProcessor for audio normalization, trimming, merging, waveforms & spectrograms.
+   */
+  audio(source, driverName = null) {
+    const mediaFile = this.#resolveMediaFile(source, "audio");
+    const driver = this.driver(driverName ?? this.#defaultAudioDriver);
+    return new AudioProcessor(driver, mediaFile);
   }
 
   // ─── Private Helpers ──────────────────────────────────────────────────────

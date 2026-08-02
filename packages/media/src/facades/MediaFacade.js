@@ -27,6 +27,14 @@ export class MediaFacade {
     return MediaFacade.getManager().image(source, driverName);
   }
 
+  static video(source, driverName = null) {
+    return MediaFacade.getManager().video(source, driverName);
+  }
+
+  static audio(source, driverName = null) {
+    return MediaFacade.getManager().audio(source, driverName);
+  }
+
   static imageRaw(buffer, opts = {}) {
     return MediaFacade.getManager().imageRaw(buffer, opts);
   }

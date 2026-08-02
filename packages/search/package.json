@@ -1,0 +1,46 @@
+{
+  "name": "@ecf/search",
+  "version": "1.0.0-rc.1",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    }
+  },
+  "scripts": {
+    "test": "node --test tests/**/*.test.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@ecf/contracts": "workspace:*",
+    "@ecf/core": "workspace:*",
+    "@ecf/support": "workspace:*"
+  },
+  "peerDependencies": {
+    "@ecf/cache": "workspace:*",
+    "@ecf/config": "workspace:*",
+    "@ecf/database": "workspace:*",
+    "@ecf/events": "workspace:*",
+    "@ecf/queue": "workspace:*",
+    "@ecf/broadcast": "workspace:*",
+    "@ecf/notifications": "workspace:*",
+    "@ecf/observability": "workspace:*",
+    "@ecf/devtools": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "@ecf/cache": { "optional": true },
+    "@ecf/config": { "optional": true },
+    "@ecf/database": { "optional": true },
+    "@ecf/events": { "optional": true },
+    "@ecf/queue": { "optional": true },
+    "@ecf/broadcast": { "optional": true },
+    "@ecf/notifications": { "optional": true },
+    "@ecf/observability": { "optional": true },
+    "@ecf/devtools": { "optional": true }
+  }
+}

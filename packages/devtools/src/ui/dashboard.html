@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECF DevTools — Developer Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --panel-bg: rgba(17, 24, 39, 0.75);
+      --card-bg: rgba(30, 41, 59, 0.6);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-primary: #6366f1;
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+      --color-success: #10b981;
+      --color-warn: #f59e0b;
+      --color-error: #ef4444;
+      --color-cyan: #06b6d4;
+      --radius-lg: 14px;
+      --radius-md: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Top Bar */
+    header {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      background: var(--accent-gradient);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+    }
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.45rem 0.9rem;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    /* Main Container */
+    .app-container {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      flex: 1;
+      height: calc(100vh - 58px);
+    }
+
+    /* Sidebar Request List */
+    .sidebar {
+      background: rgba(15, 23, 42, 0.4);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .sidebar-search {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .search-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.5rem 0.8rem;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .search-input:focus {
+      border-color: var(--accent-primary);
+    }
+    .filter-pills {
+      display: flex;
+      gap: 0.4rem;
+      overflow-x: auto;
+      padding-bottom: 0.2rem;
+    }
+    .pill {
+      font-size: 0.72rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      background: var(--card-bg);
+      color: var(--text-muted);
+      cursor: pointer;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+    .pill.active {
+      background: var(--accent-primary);
+      color: #fff;
+    }
+
+    .request-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .request-item {
+      padding: 0.75rem;
+      border-radius: var(--radius-md);
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .request-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateX(2px);
+    }
+    .request-item.active {
+      border-color: var(--accent-primary);
+      background: rgba(99, 102, 241, 0.12);
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
+    }
+
+    .req-method {
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+
+    }
+    .method-GET { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .method-POST { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+    .method-PUT { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    .method-DELETE { background: rgba(239, 68, 68, 0.15); color: #fca5a5; }
+
+    .req-url {
+      font-size: 0.85rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-main);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 170px;
+    }
+
+    .status-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .status-2xx { color: var(--color-success); }
+    .status-4xx { color: var(--color-warn); }
+    .status-5xx { color: var(--color-error); }
+
+    /* Main Content Area */
+    .content-area {
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 1.5rem;
+      gap: 1.5rem;
+      background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.05), transparent 40%);
+    }
+
+    .request-header-card {
+      background: var(--panel-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .req-title {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .req-meta-pills {
+      display: flex;
+      gap: 1.25rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .req-meta-item strong { color: var(--text-main); }
+
+    /* Panel Tabs */
+    .tabs-nav {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: var(--radius-md);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .tab-btn.active {
+      color: #fff;
+      background: var(--accent-gradient);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+    .tab-count {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Panel Content Container */
+    .panel-view {
+      background: var(--panel-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      display: none;
+    }
+    .panel-view.active {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Table Styles */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+    .data-table th {
+      text-align: left;
+      padding: 0.6rem 0.8rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+    }
+    .data-table td {
+      padding: 0.75rem 0.8rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      vertical-align: top;
+    }
+    .code-block {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .warning-tag {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+    }
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-muted);
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-logo">E</div>
+      <span>ECF DevTools</span>
+      <span class="badge">v1.0.0-rc.1</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn" id="pauseBtn" onclick="toggleAutoRefresh()">
+        <span id="pauseIcon">⏸</span> Auto-Refresh: <strong id="autoRefreshState">ON</strong>
+      </button>
+      <button class="btn btn-danger" onclick="clearEntries()">Clear Entries</button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-search">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search URL, status, method..." onkeyup="filterRequests()">
+        <div class="filter-pills">
+          <div class="pill active" onclick="setFilter('ALL', this)">ALL</div>
+          <div class="pill" onclick="setFilter('2XX', this)">2XX</div>
+          <div class="pill" onclick="setFilter('4XX', this)">4XX</div>
+          <div class="pill" onclick="setFilter('5XX', this)">5XX</div>
+          <div class="pill" onclick="setFilter('DB', this)">DB</div>
+          <div class="pill" onclick="setFilter('CACHE', this)">CACHE</div>
+          <div class="pill" onclick="setFilter('QUEUE', this)">QUEUE</div>
+        </div>
+      </div>
+      <div class="request-list" id="requestList">
+        <div class="empty-state">Loading requests...</div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content-area">
+      <div id="noSelection" class="empty-state" style="margin-top: 5rem;">
+        <h2>Select a request to inspect diagnostic panels</h2>
+        <p>Real-time telemetry and collector data will be rendered here.</p>
+      </div>
+
+      <div id="requestDetail" style="display: none;">
+        <!-- Header Summary Card -->
+        <div class="request-header-card">
+          <div>
+            <div class="req-title">
+              <span id="detailMethod" class="req-method method-GET">GET</span>
+              <span id="detailUrl">/api/v1/products</span>
+            </div>
+          </div>
+          <div class="req-meta-pills">
+            <div class="req-meta-item">Status: <strong id="detailStatus" class="status-2xx">200 OK</strong></div>
+            <div class="req-meta-item">Duration: <strong id="detailDuration">45ms</strong></div>
+            <div class="req-meta-item">IP: <strong id="detailIp">127.0.0.1</strong></div>
+          </div>
+        </div>
+
+        <!-- Panel Tabs Nav -->
+        <nav class="tabs-nav" id="tabsNav">
+          <button class="tab-btn active" onclick="switchTab('timeline', this)">Timeline</button>
+          <button class="tab-btn" onclick="switchTab('http', this)">HTTP</button>
+          <button class="tab-btn" onclick="switchTab('db', this)">Database <span class="tab-count" id="countDb">0</span></button>
+          <button class="tab-btn" onclick="switchTab('cache', this)">Cache <span class="tab-count" id="countCache">0</span></button>
+          <button class="tab-btn" onclick="switchTab('queue', this)">Queue <span class="tab-count" id="countQueue">0</span></button>
+          <button class="tab-btn" onclick="switchTab('mail', this)">Mail <span class="tab-count" id="countMail">0</span></button>
+          <button class="tab-btn" onclick="switchTab('notifications', this)">Notifications <span class="tab-count" id="countNotifications">0</span></button>
+          <button class="tab-btn" onclick="switchTab('events', this)">Events <span class="tab-count" id="countEvents">0</span></button>
+          <button class="tab-btn" onclick="switchTab('storage', this)">Storage <span class="tab-count" id="countStorage">0</span></button>
+          <button class="tab-btn" onclick="switchTab('upload', this)">Upload <span class="tab-count" id="countUpload">0</span></button>
+          <button class="tab-btn" onclick="switchTab('media', this)">Media <span class="tab-count" id="countMedia">0</span></button>
+          <button class="tab-btn" onclick="switchTab('exceptions', this)">Exceptions <span class="tab-count" id="countExceptions">0</span></button>
+          <button class="tab-btn" onclick="switchTab('performance', this)">Performance</button>
+        </nav>
+
+        <!-- Panel Views -->
+        <div id="panel-timeline" class="panel-view active">
+          <h3>Request Timeline</h3>
+          <table class="data-table">
+            <thead>
+              <tr><th>Event</th><th>Category</th><th>Timing</th><th>Status</th><th>Data</th></tr>
+            </thead>
+            <tbody id="timelineTableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="panel-http" class="panel-view">
+          <h3>HTTP Panel</h3>
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-value" id="httpMethodVal">GET</div><div class="stat-label">Method</div></div>
+            <div class="stat-card"><div class="stat-value" id="httpStatusVal">200</div><div class="stat-label">Status</div></div>
+            <div class="stat-card"><div class="stat-value" id="httpDurationVal">0ms</div><div class="stat-label">Response Time</div></div>
+          </div>
+          <h4>Headers</h4>
+          <div class="code-block" id="httpHeadersBlock">{}</div>
+        </div>
+
+        <div id="panel-db" class="panel-view">
+          <h3>Database Queries</h3>
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-value" id="dbTotalVal">0</div><div class="stat-label">Total Queries</div></div>
+            <div class="stat-card"><div class="stat-value" id="dbSlowVal">0</div><div class="stat-label">Slow Queries (&ge;100ms)</div></div>
+            <div class="stat-card"><div class="stat-value" id="dbDupVal">0</div><div class="stat-label">Duplicate Queries</div></div>
+          </div>
+          <table class="data-table">
+            <thead><tr><th>Query SQL</th><th>Bindings</th><th>Duration</th><th>Connection</th></tr></thead>
+            <tbody id="dbTableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="panel-cache" class="panel-view">
+          <h3>Cache Operations</h3>
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-value" id="cacheHitsVal">0</div><div class="stat-label">Hits</div></div>
+            <div class="stat-card"><div class="stat-value" id="cacheMissesVal">0</div><div class="stat-label">Misses</div></div>
+          </div>
+          <table class="data-table">
+            <thead><tr><th>Operation</th><th>Key</th><th>TTL</th><th>Driver</th></tr></thead>
+            <tbody id="cacheTableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="panel-queue" class="panel-view">
+          <h3>Queue Jobs</h3>
+          <table class="data-table">
+            <thead><tr><th>Job Name</th><th>Queue</th><th>Status</th><th>Payload / Details</th></tr></thead>
+            <tbody id="queueTableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="panel-mail" class="panel-view">
+          <h3>Mail Subsystem</h3>
+          <table class="data-table">
+            <thead><tr><th>To</th><th>Subject</th><th>Status</th><th>Duration</th></tr></thead>
+            <tbody id="mailTableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="panel-notifications" class="panel-view">
+          <h3>Notifications</h3>
+          <table class="data-table">
+            <thead><tr><th>Notification</th><th>Channel</th><th>Recipient</th></tr></thead>
+            <tbody id="notificationsTableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="panel-events" class="panel-view">
+          <h3>Framework Events</h3>
+          <table class="data-table">
+            <thead><tr><th>Event Name</th><th>Listeners</th><th>Timestamp</th></tr></thead>
+            <tbody id="eventsTableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="panel-storage" class="panel-view">
+          <h3>Storage Operations</h3>
+          <table class="data-table">
+            <thead><tr><th>Operation</th><th>Path</th><th>Disk</th><th>Duration</th></tr></thead>
+            <tbody id="storageTableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="panel-upload" class="panel-view">
+          <h3>File Uploads</h3>
+          <table class="data-table">
+            <thead><tr><th>Filename</th><th>Size</th><th>MIME Type</th><th>Scan Status</th></tr></thead>
+            <tbody id="uploadTableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="panel-media" class="panel-view">
+          <h3>Media Processing</h3>
+          <table class="data-table">
+            <thead><tr><th>Original File</th><th>Variants</th><th>Stored Path</th></tr></thead>
+            <tbody id="mediaTableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="panel-exceptions" class="panel-view">
+          <h3>Exceptions & Errors</h3>
+          <div id="exceptionsContent"></div>
+        </div>
+
+        <div id="panel-performance" class="panel-view">
+          <h3>Performance Metrics</h3>
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-value" id="perfRss">0 MB</div><div class="stat-label">RSS Memory</div></div>
+            <div class="stat-card"><div class="stat-value" id="perfHeap">0 MB</div><div class="stat-label">Heap Used</div></div>
+            <div class="stat-card"><div class="stat-value" id="perfDuration">0ms</div><div class="stat-label">Total Duration</div></div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    let entries = [];
+    let activeRecord = null;
+    let autoRefresh = true;
+    let timer = null;
+
+    async function fetchEntries() {
+      try {
+        const res = await fetch('/api/entries');
+        entries = await res.json();
+        renderRequestList();
+        if (entries.length > 0 && !activeRecord) {
+          selectRecord(entries[0].id);
+        }
+      } catch (err) {
+        console.error('Failed to fetch DevTools entries:', err);
+      }
+    }
+
+    function renderRequestList() {
+      const list = document.getElementById('requestList');
+      if (entries.length === 0) {
+        list.innerHTML = '<div class="empty-state">No request entries recorded yet.</div>';
+        return;
+      }
+
+      list.innerHTML = entries.map(r => `
+        <div class="request-item ${activeRecord && activeRecord.id === r.id ? 'active' : ''}" onclick="selectRecord('${r.id}')">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span class="req-method method-${r.method}">${r.method}</span>
+            <span class="req-url">${r.url}</span>
+          </div>
+          <div>
+            <span class="status-badge status-${String(r.status)[0]}xx">${r.status}</span>
+            <span style="font-size: 0.72rem; color: var(--text-muted); margin-left: 0.4rem;">${r.durationMs}ms</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function selectRecord(id) {
+      activeRecord = entries.find(e => e.id === id);
+      if (!activeRecord) return;
+
+      renderRequestList();
+      document.getElementById('noSelection').style.display = 'none';
+      document.getElementById('requestDetail').style.display = 'block';
+
+      // Header
+      document.getElementById('detailMethod').className = `req-method method-${activeRecord.method}`;
+      document.getElementById('detailMethod').innerText = activeRecord.method;
+      document.getElementById('detailUrl').innerText = activeRecord.url;
+      document.getElementById('detailStatus').className = `status-${String(activeRecord.status)[0]}xx`;
+      document.getElementById('detailStatus').innerText = `${activeRecord.status}`;
+      document.getElementById('detailDuration').innerText = `${activeRecord.durationMs}ms`;
+      document.getElementById('detailIp').innerText = activeRecord.ip;
+
+      // Counts
+      const p = activeRecord.panels;
+      document.getElementById('countDb').innerText = p.db.totalQueries;
+      document.getElementById('countCache').innerText = (p.cache.hits + p.cache.misses);
+      document.getElementById('countQueue').innerText = p.queue.totalJobs;
+      document.getElementById('countMail').innerText = p.mail.totalMails;
+      document.getElementById('countNotifications').innerText = p.notifications.sent.length;
+      document.getElementById('countEvents').innerText = p.events.totalEvents;
+      document.getElementById('countStorage').innerText = p.storage.totalOps;
+      document.getElementById('countUpload').innerText = p.upload.files.length;
+      document.getElementById('countMedia').innerText = p.media.totalFiles;
+      document.getElementById('countExceptions').innerText = p.exceptions.length;
+
+      // Render Active Tab Data
+      renderTimelineTab();
+      renderHttpTab();
+      renderDbTab();
+      renderCacheTab();
+      renderQueueTab();
+      renderMailTab();
+      renderNotificationsTab();
+      renderEventsTab();
+      renderStorageTab();
+      renderUploadTab();
+      renderMediaTab();
+      renderExceptionsTab();
+      renderPerformanceTab();
+    }
+
+    function renderTimelineTab() {
+      const tbody = document.getElementById('timelineTableBody');
+      const timeline = activeRecord.timeline || [];
+      if (timeline.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No timeline events logged.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = timeline.map(e => `
+        <tr>
+          <td><strong>${e.event}</strong></td>
+          <td>${e.category}</td>
+          <td>+${e.at}ms</td>
+          <td><span class="badge">${e.status}</span></td>
+          <td><div class="code-block">${JSON.stringify(e.data || {})}</div></td>
+        </tr>
+      `).join('');
+    }
+
+    function renderHttpTab() {
+      document.getElementById('httpMethodVal').innerText = activeRecord.method;
+      document.getElementById('httpStatusVal').innerText = activeRecord.status;
+      document.getElementById('httpDurationVal').innerText = `${activeRecord.durationMs}ms`;
+      document.getElementById('httpHeadersBlock').innerText = JSON.stringify(activeRecord.panels.http.headers, null, 2);
+    }
+
+    function renderDbTab() {
+      const p = activeRecord.panels.db;
+      document.getElementById('dbTotalVal').innerText = p.totalQueries;
+      document.getElementById('dbSlowVal').innerText = p.slowQueries;
+      document.getElementById('dbDupVal').innerText = p.duplicateQueries;
+
+      const tbody = document.getElementById('dbTableBody');
+      if (p.queries.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No DB queries executed.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = p.queries.map(q => `
+        <tr>
+          <td><div class="code-block">${q.sql}</div>${q.durationMs >= 100 ? '<span class="warning-tag">SLOW</span>' : ''}</td>
+          <td>${JSON.stringify(q.bindings)}</td>
+          <td>${q.durationMs}ms</td>
+          <td>${q.connection}</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderCacheTab() {
+      const p = activeRecord.panels.cache;
+      document.getElementById('cacheHitsVal').innerText = p.hits;
+      document.getElementById('cacheMissesVal').innerText = p.misses;
+
+      const tbody = document.getElementById('cacheTableBody');
+      if (p.operations.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No cache operations.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = p.operations.map(op => `
+        <tr>
+          <td><span class="badge">${op.type.toUpperCase()}</span></td>
+          <td><code>${op.key}</code></td>
+          <td>${op.ttl ?? 'N/A'}</td>
+          <td>${op.driver ?? 'default'}</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderQueueTab() {
+      const p = activeRecord.panels.queue;
+      const all = [...p.dispatched.map(j => ({ ...j, st: 'dispatched' })), ...p.processed.map(j => ({ ...j, st: 'processed' })), ...p.failed.map(j => ({ ...j, st: 'failed' }))];
+      const tbody = document.getElementById('queueTableBody');
+      if (all.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No queue jobs.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = all.map(j => `
+        <tr>
+          <td><strong>${j.jobName}</strong></td>
+          <td>${j.queue}</td>
+          <td><span class="badge">${j.st}</span></td>
+          <td><div class="code-block">${JSON.stringify(j.payload || j.error || {})}</div></td>
+        </tr>
+      `).join('');
+    }
+
+    function renderMailTab() {
+      const p = activeRecord.panels.mail;
+      const all = [...p.sent.map(m => ({ ...m, st: 'sent' })), ...p.failed.map(m => ({ ...m, st: 'failed' }))];
+      const tbody = document.getElementById('mailTableBody');
+      if (all.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No mail sent.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = all.map(m => `
+        <tr>
+          <td>${JSON.stringify(m.to)}</td>
+          <td>${m.subject}</td>
+          <td><span class="badge">${m.st}</span></td>
+          <td>${m.durationMs ?? 0}ms</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderNotificationsTab() {
+      const p = activeRecord.panels.notifications;
+      const tbody = document.getElementById('notificationsTableBody');
+      if (p.sent.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="empty-state">No notifications.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = p.sent.map(n => `
+        <tr>
+          <td><strong>${n.notification}</strong></td>
+          <td><span class="badge">${n.channel}</span></td>
+          <td>${JSON.stringify(n.recipient)}</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderEventsTab() {
+      const p = activeRecord.panels.events;
+      const tbody = document.getElementById('eventsTableBody');
+      if (p.dispatched.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="empty-state">No events.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = p.dispatched.map(e => `
+        <tr>
+          <td><strong>${e.name}</strong></td>
+          <td>${e.listenersCount}</td>
+          <td>+${e.at}ms</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderStorageTab() {
+      const p = activeRecord.panels.storage;
+      const tbody = document.getElementById('storageTableBody');
+      if (p.operations.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No storage operations.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = p.operations.map(o => `
+        <tr>
+          <td><span class="badge">${o.operation}</span></td>
+          <td><code>${o.path}</code></td>
+          <td>${o.disk}</td>
+          <td>${o.durationMs}ms</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderUploadTab() {
+      const p = activeRecord.panels.upload;
+      const tbody = document.getElementById('uploadTableBody');
+      if (p.files.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No file uploads.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = p.files.map(f => `
+        <tr>
+          <td><strong>${f.name}</strong></td>
+          <td>${Math.round(f.size / 1024)} KB</td>
+          <td>${f.mimeType}</td>
+          <td><span class="badge">${f.isClean ? 'CLEAN' : 'THREAT'}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function renderMediaTab() {
+      const p = activeRecord.panels.media;
+      const tbody = document.getElementById('mediaTableBody');
+      if (p.processed.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="empty-state">No media processed.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = p.processed.map(m => `
+        <tr>
+          <td><strong>${m.originalName}</strong></td>
+          <td>${m.variantsCount} variants</td>
+          <td><code>${m.storedPath ?? 'N/A'}</code></td>
+        </tr>
+      `).join('');
+    }
+
+    function renderExceptionsTab() {
+      const p = activeRecord.panels.exceptions;
+      const container = document.getElementById('exceptionsContent');
+      if (p.length === 0) {
+        container.innerHTML = '<div class="empty-state">No exceptions caught for this request.</div>';
+        return;
+      }
+      container.innerHTML = p.map(e => `
+        <div style="margin-bottom: 1.5rem;">
+          <h4 style="color: var(--color-error);">${e.name}: ${e.message}</h4>
+          <div class="code-block" style="margin-top: 0.5rem; max-height: 300px; overflow-y: auto;">${e.stack}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderPerformanceTab() {
+      const p = activeRecord.panels.performance;
+      const heapMb = p.memoryAfter ? Math.round(p.memoryAfter.heapUsed / 1024 / 1024) : 0;
+      const rssMb = p.memoryAfter ? Math.round(p.memoryAfter.rss / 1024 / 1024) : 0;
+
+      document.getElementById('perfRss').innerText = `${rssMb} MB`;
+      document.getElementById('perfHeap').innerText = `${heapMb} MB`;
+      document.getElementById('perfDuration').innerText = `${activeRecord.durationMs}ms`;
+    }
+
+    function switchTab(name, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.panel-view').forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      const target = document.getElementById(`panel-${name}`);
+      if (target) target.classList.add('active');
+    }
+
+    async function clearEntries() {
+      await fetch('/api/clear', { method: 'POST' });
+      entries = [];
+      activeRecord = null;
+      renderRequestList();
+      document.getElementById('noSelection').style.display = 'block';
+      document.getElementById('requestDetail').style.display = 'none';
+    }
+
+    function toggleAutoRefresh() {
+      autoRefresh = !autoRefresh;
+      document.getElementById('autoRefreshState').innerText = autoRefresh ? 'ON' : 'OFF';
+      document.getElementById('pauseIcon').innerText = autoRefresh ? '⏸' : '▶';
+    }
+
+    // Auto Refresh Interval
+    setInterval(() => {
+      if (autoRefresh) fetchEntries();
+    }, 2000);
+
+    fetchEntries();
+  </script>
+</body>
+</html>

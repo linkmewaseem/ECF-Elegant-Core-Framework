@@ -19,6 +19,8 @@ export * from "./channels/MailChannel.js";
 export * from "./channels/DatabaseChannel.js";
 export * from "./channels/SlackChannel.js";
 export * from "./channels/WebhookChannel.js";
+export * from "./channels/BroadcastChannel.js";
+
 
 // Database & Notifiable
 export * from "./database/DatabaseNotificationRecord.js";

@@ -28,3 +28,114 @@ export class IStorageManager {
   get(path: string): Promise<any>;
   put(path: string, contents: any): Promise<boolean>;
 }
+export class IBroadcastManager {
+  driver(name?: string | null): any;
+  extend(name: string, factory: Function): this;
+  channel(pattern: string, callback: Function): this;
+  private(name: string): any;
+  presence(name: string): any;
+  to(channels: any): any;
+  broadcast(eventOrChannels: any, eventName?: string | null, payload?: any): Promise<any>;
+  fake(): any;
+}
+export class IBroadcastDriver {
+  publish(channel: string, event: string, payload: any, metadata?: any): Promise<any>;
+  subscribe(channel: string, callback: Function): Promise<any>;
+  unsubscribe(channel: string, callback?: Function): Promise<any>;
+  authorize(channel: string, socketId: string, options?: any): Promise<any>;
+}
+export class IPresenceRepository {
+  join(channel: string, user: any): Promise<any>;
+  leave(channel: string, userId: any): Promise<any>;
+  members(channel: string): Promise<any[]>;
+  count(channel: string): Promise<number>;
+  exists(channel: string, userId: any): Promise<boolean>;
+}
+export class ISearchManager {
+  driver(name?: string | null): any;
+  extend(name: string, factory: Function): this;
+  use(name: string): this;
+  index(name: string | string[]): any;
+  collection(name: string): any;
+  reindex(modelClass: any): Promise<any>;
+  fake(): any;
+}
+export class ISearchDriver {
+  capabilities(): string[];
+  index(indexName: string, documents: any[]): Promise<any>;
+  search(indexName: string, params: any): Promise<any>;
+  remove(indexName: string, documentIds: any[]): Promise<any>;
+  flush(indexName: string): Promise<any>;
+}
+export class IApiManager {
+  resource(data: any, resourceClass?: any): any;
+  collection(data: any, resourceClass?: any): any;
+  version(version: string): this;
+  profile(name: string): this;
+  fake(): any;
+}
+export class IApiResource {
+  toArray(): any;
+  when(condition: any, value: any, defaultValue?: any): any;
+  merge(data: any): any;
+  mergeWhen(condition: any, data: any): any;
+  whenLoaded(relationship: string, value?: any, defaultValue?: any): any;
+  whenCounted(relationship: string, value?: any, defaultValue?: any): any;
+}
+export class ILogManager {
+  channel(name?: string | null): any;
+  stack(channels: string[]): any;
+  withContext(context: any, callback?: Function): any;
+  child(context: any): any;
+  batch(): any;
+  fake(): any;
+}
+export class ILogDriver {
+  write(record: any): Promise<any>;
+  getCapabilities(): any;
+}
+export class ITestRunner {
+  test(name: string, fn: Function): any;
+  profile(name: string): this;
+}
+export class ITestHttpClient {
+  get(url: string, headers?: any): Promise<any>;
+  post(url: string, data?: any, headers?: any): Promise<any>;
+  actingAs(user: any): this;
+}
+export class ITestDatabase {
+  useTransaction(): Promise<any>;
+  refresh(): Promise<any>;
+  assertDatabaseHas(table: string, data: any): void;
+}
+export class IDevKitManager {
+  make(generatorName: string, options?: any): Promise<any>;
+  blueprint(yamlFile: string): Promise<any>;
+  install(packageName: string): Promise<any>;
+  doctor(): Promise<any>;
+}
+export class ICodeGenerator {
+  generate(options?: any): Promise<any>;
+}
+export class IAiManager {
+  chat(prompt: string, options?: any): Promise<any>;
+  stream(prompt: string, options?: any): AsyncIterable<string>;
+  embed(text: string, options?: any): Promise<number[]>;
+  memory(conversationId: string): any;
+  prompt(name: string, variables?: any): any;
+  agent(options?: any): any;
+  rag(options?: any): any;
+  mcp(serverName: string): any;
+}
+export class IAiDriver {
+  chat(prompt: string, options?: any): Promise<any>;
+  embed(text: string, options?: any): Promise<number[]>;
+  getCapabilities(): Record<string, boolean>;
+}
+
+
+
+
+
+
+

@@ -38,6 +38,60 @@ importers:
         specifier: workspace:*
         version: link:../../packages/view
 
+  packages/ai:
+    dependencies:
+      '@ecf/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../core
+      '@ecf/devtools':
+        specifier: workspace:*
+        version: link:../devtools
+      '@ecf/logging':
+        specifier: workspace:*
+        version: link:../logging
+      '@ecf/media':
+        specifier: workspace:*
+        version: link:../media
+      '@ecf/search':
+        specifier: workspace:*
+        version: link:../search
+      '@ecf/support':
+        specifier: workspace:*
+        version: link:../support
+
+  packages/api:
+    dependencies:
+      '@ecf/auth':
+        specifier: workspace:*
+        version: link:../auth
+      '@ecf/cache':
+        specifier: workspace:*
+        version: link:../cache
+      '@ecf/config':
+        specifier: workspace:*
+        version: link:../config
+      '@ecf/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../core
+      '@ecf/devtools':
+        specifier: workspace:*
+        version: link:../devtools
+      '@ecf/http':
+        specifier: workspace:*
+        version: link:../http
+      '@ecf/observability':
+        specifier: workspace:*
+        version: link:../observability
+      '@ecf/support':
+        specifier: workspace:*
+        version: link:../support
+
   packages/auth:
     dependencies:
       '@ecf/cache':
@@ -55,6 +109,36 @@ importers:
       '@ecf/events':
         specifier: workspace:*
         version: link:../events
+      '@ecf/support':
+        specifier: workspace:*
+        version: link:../support
+
+  packages/broadcast:
+    dependencies:
+      '@ecf/config':
+        specifier: workspace:*
+        version: link:../config
+      '@ecf/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../core
+      '@ecf/devtools':
+        specifier: workspace:*
+        version: link:../devtools
+      '@ecf/events':
+        specifier: workspace:*
+        version: link:../events
+      '@ecf/notifications':
+        specifier: workspace:*
+        version: link:../notifications
+      '@ecf/observability':
+        specifier: workspace:*
+        version: link:../observability
+      '@ecf/queue':
+        specifier: workspace:*
+        version: link:../queue
       '@ecf/support':
         specifier: workspace:*
         version: link:../support
@@ -123,6 +207,42 @@ importers:
         specifier: workspace:*
         version: link:../core
 
+  packages/devkit:
+    dependencies:
+      '@ecf/cli':
+        specifier: workspace:*
+        version: link:../cli
+      '@ecf/config':
+        specifier: workspace:*
+        version: link:../config
+      '@ecf/console':
+        specifier: workspace:*
+        version: link:../console
+      '@ecf/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../core
+      '@ecf/database':
+        specifier: workspace:*
+        version: link:../database
+      '@ecf/support':
+        specifier: workspace:*
+        version: link:../support
+
+  packages/devtools:
+    dependencies:
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../core
+      '@ecf/observability':
+        specifier: workspace:*
+        version: link:../observability
+      '@ecf/support':
+        specifier: workspace:*
+        version: link:../support
+
   packages/events:
     dependencies:
       '@ecf/core':
@@ -143,6 +263,42 @@ importers:
       '@ecf/validation':
         specifier: workspace:*
         version: link:../validation
+
+  packages/logging:
+    dependencies:
+      '@ecf/config':
+        specifier: workspace:*
+        version: link:../config
+      '@ecf/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../core
+      '@ecf/devtools':
+        specifier: workspace:*
+        version: link:../devtools
+      '@ecf/events':
+        specifier: workspace:*
+        version: link:../events
+      '@ecf/mail':
+        specifier: workspace:*
+        version: link:../mail
+      '@ecf/observability':
+        specifier: workspace:*
+        version: link:../observability
+      '@ecf/queue':
+        specifier: workspace:*
+        version: link:../queue
+      '@ecf/search':
+        specifier: workspace:*
+        version: link:../search
+      '@ecf/storage':
+        specifier: workspace:*
+        version: link:../storage
+      '@ecf/support':
+        specifier: workspace:*
+        version: link:../support
 
   packages/mail:
     dependencies:
@@ -225,6 +381,18 @@ importers:
         specifier: workspace:*
         version: link:../support
 
+  packages/observability:
+    dependencies:
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../core
+      '@ecf/events':
+        specifier: workspace:*
+        version: link:../events
+      '@ecf/support':
+        specifier: workspace:*
+        version: link:../support
+
   packages/queue:
     dependencies:
       '@ecf/cache':
@@ -242,6 +410,63 @@ importers:
       '@ecf/events':
         specifier: workspace:*
         version: link:../events
+      '@ecf/support':
+        specifier: workspace:*
+        version: link:../support
+
+  packages/scheduler:
+    dependencies:
+      '@ecf/cache':
+        specifier: workspace:*
+        version: link:../cache
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../core
+      '@ecf/events':
+        specifier: workspace:*
+        version: link:../events
+      '@ecf/observability':
+        specifier: workspace:*
+        version: link:../observability
+      '@ecf/support':
+        specifier: workspace:*
+        version: link:../support
+
+  packages/search:
+    dependencies:
+      '@ecf/broadcast':
+        specifier: workspace:*
+        version: link:../broadcast
+      '@ecf/cache':
+        specifier: workspace:*
+        version: link:../cache
+      '@ecf/config':
+        specifier: workspace:*
+        version: link:../config
+      '@ecf/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../core
+      '@ecf/database':
+        specifier: workspace:*
+        version: link:../database
+      '@ecf/devtools':
+        specifier: workspace:*
+        version: link:../devtools
+      '@ecf/events':
+        specifier: workspace:*
+        version: link:../events
+      '@ecf/notifications':
+        specifier: workspace:*
+        version: link:../notifications
+      '@ecf/observability':
+        specifier: workspace:*
+        version: link:../observability
+      '@ecf/queue':
+        specifier: workspace:*
+        version: link:../queue
       '@ecf/support':
         specifier: workspace:*
         version: link:../support
@@ -283,6 +508,54 @@ importers:
         version: link:../support
 
   packages/support: {}
+
+  packages/testing:
+    dependencies:
+      '@ecf/api':
+        specifier: workspace:*
+        version: link:../api
+      '@ecf/auth':
+        specifier: workspace:*
+        version: link:../auth
+      '@ecf/broadcast':
+        specifier: workspace:*
+        version: link:../broadcast
+      '@ecf/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@ecf/core':
+        specifier: workspace:*
+        version: link:../core
+      '@ecf/database':
+        specifier: workspace:*
+        version: link:../database
+      '@ecf/events':
+        specifier: workspace:*
+        version: link:../events
+      '@ecf/http':
+        specifier: workspace:*
+        version: link:../http
+      '@ecf/logging':
+        specifier: workspace:*
+        version: link:../logging
+      '@ecf/mail':
+        specifier: workspace:*
+        version: link:../mail
+      '@ecf/notifications':
+        specifier: workspace:*
+        version: link:../notifications
+      '@ecf/queue':
+        specifier: workspace:*
+        version: link:../queue
+      '@ecf/search':
+        specifier: workspace:*
+        version: link:../search
+      '@ecf/storage':
+        specifier: workspace:*
+        version: link:../storage
+      '@ecf/support':
+        specifier: workspace:*
+        version: link:../support
 
   packages/upload:
     dependencies:

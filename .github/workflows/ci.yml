@@ -30,8 +30,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
 
+      - name: Approve Build Scripts
+        run: yes | pnpm approve-builds
+
       - name: Install Dependencies
-        run: pnpm install --frozen-lockfile --ignore-scripts
+        run: pnpm install --frozen-lockfile
 
       - name: Type Check (TypeScript Declarations)
         run: pnpm exec tsc --noEmit

@@ -246,7 +246,7 @@ export class SchemaBuilder {
     constructor(connection: Connection, grammar?: SchemaGrammar);
     connection: Connection;
     grammar: SchemaGrammar;
-    connection(name: string): SchemaBuilder;
+    from(name: string): SchemaBuilder;
     create(table: string, callback: (table: Blueprint) => void): Promise<void>;
     table(table: string, callback: (table: Blueprint) => void): Promise<void>;
     rename(from: string, to: string): Promise<any>;
@@ -280,6 +280,19 @@ export class Connection {
     commit(): Promise<void>;
     rollback(): Promise<void>;
     transaction<T>(callback: (conn: Connection) => Promise<T>): Promise<T>;
+}
+
+export class ConnectionManager {
+    add(name: string, config: any): this;
+    get(name?: string | null): Connection;
+    has(name: string): boolean;
+    remove(name: string): this;
+    getDefault(): string;
+    setDefault(name: string): this;
+    connections(): Record<string, Connection>;
+    disconnect(name?: string | null): Promise<void>;
+    disconnectAll(): Promise<void>;
+    extend(name: string, factory: Function): this;
 }
 
 export class DatabaseManager {
@@ -382,9 +395,9 @@ export class CastManager {
 
 export class ModelCollection<T = any> extends Array<T> {
     static make<T = any>(items?: T | T[]): ModelCollection<T>;
-    first(predicate?: (item: T, index: number) => boolean): T | null;
-    last(predicate?: (item: T, index: number) => boolean): T | null;
-    find(fnOrId: ((item: T, index: number) => boolean) | any): T | null;
+    first(predicate?: (item: T, index: number) => boolean): T | undefined;
+    last(predicate?: (item: T, index: number) => boolean): T | undefined;
+    find(fnOrId: ((item: T, index: number) => boolean) | any): T | undefined;
     where(key: string, operatorOrValue: any, value?: any): ModelCollection<T>;
     pluck(key: string, keyBy?: string | null): any;
     groupBy(keyOrFn: string | ((item: T, index: number) => any)): Record<string, ModelCollection<T>>;

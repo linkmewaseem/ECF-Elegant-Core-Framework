@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "declaration": true,
+    "noEmit": true,
+    "strict": false,
+    "skipLibCheck": false,
+    "types": ["node"],
+    "baseUrl": "."
+  },
+  "files": [
+    "packages/ai/src/index.d.ts",
+    "packages/api/src/index.d.ts",
+    "packages/auth/src/index.d.ts",
+    "packages/broadcast/src/index.d.ts",
+    "packages/contracts/src/index.d.ts",
+    "packages/core/src/index.d.ts",
+    "packages/database/src/index.d.ts",
+    "packages/devkit/src/index.d.ts",
+    "packages/devtools/src/index.d.ts",
+    "packages/http/src/index.d.ts",
+    "packages/logging/src/index.d.ts",
+    "packages/mail/src/index.d.ts",
+    "packages/media/src/index.d.ts",
+    "packages/notifications/src/index.d.ts",
+    "packages/observability/src/index.d.ts",
+    "packages/queue/src/index.d.ts",
+    "packages/scheduler/src/index.d.ts",
+    "packages/search/src/index.d.ts",
+    "packages/storage/src/index.d.ts",
+    "packages/testing/src/index.d.ts",
+    "packages/upload/src/index.d.ts",
+    "packages/validation/src/index.d.ts",
+    "packages/view/src/index.d.ts"
+  ]
+}

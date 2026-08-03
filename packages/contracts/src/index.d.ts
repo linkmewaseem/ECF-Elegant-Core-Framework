@@ -132,10 +132,30 @@ export class IAiDriver {
   embed(text: string, options?: any): Promise<number[]>;
   getCapabilities(): Record<string, boolean>;
 }
+export class IConversationMemory {
+  add(role: string, content: string): void;
+  getHistory(): Array<{ role: string; content: string }>;
+  clear(): void;
+}
 
+export class IASTInjector {
+  inject(ast: any, node: any): any;
+  parse(source: string): any;
+}
 
+export class IArchitectureValidator {
+  validate(project: any): Promise<any>;
+  rules(): any[];
+}
 
+export class ILogFormatter {
+  format(record: any): string;
+}
 
+export class ILogProcessor {
+  process(record: any): any;
+}
 
-
-
+export class ILogMasker {
+  mask(value: string, key?: string): string;
+}

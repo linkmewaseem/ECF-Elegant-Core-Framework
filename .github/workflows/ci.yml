@@ -34,7 +34,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Type Check (TypeScript Declarations)
-        run: npx tsc --noEmit
+        run: pnpm exec tsc --noEmit
 
       - name: Run Full Workspace Tests
         run: pnpm test

@@ -1,6 +1,6 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { Readable } from "node:stream";
+import { Readable, Writable } from "node:stream";
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
@@ -9,27 +9,27 @@ import ResponseError from "../src/errors/ResponseError.js";
 
 function makeFakeServerResponse() {
     const headers = new Map();
-    return {
-        statusCode: 200,
-        headersSent: false,
-        setHeader(name, val) {
-            headers.set(name.toLowerCase(), val);
-        },
-        getHeader(name) {
-            return headers.get(name.toLowerCase());
-        },
-        removeHeader(name) {
-            headers.delete(name.toLowerCase());
-        },
-        end(data) {
-            this.body = data;
-            this.headersSent = true;
-        },
-        on() {},
-        once() {},
-        emit() {},
-        destroy() {}
+    let body = "";
+    const writable = new Writable({
+        write(chunk, encoding, callback) {
+            body += Buffer.isBuffer(chunk) ? chunk.toString("utf-8") : String(chunk);
+            writable.headersSent = true;
+            if (callback) callback();
+        }
+    });
+    writable.statusCode = 200;
+    writable.headersSent = false;
+    writable.setHeader = (name, val) => headers.set(name.toLowerCase(), val);
+    writable.getHeader = (name) => headers.get(name.toLowerCase());
+    writable.removeHeader = (name) => headers.delete(name.toLowerCase());
+    const origEnd = writable.end.bind(writable);
+    writable.end = (data) => {
+        if (data !== undefined) writable.write(data);
+        origEnd();
+        writable.headersSent = true;
+        writable.body = body;
     };
+    return writable;
 }
 
 describe("Response Enterprise Capabilities (Phase 1 - 5)", () => {

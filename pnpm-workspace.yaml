@@ -1,3 +1,6 @@
+settings:
+  autoInstallPeers: false
+
 packages:
   - "packages/*"
   - "apps/*"

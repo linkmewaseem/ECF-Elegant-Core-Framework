@@ -790,3 +790,6 @@ See [docs/ecf-framework.md](docs/ecf-framework.md) for the full framework archit
 See [issues.md](issues.md) for known bugs, missing features, and improvement opportunities.
 
 See [fix.md](fix.md) for documented solutions to known bugs.
+#   E C F - E l e g a n t - C o r e - F r a m e w o r k  
+ #   E C F - E l e g a n t - C o r e - F r a m e w o r k  
+ 

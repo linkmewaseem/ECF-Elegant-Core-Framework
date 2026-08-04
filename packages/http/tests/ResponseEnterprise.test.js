@@ -32,6 +32,27 @@ function makeFakeServerResponse() {
     return writable;
 }
 
+function makeNonWritableFakeServerResponse() {
+    const headers = new Map();
+    return {
+        statusCode: 200,
+        headersSent: false,
+        setHeader(name, value) {
+            headers.set(name.toLowerCase(), value);
+        },
+        getHeader(name) {
+            return headers.get(name.toLowerCase());
+        },
+        removeHeader(name) {
+            headers.delete(name.toLowerCase());
+        },
+        end(data) {
+            this.headersSent = true;
+            this.body = data !== undefined ? data.toString("utf-8") : "";
+        }
+    };
+}
+
 describe("Response Enterprise Capabilities (Phase 1 - 5)", () => {
 
     describe("Phase 1: Foundation & Header Enhancements", () => {
@@ -133,14 +154,27 @@ describe("Response Enterprise Capabilities (Phase 1 - 5)", () => {
     });
 
     describe("Phase 3 & 4: Stream, File & Download Responses", () => {
-        test("stream() pipes readable stream to response", () => {
+        test("stream() pipes readable stream to response", async () => {
             const raw = makeFakeServerResponse();
             const res = new Response(raw);
 
             const stream = Readable.from(["hello ", "world"]);
-            res.stream(stream, { contentType: "text" });
+            await res.stream(stream, { contentType: "text" });
 
             assert.equal(res.headersSent, true);
+            assert.equal(raw.body, "hello world");
+        });
+
+        test("stream() consumes readable stream for non-writable response objects", async () => {
+            const raw = makeNonWritableFakeServerResponse();
+            const res = new Response(raw);
+
+            const stream = Readable.from(["hello ", "world"]);
+            await res.stream(stream, { contentType: "text" });
+
+            assert.equal(raw.headersSent, true);
+            assert.equal(raw.body, "hello world");
+            assert.equal(raw.getHeader("content-type"), "text/plain; charset=utf-8");
         });
 
         test("download() streams file with Content-Disposition header", async () => {

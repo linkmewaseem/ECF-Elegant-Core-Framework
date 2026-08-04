@@ -1,3 +1,4 @@
+import { pipeline as streamPipeline } from "stream/promises";
 import ResponseError from "./errors/ResponseError.js";
 
 const MIN_STATUS = 100;
@@ -259,9 +260,12 @@ export default class Response {
 
     // ---- Streams & Files ----
 
-    stream(readableStream, options = {}) {
+    async stream(readableStream, options = {}) {
         this.assertNotSent();
-        if (!readableStream || typeof readableStream.pipe !== "function") {
+        if (
+            !readableStream ||
+            (typeof readableStream[Symbol.asyncIterator] !== "function" && typeof readableStream.pipe !== "function")
+        ) {
             throw new ResponseError("stream() requires a valid Readable stream.");
         }
 
@@ -270,26 +274,80 @@ export default class Response {
         }
 
         this.raw.statusCode = this.statusCode;
+        const raw = this.raw;
+        const isWritable = typeof raw.write === "function" && typeof raw.end === "function";
 
-        readableStream.pipe(this.raw);
-        this.#sent = true;
-
-        readableStream.on("error", (err) => {
-            if (!this.raw.headersSent) {
-                this.raw.statusCode = 500;
+        if (isWritable) {
+            try {
+                await streamPipeline(readableStream, raw);
+                this.#sent = true;
+                return this;
+            } catch (error) {
+                if (!raw.headersSent) {
+                    raw.statusCode = 500;
+                }
+                if (typeof raw.end === "function") {
+                    raw.end();
+                }
+                throw error;
             }
-            if (typeof this.raw.end === "function") {
-                this.raw.end();
-            }
-        });
+        }
 
-        this.raw.on("close", () => {
-            if (typeof readableStream.destroy === "function") {
-                readableStream.destroy();
+        const chunks = [];
+        try {
+            if (typeof readableStream[Symbol.asyncIterator] === "function") {
+                for await (const chunk of readableStream) {
+                    if (typeof chunk === "string") {
+                        chunks.push(Buffer.from(chunk));
+                    } else if (Buffer.isBuffer(chunk)) {
+                        chunks.push(chunk);
+                    } else {
+                        chunks.push(Buffer.from(chunk));
+                    }
+                }
+            } else {
+                await new Promise((resolve, reject) => {
+                    readableStream.on("data", (chunk) => {
+                        if (typeof chunk === "string") {
+                            chunks.push(Buffer.from(chunk));
+                        } else if (Buffer.isBuffer(chunk)) {
+                            chunks.push(chunk);
+                        } else {
+                            chunks.push(Buffer.from(chunk));
+                        }
+                    });
+                    readableStream.on("end", resolve);
+                    readableStream.on("error", reject);
+                });
             }
-        });
 
-        return this;
+            const data = Buffer.concat(chunks);
+            if (typeof raw.setHeader === "function") {
+                try {
+                    raw.setHeader("Content-Length", String(data.length));
+                } catch (error) {
+                    // ignore if setHeader is unsupported or headers already sent
+                }
+            }
+
+            if (typeof raw.end === "function") {
+                raw.end(data);
+            } else {
+                raw.body = data;
+                raw.headersSent = true;
+            }
+
+            this.#sent = true;
+            return this;
+        } catch (error) {
+            if (!raw.headersSent) {
+                raw.statusCode = 500;
+            }
+            if (typeof raw.end === "function") {
+                raw.end();
+            }
+            throw error;
+        }
     }
 
     async download(filePath, filename = null, options = {}) {

@@ -31,7 +31,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Approve Build Scripts
-        run: yes | pnpm approve-builds
+        run: node -e "require('child_process').spawnSync('pnpm', ['approve-builds'], { input: Buffer.from('y\\n'), stdio: 'inherit' })"
 
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile

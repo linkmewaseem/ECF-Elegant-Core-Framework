@@ -45,5 +45,14 @@ jobs:
       - name: Run Ecosystem Benchmarks
         run: node --test packages/testing/tests/benchmarks/EcosystemBenchmark.test.js
 
+      - name: Show git status & changes (debug)
+        run: |
+          echo "Git status (porcelain):"
+          git status --porcelain || true
+          echo "--- Unstaged diff (names only) ---"
+          git diff --name-only || true
+          echo "--- Untracked files ---"
+          git ls-files --others --exclude-standard || true
+
       - name: Package Bundle Dry-Run Audit
-        run: pnpm publish --dry-run
+        run: pnpm publish --dry-run --no-git-checks

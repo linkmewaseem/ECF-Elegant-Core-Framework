@@ -31,7 +31,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Approve Build Scripts
-        run: yes | pnpm approve-builds
+        run: pnpm approve-builds --all
 
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile

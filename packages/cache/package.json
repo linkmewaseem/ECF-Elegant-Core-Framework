@@ -1,6 +1,7 @@
 {
   "name": "@ecf/cache",
   "version": "1.0.0-rc.1",
+  "description": "ECF cache layer with stampede protection, multi-driver support, and tagged cache invalidation",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,13 @@
   },
   "scripts": {
     "test": "node --test"
+  },
+  "keywords": ["ecf", "framework", "cache", "redis", "memory-cache", "stampede"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/cache"
   },
   "engines": {
     "node": ">=22"

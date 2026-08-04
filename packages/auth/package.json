@@ -1,6 +1,7 @@
 {
   "name": "@ecf/auth",
   "version": "1.0.0-rc.1",
+  "description": "ECF authentication system with guards, JWT, session management, and multi-driver auth pipelines",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,13 @@
   },
   "scripts": {
     "test": "node --test tests/**/*.test.js"
+  },
+  "keywords": ["ecf", "framework", "auth", "authentication", "jwt", "guards", "session"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/auth"
   },
   "engines": {
     "node": ">=22"

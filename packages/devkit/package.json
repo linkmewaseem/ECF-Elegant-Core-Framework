@@ -1,6 +1,7 @@
 {
   "name": "@ecf/devkit",
   "version": "1.0.0-rc.1",
+  "description": "ECF developer toolkit with AST code injection, YAML blueprint compiler, and ecf doctor/validate commands",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,13 @@
   },
   "scripts": {
     "test": "node --test tests/**/*.test.js"
+  },
+  "keywords": ["ecf", "framework", "devkit", "codegen", "ast", "scaffold", "blueprint"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/devkit"
   },
   "engines": {
     "node": ">=22"

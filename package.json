@@ -1,11 +1,21 @@
 {
   "name": "ecf",
   "version": "1.0.0-rc.1",
+  "description": "ECF (Elegant Core Framework) — A modular, enterprise-grade Node.js framework monorepo",
   "private": true,
+  "homepage": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git"
+  },
+  "license": "MIT",
+  "keywords": ["ecf", "framework", "enterprise", "node", "monorepo"],
 
   "scripts": {
     "test": "pnpm -r test",
-    "lint": "pnpm -r lint"
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm exec tsc --noEmit",
+    "build:dry-run": "pnpm publish --dry-run --no-git-checks"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

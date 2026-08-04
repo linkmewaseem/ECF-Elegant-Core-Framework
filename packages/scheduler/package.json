@@ -1,6 +1,7 @@
 {
   "name": "@ecf/scheduler",
   "version": "1.0.0-rc.1",
+  "description": "ECF cron scheduler with fluent job definitions, overlapping prevention, and distributed locking",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,13 @@
   },
   "scripts": {
     "test": "node --test tests/**/*.test.js"
+  },
+  "keywords": ["ecf", "framework", "scheduler", "cron", "jobs", "recurring", "task-scheduler"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/scheduler"
   },
   "engines": {
     "node": ">=22"

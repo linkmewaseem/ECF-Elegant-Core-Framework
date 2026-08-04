@@ -1,26 +1,45 @@
 <div align="center">
-  <img src="https://github.com/linkmewaseem/ECF/raw/main/banner.png" alt="ECF Banner" width="100%" style="border-radius:12px; margin-bottom:20px;">
+  <img src="https://github.com/linkmewaseem/ECF-Elegant-Core-Framework/raw/main/banner.png" alt="ECF Banner" width="100%" style="border-radius:12px; margin-bottom:20px;">
 </div>
 
 <br>
 
- # ECF — Elegant Core Framework
+<div align="center">
 
-ECF is a lightweight, modular Node.js framework built around a powerful dependency injection container and service provider system. It ships two packages today: **`@ecf/core`** for the application foundation and **`@ecf/http`** for HTTP routing, middleware, and request/response handling.
+# ECF — Elegant Core Framework
+
+**A modular, enterprise-grade Node.js framework built on a powerful IoC container and service provider system.**
+
+[![Version](https://img.shields.io/badge/version-1.0.0--rc.1-blue.svg)](https://github.com/linkmewaseem/ECF-Elegant-Core-Framework)
+[![Node](https://img.shields.io/badge/node-%3E%3D22-brightgreen.svg)](https://nodejs.org)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![pnpm](https://img.shields.io/badge/pnpm-11.17.0-orange.svg)](https://pnpm.io)
+[![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](https://github.com/linkmewaseem/ECF-Elegant-Core-Framework/actions)
+
+</div>
+
+---
+
+## What is ECF?
+
+ECF (Elegant Core Framework) is a **complete, enterprise-grade Node.js framework** shipped as a monorepo of 35 focused, composable packages. It covers everything from IoC container and HTTP routing to AI engines, real-time broadcasting, job queues, and developer tooling — all built natively on modern ESM with zero legacy dependencies.
+
+**Current release: `v1.0.0-rc.1`** — Release Candidate. All packages are feature-complete and test-passing.
 
 ---
 
 ## Table of Contents
 
-- [What is Included](#what-is-included)
-- [Package Structure](#package-structure)
+- [Ecosystem Overview](#ecosystem-overview)
+- [Package Catalog](#package-catalog)
 - [Requirements](#requirements)
 - [Installation](#installation)
-- [Running Tests](#running-tests)
-- [Quick Start — HTTP Server](#quick-start--http-server)
+- [Quick Start](#quick-start)
+  - [HTTP Server](#http-server)
+  - [With Database](#with-database)
+  - [With Auth & Validation](#with-auth--validation)
 - [Core Concepts](#core-concepts)
-  - [Container](#container)
-  - [Application](#application)
+  - [Container & Application](#container--application)
   - [Service Providers](#service-providers)
   - [Facades](#facades)
   - [Config](#config)
@@ -32,61 +51,111 @@ ECF is a lightweight, modular Node.js framework built around a powerful dependen
   - [Request](#request)
   - [Response](#response)
   - [Middleware](#middleware)
-  - [Pipeline](#pipeline)
-- [Exported API](#exported-api)
-  - [@ecf/core](#ecfcore)
-  - [@ecf/http](#ecfhttp)
+  - [Validation](#validation)
+- [Testing](#testing)
+- [Developer Tooling](#developer-tooling)
+- [Running Tests](#running-tests)
+- [Architecture & Governance](#architecture--governance)
 - [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
-## What is Included
+## Ecosystem Overview
 
-### `@ecf/core`
-- IoC **Container** — bind factories, resolve services, detect circular dependencies
-- **Singleton** support with instance caching
-- **Application** wrapper with provider-based bootstrapping lifecycle
-- **ServiceProvider** base class for organized service registration and boot logic
-- **ConfigManager** — dot-notation config access (`app.db.host`)
-- **LoggerManager** — pluggable transport-based logger (`info`, `warning`, `error`, `critical`)
-- **EventManager** — synchronous event dispatch with error isolation
-- **EnvManager** + **DotEnvLoader** — `.env` file loading and environment variable access
-- **Facade** system — static proxy shortcuts to container services
-- Framework-specific error hierarchy (`ECFError`, `ContainerError`, `ConfigError`, etc.)
-
-### `@ecf/http`
-- **Router** — static and dynamic route matching (`/users/{id}`)
-- **Request** — parsed URL, query string, headers, cookies, params, body, IP
-- **Response** — `text()`, `html()`, `json()`, `redirect()`, status codes, headers
-- **Middleware Pipeline** — composable middleware chain per request
-- **MiddlewareRegistry** — global and per-route middleware registration
-- **HttpKernel** — ties router + middleware + body parser into a single request handler
-- **HttpServer** — wraps Node.js `http.createServer` with a clean API
-- **HttpServiceProvider** — registers the entire HTTP stack with one line
+```
+ECF Monorepo (35 packages)
+│
+├── Foundation Layer
+│   ├── @ecf/core          — IoC container, app lifecycle, facades, logger, events, env
+│   ├── @ecf/contracts     — Interface contracts and shared type definitions
+│   └── @ecf/support       — Utility helpers: Arr, Str, Collection, Fluent, Macroable
+│
+├── HTTP & Presentation
+│   ├── @ecf/http          — Router, Request, Response, Middleware, HttpKernel, HttpServer
+│   ├── @ecf/validation    — Pipe-based validation engine, 40+ built-in rules, fluent builder
+│   └── @ecf/view          — AST template engine, layouts, components, directives
+│
+├── Data Layer
+│   ├── @ecf/database      — Eloquent Active Record ORM, schema builder, migrations, seeders
+│   ├── @ecf/cache         — Multi-driver cache with stampede protection
+│   └── @ecf/search        — Vector + full-text search, faceting, ReRanker pipeline
+│
+├── Enterprise Services
+│   ├── @ecf/auth          — Guards, JWT, session, multi-driver auth
+│   ├── @ecf/queue         — BullMQ-compatible job queues, retries, batches
+│   ├── @ecf/mail          — Nodemailer, Mailable classes, queued delivery
+│   ├── @ecf/storage       — Local, S3, cloud drivers, URL signing, streams
+│   ├── @ecf/upload        — Multipart file uploads, MIME validation, size limits
+│   ├── @ecf/media         — Image resizing, audio/video transcoding (via sharp)
+│   ├── @ecf/broadcast     — WebSocket channels, presence, pub-sub
+│   ├── @ecf/notifications — Multi-channel alerts (email, SMS, Slack, push, in-app)
+│   ├── @ecf/scheduler     — Cron jobs, overlap prevention, distributed locking
+│   └── @ecf/logging       — 12 drivers, multi-channel rotation, OpenTelemetry, PII redaction
+│
+├── API Platform
+│   ├── @ecf/api           — OpenAPI generator, JSON:API resources, versioning
+│   └── @ecf/ai            — 8 AI drivers (OpenAI, Anthropic, Gemini, Ollama, Groq…), RAG, MCP
+│
+├── Developer Tooling
+│   ├── @ecf/testing       — DI test contexts, HTTP assertions, model factories, snapshots
+│   ├── @ecf/devkit        — AST code injection, YAML blueprint compiler, ecf doctor
+│   ├── @ecf/devtools      — Telescope-style dashboard, query inspector, job monitor
+│   ├── @ecf/cli           — ecf new, ecf make:*, ecf migrate, scaffold tooling
+│   ├── @ecf/console       — Artisan-style commands, argument parsing, interactive prompts
+│   ├── @ecf/observability — OpenTelemetry tracing, metrics, span instrumentation
+│   ├── @ecf/skeleton      — Application starter bootstrap structure
+│   └── @ecf/config        — Dot-notation config, environment layering, reactive events
+│
+└── ORM Extensions
+    ├── @ecf/audit         — Full model change audit trail
+    ├── @ecf/sluggable     — Auto URL-friendly slugs
+    ├── @ecf/soft-deletes  — deleted_at soft delete behavior
+    ├── @ecf/timestamps    — created_at / updated_at auto-management
+    └── @ecf/uuids         — UUID primary keys
+```
 
 ---
 
-## Package Structure
+## Package Catalog
 
-```
-ecf/
-├── apps/
-│   └── halo/              # Demo application
-│       └── app.js
-├── packages/
-│   ├── core/              # @ecf/core — IoC container, providers, config, logger, events, env
-│   │   ├── src/
-│   │   └── tests/
-│   ├── http/              # @ecf/http — routing, request, response, middleware
-│   │   ├── src/
-│   │   └── tests/
-│   ├── commerce/          # Planned — e-commerce utilities
-│   └── view/              # Planned — .ecf template engine
-├── docs/
-│   └── ecf-framework.md
-├── tools/                 # Planned — CLI and scaffolding
-└── pnpm-workspace.yaml
-```
+| Package | Version | Description |
+|---|---|---|
+| `@ecf/core` | `1.0.0-rc.1` | IoC container, application lifecycle, facades, config, logger, events, env |
+| `@ecf/contracts` | `1.0.0-rc.1` | Interface contracts and type definitions |
+| `@ecf/support` | `1.0.0-rc.1` | Arr, Str, Collection, LazyCollection, Fluent, Macroable |
+| `@ecf/http` | `1.0.0-rc.1` | Router, Request, Response, Middleware, HttpKernel, HttpServer |
+| `@ecf/validation` | `1.0.0-rc.1` | Pipe-based rules, fluent builder, nested fields, array wildcards |
+| `@ecf/view` | `1.0.0-rc.1` | AST template engine, layouts, components, directives |
+| `@ecf/database` | `1.0.0-rc.1` | Eloquent Active Record ORM, QueryBuilder, migrations, seeders |
+| `@ecf/cache` | `1.0.0-rc.1` | Multi-driver cache, stampede protection, tagged invalidation |
+| `@ecf/search` | `1.0.0-rc.1` | Vector + full-text search, faceting, ReRanker pipeline |
+| `@ecf/auth` | `1.0.0-rc.1` | Guards, JWT, session management, multi-driver auth |
+| `@ecf/queue` | `1.0.0-rc.1` | Job queues, retries, delayed jobs, batch processing |
+| `@ecf/mail` | `1.0.0-rc.1` | Nodemailer, Mailable classes, queued delivery |
+| `@ecf/storage` | `1.0.0-rc.1` | Local, S3, cloud drivers, URL signing, streams |
+| `@ecf/upload` | `1.0.0-rc.1` | Multipart uploads, MIME validation, size limits |
+| `@ecf/media` | `1.0.0-rc.1` | Image/audio/video processing via sharp |
+| `@ecf/broadcast` | `1.0.0-rc.1` | WebSocket channels, presence, event-driven pub-sub |
+| `@ecf/notifications` | `1.0.0-rc.1` | Email, SMS, Slack, push, in-app multi-channel notifications |
+| `@ecf/scheduler` | `1.0.0-rc.1` | Cron jobs, overlap prevention, distributed locking |
+| `@ecf/logging` | `1.0.0-rc.1` | 12 drivers, multi-channel rotation, OpenTelemetry, PII redaction |
+| `@ecf/api` | `1.0.0-rc.1` | OpenAPI generator, JSON:API resources, versioning, rate limiting |
+| `@ecf/ai` | `1.0.0-rc.1` | OpenAI/Anthropic/Gemini/Ollama/Groq drivers, streaming, RAG, MCP |
+| `@ecf/testing` | `1.0.0-rc.1` | DI test contexts, HTTP/DB assertions, model factories, time travel |
+| `@ecf/devkit` | `1.0.0-rc.1` | AST code injection, YAML blueprint compiler, ecf doctor/validate |
+| `@ecf/devtools` | `1.0.0-rc.1` | Telescope-style dashboard, query inspector, job monitor |
+| `@ecf/cli` | `1.0.0-rc.1` | `ecf new`, `ecf make:*`, `ecf migrate`, scaffold tooling |
+| `@ecf/console` | `1.0.0-rc.1` | Artisan-style commands, argument parsing, interactive prompts |
+| `@ecf/observability` | `1.0.0-rc.1` | OpenTelemetry tracing, metrics, span instrumentation |
+| `@ecf/skeleton` | `1.0.0-rc.1` | Application starter bootstrap structure |
+| `@ecf/config` | `1.0.0-rc.1` | Dot-notation config, environment layering, reactive events |
+| `@ecf/audit` | `1.0.0` | ORM plugin — full model change audit trail |
+| `@ecf/sluggable` | `1.0.0` | ORM plugin — auto URL-friendly slugs |
+| `@ecf/soft-deletes` | `1.0.0` | ORM plugin — deleted_at soft delete behavior |
+| `@ecf/timestamps` | `1.0.0` | ORM plugin — created_at / updated_at auto-management |
+| `@ecf/uuids` | `1.0.0` | ORM plugin — UUID primary keys |
 
 ---
 
@@ -94,52 +163,36 @@ ecf/
 
 - **Node.js** `>=22`
 - **pnpm** `>=11` (workspace management)
-- ECMAScript Module format (`"type": "module"`)
+- ESM modules (`"type": "module"`)
 
 ---
 
 ## Installation
 
+Clone the repository and install all dependencies:
+
 ```bash
+git clone https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git
+cd ECF-Elegant-Core-Framework
 pnpm install
 ```
 
 ---
 
-## Running Tests
+## Quick Start
 
-Run all tests across all packages from the repository root:
-
-```bash
-pnpm test
-```
-
-Run tests for a single package:
-
-```bash
-# Core tests
-cd packages/core && node --test
-
-# HTTP tests
-cd packages/http && node --test
-```
-
----
-
-## Quick Start — HTTP Server
-
-The fastest way to start an ECF HTTP server:
+### HTTP Server
 
 ```js
-import { Application, Facade, HttpServiceProvider, Route } from "@ecf/http";
+import { Application, Facade } from "@ecf/core";
+import { HttpServiceProvider, Route } from "@ecf/http";
 
-// 1. Bootstrap the application
 const app = new Application();
 app.register(HttpServiceProvider);
 app.boot();
 Facade.setApplication(app);
 
-// 2. Define routes
+// Define routes
 Route.get("/", (req, res) => {
     return res.json({ message: "Hello from ECF!" });
 });
@@ -154,9 +207,71 @@ Route.post("/users", async (req, res) => {
     return res.status(201).json({ created: true, data: body });
 });
 
-// 3. Start listening
+// Start the server
 app.listen(3000, () => {
     console.log("ECF running at http://localhost:3000");
+});
+```
+
+### With Database
+
+```js
+import { Application, Facade } from "@ecf/core";
+import { HttpServiceProvider } from "@ecf/http";
+import { DatabaseServiceProvider, DB } from "@ecf/database";
+
+const app = new Application();
+app.register(DatabaseServiceProvider);
+app.register(HttpServiceProvider);
+app.boot();
+Facade.setApplication(app);
+
+// Query using the DB facade
+const users = await DB.table("users").where("active", true).get();
+
+// Using an Active Record model
+class User extends DB.Model {
+    static table = "users";
+}
+
+const user = await User.find(1);
+const active = await User.where("active", true).orderBy("name").get();
+```
+
+### With Auth & Validation
+
+```js
+import { Application, Facade } from "@ecf/core";
+import { HttpServiceProvider, Route } from "@ecf/http";
+import { Validator } from "@ecf/validation";
+import { AuthServiceProvider, Auth } from "@ecf/auth";
+
+const app = new Application();
+app.register(AuthServiceProvider);
+app.register(HttpServiceProvider);
+app.boot();
+Facade.setApplication(app);
+
+Route.post("/login", async (req, res) => {
+    const body = await req.body();
+
+    // Validate input
+    const validator = new Validator(body, {
+        email: "required|email",
+        password: "required|min:8",
+    });
+
+    if (validator.fails()) {
+        return res.status(422).json({ errors: validator.errors() });
+    }
+
+    // Attempt login
+    const token = await Auth.attempt(body.email, body.password);
+    if (!token) {
+        return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    return res.json({ token });
 });
 ```
 
@@ -164,178 +279,143 @@ app.listen(3000, () => {
 
 ## Core Concepts
 
-### Container
+### Container & Application
 
-The IoC container is the heart of ECF. It manages service bindings, singleton instances, and dependency resolution.
+The IoC container is the heart of ECF. It manages service bindings, singleton instances, and dependency resolution with built-in circular dependency detection.
 
 ```js
-import { Container } from "@ecf/core";
+import { Container, Application, ServiceProvider } from "@ecf/core";
 
+// Low-level container
 const container = new Container();
 
-// Register a factory (new instance on every make())
-container.bind("logger", () => ({
-    log: (msg) => console.log(msg)
-}));
-
-// Register a singleton (same instance every time)
-container.singleton("config", () => ({
-    env: "production",
-    port: 3000
-}));
+container.bind("logger", () => ({ log: (msg) => console.log(msg) }));
+container.singleton("config", () => ({ env: "production", port: 3000 }));
 
 const logger = container.make("logger");
-logger.log("Hello ECF");
-
 const cfg1 = container.make("config");
 const cfg2 = container.make("config");
-console.log(cfg1 === cfg2); // true — same instance
+console.log(cfg1 === cfg2); // true — singleton
 
-// Check, forget, flush
 container.has("config");   // true
 container.forget("config");
-container.flush();          // clears everything
-```
+container.flush();
 
-Circular dependency detection is built in:
-
-```js
-container.bind("a", (c) => c.make("b"));
-container.bind("b", (c) => c.make("a"));
-container.make("a"); // throws ContainerError: Circular dependency detected: a -> b -> a
-```
-
----
-
-### Application
-
-`Application` is a thin wrapper over `Container` that adds the service provider lifecycle.
-
-```js
-import { Application, ServiceProvider } from "@ecf/core";
-
-class DatabaseProvider extends ServiceProvider {
+// Application — adds provider lifecycle on top of Container
+class AppProvider extends ServiceProvider {
     register(app) {
-        app.singleton("database", () => ({ connected: true }));
+        app.singleton("mailer", () => new Mailer());
     }
-
     boot(app) {
-        const db = app.make("database");
-        console.log("Database ready:", db.connected);
+        const mailer = app.make("mailer");
+        mailer.connect();
     }
 }
 
 const app = new Application();
-app.register(DatabaseProvider);
+app.register(AppProvider);
 app.boot();
-
-console.log(app.make("database").connected); // true
 ```
 
-**Application methods:**
+**Application Methods:**
 
 | Method | Description |
 |---|---|
 | `bind(name, factory)` | Register a transient service |
 | `singleton(name, factory)` | Register a singleton service |
-| `make(name)` | Resolve a service from the container |
-| `has(name)` | Check if a binding exists |
+| `make(name)` | Resolve a service |
+| `has(name)` | Check if binding exists |
 | `forget(name)` | Remove a binding |
 | `flush()` | Clear all bindings |
 | `register(ProviderClass)` | Register a service provider |
-| `boot()` | Run all provider `register()` then `boot()` hooks |
-| `use(middleware)` | Register a global HTTP middleware |
-| `listen(port, [host], [callback])` | Start the HTTP server |
+| `boot()` | Run all `register()` then `boot()` hooks |
+| `use(middleware)` | Register global HTTP middleware |
+| `listen(port, [callback])` | Start the HTTP server |
 
 ---
 
 ### Service Providers
 
-Service providers give structure to service registration. Every provider extends `ServiceProvider` and implements `register()` and/or `boot()`.
+Providers give structure to service registration. Every provider extends `ServiceProvider` and implements `register()` and/or `boot()`.
 
 ```js
 import { ServiceProvider } from "@ecf/core";
 
 class CacheProvider extends ServiceProvider {
     register(app) {
-        // register services here — other providers may not be ready yet
+        // register here — other providers may not be ready yet
         app.singleton("cache", () => new Map());
     }
 
     boot(app) {
         // all providers are registered by this point
-        // safe to resolve other services here
         const config = app.make("config");
-        console.log("Cache booted with config:", config.get("cache.driver"));
+        console.log("Cache driver:", config.get("cache.driver"));
     }
 }
 ```
 
-**Built-in providers (`@ecf/core`):**
+**Built-in Core Providers:**
 
-| Provider | Binding key | Description |
+| Provider | Binding | Description |
 |---|---|---|
 | `ConfigServiceProvider` | `"config"` | Registers `ConfigManager` |
 | `LoggerServiceProvider` | `"logger"` | Registers `LoggerManager` with `ConsoleTransport` |
 | `EventServiceProvider` | `"event"` | Registers `EventManager` |
-| `EnvironmentServiceProvider` | `"env"` | Loads `.env` file and registers `EnvManager` |
-| `DatabaseServiceProvider` | `"database"` | Stub — placeholder for Phase 4 |
+| `EnvironmentServiceProvider` | `"env"` | Loads `.env` and registers `EnvManager` |
+| `CoreServiceProvider` | — | Bootstraps all core sub-systems |
+| `DatabaseServiceProvider` | `"database"` | Registers database connection and ORM |
 
-**Built-in providers (`@ecf/http`):**
+**HTTP Provider:**
 
-| Provider | Binding keys | Description |
+| Provider | Binding Keys | Description |
 |---|---|---|
-| `HttpServiceProvider` | `"router"`, `"middleware.registry"`, `"middleware.resolver"`, `"http.kernel"`, `"http.server"` | Registers the full HTTP stack |
+| `HttpServiceProvider` | `"router"`, `"http.kernel"`, `"http.server"`, … | Full HTTP stack |
 
 ---
 
 ### Facades
 
-Facades are static proxies to container services. They provide a clean, short-hand API without manually calling `app.make()`.
+Facades are static proxies to container services — clean, short-hand API without manual `app.make()`.
 
 ```js
-import { Application, Facade } from "@ecf/core";
 import { Config, Log, Event, Env } from "@ecf/core";
+import { Route } from "@ecf/http";
 
-const app = new Application();
-// ... register providers and boot ...
-Facade.setApplication(app);  // wire facades to the application
+// Must call once after boot()
+Facade.setApplication(app);
 
-// Now use facades statically
+// Config
 Config.set("app.name", "ECF");
-Config.get("app.name");              // "ECF"
+Config.get("app.name");               // "ECF"
+Config.get("missing.key", "default"); // "default"
 
+// Logger
 Log.info("Server started", { port: 3000 });
-Log.error("Something went wrong", { code: 500 });
+Log.warning("High memory usage");
+Log.error("Request failed", { status: 500 });
+Log.critical("Database unreachable");
 
+// Events
 Event.listen("user.created", (payload) => {
     console.log("New user:", payload.name);
 });
-Event.dispatch("user.created", { name: "John" });
+Event.dispatch("user.created", { name: "Alice" });
 
+// Environment
 Env.get("DB_HOST", "localhost");
+Env.has("APP_KEY"); // true / false
+
+// Routing
+Route.get("/", handler);
+Route.post("/users", [UserController, "store"]);
 ```
-
-**Available core facades:**
-
-| Facade | Accessor | Backed by |
-|---|---|---|
-| `Config` | `"config"` | `ConfigManager` |
-| `Log` | `"logger"` | `LoggerManager` |
-| `Event` | `"event"` | `EventManager` |
-| `Env` | `"env"` | `EnvManager` |
-
-**HTTP facade:**
-
-| Facade | Accessor | Backed by |
-|---|---|---|
-| `Route` | `"router"` | `Router` |
 
 ---
 
 ### Config
 
-`ConfigManager` supports dot-notation paths for nested configuration.
+`ConfigManager` supports dot-notation paths for deeply nested configuration.
 
 ```js
 import { ConfigManager } from "@ecf/core";
@@ -343,13 +423,13 @@ import { ConfigManager } from "@ecf/core";
 const config = new ConfigManager();
 
 config.set("app.name", "ECF");
-config.set("app.debug", true);
 config.set("database.host", "localhost");
 config.set("database.port", 5432);
 
-config.get("app.name");           // "ECF"
-config.get("database.port");      // 5432
-config.get("missing.key", "default"); // "default"
+config.get("app.name");                   // "ECF"
+config.get("database.port");              // 5432
+config.get("missing.key", "default");     // "default"
+config.has("database.host");              // true
 ```
 
 ---
@@ -359,25 +439,21 @@ config.get("missing.key", "default"); // "default"
 `LoggerManager` routes log calls to pluggable transports.
 
 ```js
-import { LoggerManager, ConsoleTransport } from "@ecf/core";
+import { LoggerManager, ConsoleTransport, Transport } from "@ecf/core";
 
 const logger = new LoggerManager();
 logger.addTransport(new ConsoleTransport());
 
 logger.info("App started");
 logger.warning("Disk space low", { free: "500MB" });
-logger.error("Request failed", { status: 500, url: "/api/users" });
+logger.error("Request failed", { status: 500 });
 logger.critical("Database connection lost");
-```
+logger.debug("Query executed", { sql: "SELECT * FROM users", ms: 3 });
 
-**Creating a custom transport:**
-
-```js
-import { Transport } from "@ecf/core";
-
+// Custom transport
 class FileTransport extends Transport {
     log(level, message, context = {}) {
-        // write to a file
+        // write to a log file
     }
 }
 
@@ -389,25 +465,20 @@ logger.removeTransport(existingTransport);
 
 ### Events
 
-`EventManager` provides synchronous event broadcasting with built-in error isolation (one failing listener does not block others).
+`EventManager` provides synchronous event broadcasting with built-in error isolation.
 
 ```js
-import { EventManager, LoggerManager, ConsoleTransport } from "@ecf/core";
-
-const logger = new LoggerManager();
-logger.addTransport(new ConsoleTransport());
+import { EventManager } from "@ecf/core";
 
 const events = new EventManager(logger);
 
-// Listen
 events.listen("order.placed", (payload) => {
     console.log("Order placed:", payload.orderId);
 });
 
-// Dispatch — returns array of any listener errors
+// Returns array of any listener errors
 const errors = events.dispatch("order.placed", { orderId: 42 });
 
-// Check / remove
 events.has("order.placed");    // true
 events.forget("order.placed"); // remove all listeners for this event
 events.clear();                // remove all events
@@ -420,7 +491,6 @@ events.clear();                // remove all events
 `EnvironmentServiceProvider` automatically loads `.env` from `process.cwd()` on boot.
 
 ```env
-# .env
 APP_NAME=ECF
 APP_PORT=3000
 DB_HOST=localhost
@@ -430,15 +500,17 @@ DB_PASSWORD=secret
 ```js
 import { EnvManager, DotEnvLoader } from "@ecf/core";
 
-const loader = new DotEnvLoader();
-const parsed = loader.load("./.env"); // { APP_NAME: "ECF", APP_PORT: "3000", ... }
+// Manual loading
+const parsed = DotEnvLoader.load("./.env"); // { APP_NAME: "ECF", ... }
 
+// Via EnvManager
 const env = new EnvManager();
 env.set("APP_NAME", "ECF");
-env.get("APP_NAME");             // "ECF"
-env.get("MISSING", "fallback"); // "fallback"
-env.has("APP_NAME");             // true
-env.all();                       // { APP_NAME: "ECF", ... }
+env.get("APP_NAME");              // "ECF"
+env.get("MISSING", "fallback");   // "fallback"
+env.has("APP_NAME");              // true
+env.all();                        // { APP_NAME: "ECF", ... }
+env.clear();
 ```
 
 ---
@@ -447,26 +519,20 @@ env.all();                       // { APP_NAME: "ECF", ... }
 
 ### Routing
 
-The `Router` supports static and dynamic (parameterized) routes. Import the `Route` facade for a clean API.
-
 ```js
 import { Route } from "@ecf/http";
 
-// HTTP methods
-Route.get("/",            (req, res) => res.text("Home"));
-Route.post("/users",      (req, res) => res.json({ created: true }));
-Route.put("/users/{id}",  (req, res) => res.json({ updated: true }));
-Route.patch("/users/{id}",(req, res) => res.json({ patched: true }));
-Route.delete("/users/{id}",(req, res) => res.json({ deleted: true }));
-Route.head("/health",     (req, res) => res.status(200).end());
-Route.options("/",        (req, res) => res.status(204).end());
+// All HTTP verbs
+Route.get("/",              (req, res) => res.json({ ok: true }));
+Route.post("/users",        (req, res) => res.status(201).json({ created: true }));
+Route.put("/users/{id}",    (req, res) => res.json({ updated: true }));
+Route.patch("/users/{id}",  (req, res) => res.json({ patched: true }));
+Route.delete("/users/{id}", (req, res) => res.json({ deleted: true }));
+Route.any("/webhook",       (req, res) => res.json({ ok: true }));
 
-// Register for all methods
-Route.any("/webhook", (req, res) => res.json({ ok: true }));
-
-// Dynamic parameters — accessed via req.params
+// Dynamic parameters
 Route.get("/users/{id}", (req, res) => {
-    const { id } = req.params; // "42"
+    const { id } = req.params;
     return res.json({ id });
 });
 
@@ -476,53 +542,56 @@ Route.get("/users/{userId}/posts/{postId}", (req, res) => {
     return res.json({ userId, postId });
 });
 
-// Controller tuple syntax — [ControllerClass, "methodName"]
+// Controller syntax
 Route.get("/users", [UserController, "index"]);
 Route.post("/users", [UserController, "store"]);
+
+// Route groups and prefixes
+Route.group("/api/v1", () => {
+    Route.get("/users", [UserController, "index"]);
+    Route.post("/users", [UserController, "store"]);
+});
+
+// Named routes
+Route.get("/users/{id}", handler).name("users.show");
 ```
 
-**Important:** Static routes must be defined **before** dynamic routes with overlapping segments:
-
-```js
-Route.get("/users/new",      handler); // define first
-Route.get("/users/{id}",     handler); // define after
-```
+> **Note:** Define static routes **before** overlapping dynamic routes:
+> ```js
+> Route.get("/users/new", handler);  // static first
+> Route.get("/users/{id}", handler); // dynamic after
+> ```
 
 ---
 
 ### Request
 
 ```js
-Route.get("/example", (req, res) => {
-    // Method & URL
-    req.method;         // "GET"
-    req.url;            // "/example?sort=asc"
-    req.path;           // "/example"
+Route.get("/example", async (req, res) => {
+    req.method;           // "GET"
+    req.url;              // "/example?sort=asc"
+    req.path;             // "/example"
+    req.query;            // { sort: "asc" }
+    req.params;           // { id: "42" } — set by router
+    req.headers;          // frozen copy of all headers
 
-    // Query string
-    req.query;          // { sort: "asc" }
+    req.header("content-type");      // "application/json"
+    req.hasHeader("authorization");  // true / false
 
-    // Route params
-    req.params;         // { id: "42" } — set by router
+    req.cookies;          // { session: "abc123" }
 
-    // Headers
-    req.header("content-type");   // "application/json"
-    req.hasHeader("authorization"); // true / false
-    req.headers;                  // frozen copy of all headers
+    const body = await req.body();   // parsed request body
 
-    // Cookies
-    req.cookies;        // { session: "abc123" }
+    req.ip;               // "127.0.0.1"
+    req.protocol;         // "http" or "https"
+    req.secure;           // false
+    req.host;             // "localhost:3000"
+    req.origin;           // "http://localhost:3000"
+    req.userAgent;        // "Mozilla/5.0 ..."
 
-    // Body — async, delegates to BodyParserManager
-    const body = await req.body(); // {}  (note: parser not yet implemented)
-
-    // Network info
-    req.ip;             // "127.0.0.1"
-    req.protocol;       // "http" or "https"
-    req.secure;         // false
-    req.host;           // "localhost:3000"
-    req.origin;         // "http://localhost:3000"
-    req.userAgent;      // "Mozilla/5.0 ..."
+    req.isJson();         // true if Content-Type is application/json
+    req.wantsJson();      // true if Accept is application/json
+    req.isXhr();          // true if X-Requested-With: XMLHttpRequest
 
     return res.json({ ok: true });
 });
@@ -534,37 +603,26 @@ Route.get("/example", (req, res) => {
 
 ```js
 Route.get("/demo", (req, res) => {
-    // Text response
-    res.text("Hello World");
+    res.text("Hello World");                      // text/plain
+    res.html("<h1>Hello</h1>");                   // text/html
+    res.json({ message: "ok", data: [1, 2, 3] }); // application/json
 
-    // HTML response
-    res.html("<h1>Hello</h1>");
-
-    // JSON response
-    res.json({ message: "ok", data: [1, 2, 3] });
-
-    // Set status code
     res.status(201).json({ created: true });
     res.status(404).text("Not Found");
 
-    // Set headers
     res.header("X-Request-Id", "abc-123");
     res.hasHeader("X-Request-Id"); // true
     res.removeHeader("X-Request-Id");
 
-    // Redirect
-    res.redirect("/new-location");          // 302
-    res.redirect("/permanent", 301);        // 301
+    res.redirect("/new-location");    // 302
+    res.redirect("/permanent", 301); // 301
 
-    // End with no body
     res.status(204).end();
 
-    // Send raw — auto-detects type
-    res.send("plain string");   // sends as-is
-    res.send({ key: "value" }); // auto-serializes to JSON
-    res.send(Buffer.from("binary")); // sends buffer
+    res.send("plain string");         // auto content-type
+    res.send({ key: "value" });       // auto JSON
+    res.send(Buffer.from("binary"));  // buffer
 
-    // Check if already sent
     res.headersSent; // true / false
 });
 ```
@@ -573,30 +631,23 @@ Route.get("/demo", (req, res) => {
 
 ### Middleware
 
-Middleware intercepts requests before they reach the route handler.
-
-**Function-style middleware:**
-
 ```js
+import { Middleware } from "@ecf/http";
+
+// Function-style
 const logger = (req, res, next) => {
     console.log(`${req.method} ${req.path}`);
-    return next(); // call next to continue the chain
+    return next();
 };
 
 const auth = (req, res, next) => {
-    const token = req.header("authorization");
-    if (!token) {
+    if (!req.header("authorization")) {
         return res.status(401).json({ error: "Unauthorized" });
     }
     return next();
 };
-```
 
-**Class-style middleware (extends `Middleware`):**
-
-```js
-import { Middleware } from "@ecf/http";
-
+// Class-style
 class CorsMiddleware extends Middleware {
     handle(req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
@@ -604,192 +655,260 @@ class CorsMiddleware extends Middleware {
         return next();
     }
 }
-```
 
-**Registering global middleware (runs on every request):**
-
-```js
-// On the application instance
+// Global middleware (every request)
 app.use(logger);
-app.use(auth);
 app.use(new CorsMiddleware());
+
+// Route-specific middleware
+Route.use("GET", "/dashboard", auth);
+Route.get("/dashboard", (req, res) => res.json({ secret: true }));
 ```
 
-**Registering route-specific middleware:**
+---
+
+### Validation
+
+`@ecf/validation` provides a Laravel-inspired pipe validation engine.
 
 ```js
-// Via the Route facade
-Route.use("GET", "/users/new", auth);
-Route.get("/users/new", (req, res) => {
-    return res.html("<h1>New User Form</h1>");
+import { Validator, Rule } from "@ecf/validation";
+
+const data = {
+    name: "Alice",
+    email: "alice@example.com",
+    age: 25,
+    role: "admin",
+};
+
+const validator = new Validator(data, {
+    name:  "required|min:2|max:100",
+    email: "required|email",
+    age:   "required|integer|between:18,120",
+    role:  "required|in:admin,editor,viewer",
+});
+
+if (validator.fails()) {
+    return res.status(422).json({ errors: validator.errors() });
+}
+
+const validated = validator.validated(); // only validated keys
+
+// Fluent Rule builder
+const rules = {
+    password: [
+        Rule.required(),
+        Rule.min(8),
+        Rule.confirmed(),
+    ],
+    tags: [
+        Rule.array(),
+        Rule.max(10),
+    ],
+};
+
+// Nested fields
+const nestedRules = {
+    "user.email":       "required|email",
+    "user.profile.bio": "max:500",
+    "tags.*.name":      "required|string",
+};
+
+// Custom rules
+validator.extend("uppercase", (value) => {
+    return value === value.toUpperCase() || "The :attribute must be uppercase.";
 });
 ```
 
 ---
 
-### Pipeline
+## Testing
 
-The `Pipeline` executes middleware in order and calls the final destination handler.
-
-```js
-import { Pipeline, Request, Response } from "@ecf/http";
-
-const pipeline = new Pipeline();
-
-const result = await pipeline
-    .send(request, response)
-    .through([logger, auth, new CorsMiddleware()])
-    .then((req, res) => handler(req, res));
-```
-
-The pipeline is built using `reduceRight` — middleware is executed in the order it is passed to `through()`, with each calling `next()` to proceed.
-
----
-
-## Exported API
-
-### `@ecf/core`
+`@ecf/testing` provides a complete testing toolkit built on Node.js native `node:test`.
 
 ```js
-import {
-    // Application
-    Application,
-    Container,
-    ServiceProvider,
-    Facade,
+import { test } from "node:test";
+import { TestApplication, TestHttpClient, makeFactory } from "@ecf/testing";
 
-    // Errors
-    ECFError,
-    ContainerError,
-    ConfigError,
-    LoggerError,
-    EventError,
-    EnvError,
+// DI Test Context
+test("resolves service from container", async (t) => {
+    await TestApplication.run(async ({ app }) => {
+        const config = app.make("config");
+        assert.strictEqual(config.get("app.name"), "ECF");
+    });
+});
 
-    // Config
-    ConfigManager,
-    ConfigServiceProvider,
-    Config,                     // Facade
+// HTTP Assertions
+test("GET /users returns 200", async (t) => {
+    const client = new TestHttpClient(app);
+    const res = await client.get("/api/v1/users");
 
-    // Logger
-    LoggerManager,
-    LoggerServiceProvider,
-    Log,                        // Facade
-    Transport,
-    ConsoleTransport,
+    res.assertStatus(200);
+    res.assertJson({ success: true });
+    res.assertJsonCount("data", 3);
+});
 
-    // Events
-    EventManager,
-    EventServiceProvider,
-    Event,                      // Facade
+// Model Factories
+const UserFactory = makeFactory({
+    name: () => "Test User",
+    email: () => `user_${Date.now()}@test.com`,
+    active: true,
+});
 
-    // Environment
-    EnvManager,
-    DotEnvLoader,
-    EnvironmentServiceProvider,
-    Env,                        // Facade
+const user = UserFactory.create();
+const users = UserFactory.createMany(5);
+const admin = UserFactory.state({ role: "admin" }).create();
 
-    // Database (stub)
-    DatabaseServiceProvider,
-} from "@ecf/core";
-```
+// Time Travel
+import { TimeTravel } from "@ecf/testing";
 
-### `@ecf/http`
+TimeTravel.freeze("2025-01-01T00:00:00Z");
+// ... test time-sensitive logic ...
+TimeTravel.restore();
 
-```js
-import {
-    // Re-exported from @ecf/core
-    Application,
-    Container,
-    ServiceProvider,
-    Facade,
-    ConfigManager,
-    ConfigError,
-    ContainerError,
-    ECFError,
-
-    // HTTP
-    Request,
-    Response,
-    Route,                      // Facade → Router
-    Router,
-    Pipeline,
-    Middleware,
-    HttpKernel,
-    HttpServer,
-    HttpServiceProvider,
-    MiddlewareRegistry,
-
-    // Errors
-    RequestError,
-    ResponseError,
-    RouterError,
-    RouteError,
-    PipelineError,
-    HttpKernelError,
-    HttpServerError,
-    MiddlewareRegistryError,
-} from "@ecf/http";
+// Snapshot Testing
+import { Snapshot } from "@ecf/testing";
+Snapshot.assert("response-shape", actualData);
 ```
 
 ---
 
+## Developer Tooling
+
+### DevKit — Code Generation
+
+```bash
+# Create a new ECF project
+ecf new my-app
+
+# Generate code
+ecf make:controller UserController
+ecf make:model User
+ecf make:migration create_users_table
+ecf make:provider AuthServiceProvider
+ecf make:command SendWelcomeEmail
+
+# Validate architecture
+ecf validate
+ecf architecture
+ecf doctor
+
+# Undo last generation
+ecf undo
+```
+
+### AI Engine
+
+```js
+import { AI, Driver } from "@ecf/ai";
+
+// Simple chat
+const response = await AI.driver("openai").chat([
+    { role: "user", content: "Explain ECF in one sentence." }
+]);
+
+// Streaming
+const stream = AI.driver("anthropic").stream([
+    { role: "user", content: "Write me a service provider." }
+]);
+for await (const chunk of stream) process.stdout.write(chunk);
+
+// RAG Pipeline
+const rag = AI.rag()
+    .withChunker("markdown")
+    .withEmbedder("openai")
+    .withReranker("cross-encoder")
+    .withMemory();
+
+const answer = await rag.ask("How does the container work?", documents);
+```
+
 ---
 
-## Roadmap & Ecosystem Milestones
+## Running Tests
 
-### Completed Milestones (v1.0-RC Core Stack) ✅
+Run all tests across all packages:
 
-- **Milestone 1 — `@ecf/core`**: IoC Container, Service Providers, Application Lifecycle, Config, Logger, Events, Env Manager.
-- **Milestone 2 — `@ecf/database` (Part 1)**: Connection & Multi-Driver Grammar Engine (SQLite, MySQL, Postgres).
-- **Milestone 3 — `@ecf/database` (Part 2)**: AST QueryBuilder Engine & Active Record + Data Mapper ORM.
-- **Milestone 4 — `@ecf/database` (Part 3)**: Relationship Engine, Identity Map, Eager Loading (`with`), Scope Intelligence, Observers.
-- **Milestone 5 — `@ecf/validation`**: Standalone & FormRequest validation engine, built-in & custom rules.
-- **Milestone 6 — `@ecf/http`**: Dynamic Router, Request, Response, Middleware Pipeline, HttpKernel, HttpServer, Event Bus.
-- **Milestone 7 — `@ecf/extensions`**: Modular extensions platform (`@ecf/soft-deletes`, `@ecf/timestamps`, `@ecf/uuids`, `@ecf/sluggable`, `@ecf/audit`).
-- **Milestone 8 — `@ecf/view` (Part 1)**: AST View Engine, Directives (`@if`, `@for`, `@switch`), Expression Engine, ViewCache.
-- **Milestone 9 — `@ecf/view` (Part 2)**: Layouts (`@extends`, `@section`), Components (`@component`), Stacks (`@push`, `@stack`), Composers.
-- **Milestone 10 — `@ecf/skeleton`**: Full-stack framework skeleton boilerplate.
-- **Milestone 11 — `@ecf/cli` (Part 1)**: Code Generators, Signature Parser, Stub Compiler, `ecf doctor` Diagnostics.
-- **Milestone 12 — `@ecf/cli` (Part 2)**: Full interactive CLI tooling suite.
+```bash
+pnpm test
+```
 
----
+Run TypeScript type checking:
 
-### ⭐ Milestone 12.5 — ECF Ecosystem Governance & Architecture Freeze ✅ Complete
+```bash
+pnpm typecheck
+```
 
-- 📘 **[ECOSYSTEM_ARCHITECTURE.md](docs/governance/ECOSYSTEM_ARCHITECTURE.md)**: Master Ecosystem Architecture & Layer Boundaries.
-- 📊 **[COMPATIBILITY_MATRIX.md](docs/governance/COMPATIBILITY_MATRIX.md)**: Cross-Package Compatibility Grid & Node `>=22` ESM Standards.
-- 🔄 **[PACKAGE_LIFECYCLE.md](docs/governance/PACKAGE_LIFECYCLE.md)**: 7-Stage Package Maturity & Development Standard.
-- 🚫 **[DEPENDENCY_RULES.md](docs/governance/DEPENDENCY_RULES.md)**: Allowed vs Forbidden Dependency Directions & Circular Import Elimination.
-- 🛡️ **[PUBLIC_API_GUIDE.md](docs/governance/PUBLIC_API_GUIDE.md)**: Public API Surface & Hiding Internal Subdirectories (`src/internal/`, `src/compiler/`).
-- ⚡ **[PERFORMANCE_CONTRACT.md](docs/governance/PERFORMANCE_CONTRACT.md)**: Official SLAs (>300k req/sec HTTP, <10ms View, >6M/sec ORM).
-- 🚀 **[CI_RELEASE_PIPELINE.md](docs/governance/CI_RELEASE_PIPELINE.md)**: Quality Gates & Automated Release Pipeline.
-- 🧪 **[CROSS_PACKAGE_TEST_MATRIX.md](docs/governance/CROSS_PACKAGE_TEST_MATRIX.md)**: Pairwise Cross-Package Integration Matrix.
-- 🏷️ **[API_STABILITY_POLICY.md](docs/governance/API_STABILITY_POLICY.md)**: SemVer Policy & Deprecation Directives.
-- 🌟 **[ECF_IDENTITY.md](docs/governance/ECF_IDENTITY.md)**: ECF Identity & Ecosystem Manifesto.
-- 🆕 **`@ecf/support`**: Utility package added for shared primitives (`Collection`, `Str`, `Arr`, `Macroable`, `Fluent`, `UUID/ULID`).
+Run tests for a single package:
+
+```bash
+cd packages/core && node --test
+cd packages/http && node --test
+cd packages/database && node --test
+```
+
+Run ecosystem benchmarks:
+
+```bash
+node --test packages/testing/tests/benchmarks/EcosystemBenchmark.test.js
+```
 
 ---
 
-### Upcoming Milestones 🔲
+## Architecture & Governance
 
-- 🚀 **Milestone 13 — `@ecf/console`**: Artisan-grade interactive CLI command framework.
-- 🛠️ **Milestone 14 — `@ecf/devtools`**: Debug bar, profiler, query timeline, route inspector.
-- ⚡ **Milestone 15 — `@ecf/queue`**: Jobs, workers, scheduler, event-driven queues, Redis / DB drivers.
-- 📚 **Milestone 16 — Production Documentation & Release Candidate**: Documentation Website, API Reference, Benchmarks & v1.0.0 Stable Release.
+The full ecosystem architecture and governance documents live in [`docs/governance/`](docs/governance/):
+
+| Document | Description |
+|---|---|
+| [ECOSYSTEM_ARCHITECTURE.md](docs/governance/ECOSYSTEM_ARCHITECTURE.md) | Layer boundaries and package dependency rules |
+| [PACKAGE_CATALOG.md](docs/governance/PACKAGE_CATALOG.md) | Maturity status for all 35 packages |
+| [API_STABILITY_POLICY.md](docs/governance/API_STABILITY_POLICY.md) | SemVer policy and deprecation directives |
+| [COMPATIBILITY_MATRIX.md](docs/governance/COMPATIBILITY_MATRIX.md) | Cross-package compatibility grid |
+| [PERFORMANCE_CONTRACT.md](docs/governance/PERFORMANCE_CONTRACT.md) | Official performance SLAs |
+| [DEPENDENCY_RULES.md](docs/governance/DEPENDENCY_RULES.md) | Allowed vs. forbidden dependency directions |
+| [SECURITY_REVIEW_CHECKLIST.md](docs/governance/SECURITY_REVIEW_CHECKLIST.md) | Security review per package |
+| [CI_RELEASE_PIPELINE.md](docs/governance/CI_RELEASE_PIPELINE.md) | Quality gates and release pipeline |
+
+Architecture Decision Records (ADRs) are in [`docs/adr/`](docs/adr/).
 
 ---
 
-## Documentation
+## Roadmap
 
-See [docs/README.md](docs/README.md) for the master documentation index and architecture freezes.
+### ✅ Completed — v1.0.0-rc.1
 
-See [docs/ecf-framework.md](docs/ecf-framework.md) for the full framework architecture overview.
+All milestones are complete. ECF ships 35 packages covering the full server-side framework stack:
 
+- ✅ **Foundation** — `@ecf/core`, `@ecf/contracts`, `@ecf/support`
+- ✅ **HTTP & Presentation** — `@ecf/http`, `@ecf/validation`, `@ecf/view`
+- ✅ **Data Layer** — `@ecf/database`, `@ecf/cache`, `@ecf/search`
+- ✅ **Enterprise Services** — `@ecf/auth`, `@ecf/queue`, `@ecf/mail`, `@ecf/storage`, `@ecf/upload`, `@ecf/media`, `@ecf/broadcast`, `@ecf/notifications`, `@ecf/scheduler`, `@ecf/logging`
+- ✅ **API Platform** — `@ecf/api`, `@ecf/ai`
+- ✅ **Developer Tooling** — `@ecf/testing`, `@ecf/devkit`, `@ecf/devtools`, `@ecf/cli`, `@ecf/console`, `@ecf/observability`, `@ecf/skeleton`, `@ecf/config`
+- ✅ **ORM Extensions** — `@ecf/audit`, `@ecf/sluggable`, `@ecf/soft-deletes`, `@ecf/timestamps`, `@ecf/uuids`
+- ✅ **Governance** — Full architecture freeze, ADRs, governance docs, CI/CD pipeline
 
-See [issues.md](issues.md) for known bugs, missing features, and improvement opportunities.
+### 🔲 Upcoming — v1.0.0 Stable
 
-See [fix.md](fix.md) for documented solutions to known bugs.
-#   E C F - E l e g a n t - C o r e - F r a m e w o r k  
- #   E C F - E l e g a n t - C o r e - F r a m e w o r k  
- 
+- 🔲 Publish all packages to npm
+- 🔲 Documentation website and API reference
+- 🔲 Community examples and tutorials
+
+---
+
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting pull requests. All contributors must follow the [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
+---
+
+## License
+
+ECF is open-source software licensed under the [MIT License](LICENSE).
+
+---
+
+<div align="center">
+  <strong>Built with ❤️ by the ECF Team</strong>
+</div>

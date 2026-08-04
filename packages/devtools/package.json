@@ -1,6 +1,7 @@
 {
   "name": "@ecf/devtools",
   "version": "1.0.0-rc.1",
+  "description": "ECF interactive developer dashboard — Telescope-style query inspector, log viewer, and job monitor",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,13 @@
   },
   "scripts": {
     "test": "node --test tests/**/*.test.js"
+  },
+  "keywords": ["ecf", "framework", "devtools", "dashboard", "telescope", "inspector", "debug"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/devtools"
   },
   "engines": {
     "node": ">=22"

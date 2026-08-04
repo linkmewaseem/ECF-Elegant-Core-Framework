@@ -1,6 +1,7 @@
 {
   "name": "@ecf/database",
-  "version": "0.1.0-alpha.1",
+  "version": "1.0.0-rc.1",
+  "description": "ECF database ORM with Eloquent-style Active Record models, schema builder, migrations, and seeders",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,16 @@
   },
   "scripts": {
     "test": "node --test"
+  },
+  "keywords": ["ecf", "framework", "database", "orm", "active-record", "migrations", "query-builder"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/database"
+  },
+  "engines": {
+    "node": ">=22"
   },
   "dependencies": {
     "@ecf/core": "workspace:*"

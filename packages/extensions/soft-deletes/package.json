@@ -1,13 +1,16 @@
 {
   "name": "@ecf/soft-deletes",
   "version": "1.0.0",
+  "description": "ECF ORM plugin that adds soft-delete behavior to models with deleted_at timestamps",
   "type": "module",
   "main": "index.js",
-  "keywords": [
-    "ecf",
-    "orm",
-    "soft-delete"
-  ],
+  "keywords": ["ecf", "orm", "soft-delete"],
   "author": "ECF Team",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/extensions/soft-deletes"
+  },
+  "engines": { "node": ">=22" }
 }

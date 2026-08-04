@@ -1,6 +1,7 @@
 {
   "name": "@ecf/observability",
   "version": "1.0.0-rc.1",
+  "description": "ECF OpenTelemetry observability package for distributed tracing, metrics, and span instrumentation",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,13 @@
   },
   "scripts": {
     "test": "node --test tests/**/*.test.js"
+  },
+  "keywords": ["ecf", "framework", "observability", "opentelemetry", "tracing", "metrics", "spans"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/observability"
   },
   "engines": { "node": ">=22" },
   "dependencies": {

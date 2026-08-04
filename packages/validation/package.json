@@ -1,6 +1,7 @@
 {
   "name": "@ecf/validation",
-  "version": "0.1.0-alpha.1",
+  "version": "1.0.0-rc.1",
+  "description": "ECF validation engine with pipe-based rules, fluent builder API, nested fields, and custom rule registration",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,13 @@
   },
   "scripts": {
     "test": "node --test"
+  },
+  "keywords": ["ecf", "framework", "validation", "rules", "validator", "pipe"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/validation"
   },
   "engines": {
     "node": ">=22"

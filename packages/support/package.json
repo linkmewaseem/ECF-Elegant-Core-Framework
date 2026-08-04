@@ -1,6 +1,7 @@
 {
   "name": "@ecf/support",
   "version": "1.0.0-rc.1",
+  "description": "ECF utility library — Arr, Str, Collection, LazyCollection, Fluent, and Macroable helpers",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,13 @@
   },
   "scripts": {
     "test": "node --test"
+  },
+  "keywords": ["ecf", "framework", "support", "helpers", "collection", "utilities"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/support"
   },
   "engines": {
     "node": ">=22"

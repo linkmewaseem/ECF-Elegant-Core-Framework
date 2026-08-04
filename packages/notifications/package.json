@@ -1,6 +1,7 @@
 {
   "name": "@ecf/notifications",
   "version": "1.0.0-rc.1",
+  "description": "ECF multi-channel notification system for email, SMS, Slack, push, and in-app notifications",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,13 @@
   },
   "scripts": {
     "test": "node --test tests/**/*.test.js"
+  },
+  "keywords": ["ecf", "framework", "notifications", "email", "sms", "push", "alerts"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/notifications"
   },
   "engines": {
     "node": ">=22"

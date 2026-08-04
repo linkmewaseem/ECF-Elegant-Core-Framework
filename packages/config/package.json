@@ -1,6 +1,7 @@
 {
   "name": "@ecf/config",
   "version": "1.0.0-rc.1",
+  "description": "ECF configuration manager with dot-notation access, environment layering, and reactive config events",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,13 @@
   },
   "scripts": {
     "test": "node --test"
+  },
+  "keywords": ["ecf", "framework", "config", "configuration", "dotenv", "env"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/config"
   },
   "engines": {
     "node": ">=22"

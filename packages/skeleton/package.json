@@ -1,10 +1,18 @@
 {
   "name": "@ecf/skeleton",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-rc.1",
+  "description": "ECF application skeleton — starter bootstrap structure for new ECF projects",
   "type": "module",
   "main": "./v1/full/bootstrap/app.js",
   "scripts": {
     "test": "node --test"
+  },
+  "keywords": ["ecf", "framework", "skeleton", "starter", "boilerplate"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/skeleton"
   },
   "engines": {
     "node": ">=22"

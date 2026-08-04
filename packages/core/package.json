@@ -1,6 +1,7 @@
 {
   "name": "@ecf/core",
-  "version": "0.1.0-alpha.1",
+  "version": "1.0.0-rc.1",
+  "description": "ECF core IoC container, application lifecycle, service providers, facades, and foundation subsystems",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,13 @@
   },
   "scripts": {
     "test": "node --test"
+  },
+  "keywords": ["ecf", "framework", "ioc", "container", "dependency-injection", "service-provider"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/core"
   },
   "engines": {
     "node": ">=22"

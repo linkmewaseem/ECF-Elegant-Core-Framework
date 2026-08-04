@@ -1,6 +1,7 @@
 {
   "name": "@ecf/events",
   "version": "1.0.0-rc.1",
+  "description": "ECF event bus with typed event classes, listeners, wildcards, and deferred dispatch",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,13 @@
   },
   "scripts": {
     "test": "node --test"
+  },
+  "keywords": ["ecf", "framework", "events", "event-bus", "listeners", "pub-sub"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/events"
   },
   "engines": {
     "node": ">=22"

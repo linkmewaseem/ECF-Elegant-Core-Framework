@@ -1,6 +1,7 @@
 {
   "name": "@ecf/mail",
   "version": "1.0.0-rc.1",
+  "description": "ECF mail system with Nodemailer integration, Mailable classes, queued delivery, and template rendering",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,13 @@
   },
   "scripts": {
     "test": "node --test tests/**/*.test.js"
+  },
+  "keywords": ["ecf", "framework", "mail", "email", "nodemailer", "smtp", "mailer"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/mail"
   },
   "engines": {
     "node": ">=22"

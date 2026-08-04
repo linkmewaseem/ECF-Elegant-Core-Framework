@@ -1,6 +1,7 @@
 {
   "name": "@ecf/cli",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-rc.1",
+  "description": "ECF command-line interface — ecf new, ecf make:*, ecf migrate, and scaffold tooling",
   "type": "module",
   "main": "./src/index.js",
   "bin": {
@@ -8,6 +9,13 @@
   },
   "scripts": {
     "test": "node --test"
+  },
+  "keywords": ["ecf", "framework", "cli", "scaffold", "codegen"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/cli"
   },
   "engines": {
     "node": ">=22"

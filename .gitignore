@@ -7,7 +7,6 @@ dist/
 .DS_Store
 .vscode/
 .idea/
-fix.md
-issues.md
-mission.md
-diagram.md
+storage/logs/
+tmp/
+*.log

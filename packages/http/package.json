@@ -1,6 +1,7 @@
 {
   "name": "@ecf/http",
-  "version": "0.1.0-alpha.1",
+  "version": "1.0.0-rc.1",
+  "description": "ECF HTTP kernel, router, request/response pipeline, middleware, controllers, and HTTP adapters",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,13 @@
   },
   "scripts": {
     "test": "node --test"
+  },
+  "keywords": ["ecf", "framework", "http", "router", "middleware", "request", "response"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/http"
   },
   "engines": {
     "node": ">=22"

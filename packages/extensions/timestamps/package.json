@@ -1,13 +1,16 @@
 {
   "name": "@ecf/timestamps",
   "version": "1.0.0",
+  "description": "ECF ORM plugin that automatically manages created_at and updated_at timestamps on models",
   "type": "module",
   "main": "index.js",
-  "keywords": [
-    "ecf",
-    "orm",
-    "timestamps"
-  ],
+  "keywords": ["ecf", "orm", "timestamps"],
   "author": "ECF Team",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/extensions/timestamps"
+  },
+  "engines": { "node": ">=22" }
 }

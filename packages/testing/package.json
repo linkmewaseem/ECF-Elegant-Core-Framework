@@ -1,6 +1,7 @@
 {
   "name": "@ecf/testing",
   "version": "1.0.0-rc.1",
+  "description": "ECF testing toolkit with DI contexts, HTTP assertions, model factories, time travel, snapshots, and benchmarks",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -16,6 +17,13 @@
   },
   "scripts": {
     "test": "node --test tests/**/*.test.js"
+  },
+  "keywords": ["ecf", "framework", "testing", "test-helpers", "factory", "assertions", "benchmarks"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/testing"
   },
   "engines": {
     "node": ">=22"

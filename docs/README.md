@@ -19,6 +19,23 @@ Welcome to the official documentation portal for **ECF (Enterprise Core Framewor
 
 ---
 
+## 🛡️ Governance & Release
+
+| Document | Purpose |
+| :--- | :--- |
+| [Package Catalog & Maturity Status](governance/PACKAGE_CATALOG.md) | Ownership, maturity stage, and documentation completeness |
+| [Release Acceptance Checklist](governance/RELEASE_ACCEPTANCE_CHECKLIST.md) | 200-point release gate before v1.0.0 |
+| [Security Review Checklist](governance/SECURITY_REVIEW_CHECKLIST.md) | Per-package security controls |
+| [API Conformance Matrix](governance/API_CONFORMANCE_MATRIX.md) | Fluent API conventions across packages |
+| [Cross-Package Test Matrix](governance/CROSS_PACKAGE_TEST_MATRIX.md) | Integration test combinations |
+| [Performance Contract](governance/PERFORMANCE_CONTRACT.md) | SLA baselines per package |
+| [Package Lifecycle](governance/PACKAGE_LIFECYCLE.md) | 7-stage maturity model |
+| [Dependency Rules](governance/DEPENDENCY_RULES.md) | Inter-package dependency boundaries |
+| [Code Quality Policy](governance/CODE_QUALITY_POLICY.md) | Lint, typecheck, and quality gates |
+| [CI Release Pipeline](governance/CI_RELEASE_PIPELINE.md) | Automated quality gate flow |
+
+---
+
 ## 📦 Package Ecosystem Matrix
 
 | Subsystem | Package | Standard / Reference |

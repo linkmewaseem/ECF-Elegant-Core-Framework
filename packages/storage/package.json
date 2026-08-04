@@ -1,6 +1,7 @@
 {
   "name": "@ecf/storage",
   "version": "1.0.0-rc.1",
+  "description": "ECF file storage system with local, S3, and cloud driver support, stream handling, and URL signing",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,13 @@
   },
   "scripts": {
     "test": "node --test tests/**/*.test.js"
+  },
+  "keywords": ["ecf", "framework", "storage", "s3", "filesystem", "disk", "cloud-storage"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/storage"
   },
   "engines": {
     "node": ">=22"

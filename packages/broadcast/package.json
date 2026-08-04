@@ -1,6 +1,7 @@
 {
   "name": "@ecf/broadcast",
   "version": "1.0.0-rc.1",
+  "description": "ECF realtime broadcast system with WebSocket channels, presence, and event-driven pub-sub",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -12,6 +13,13 @@
   },
   "scripts": {
     "test": "node --test tests/**/*.test.js"
+  },
+  "keywords": ["ecf", "framework", "broadcast", "websocket", "realtime", "channels", "pub-sub"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
+    "directory": "packages/broadcast"
   },
   "engines": {
     "node": ">=22"

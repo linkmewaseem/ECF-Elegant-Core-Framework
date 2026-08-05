@@ -11,7 +11,7 @@ This document tracks remediation of issues identified in the ECF enterprise audi
 
 | Issue | Remediation |
 |---|---|
-| Package-level README files missing for major packages | Added `README.md` for all 30 packages including `@ecf/core`, `@ecf/http`, `@ecf/database`, `@ecf/validation`, and 15 others |
+| Package-level README files missing for major packages | Added `README.md` for all 30 packages including `@ecfjs/core`, `@ecfjs/http`, `@ecfjs/database`, `@ecfjs/validation`, and 15 others |
 | Release acceptance checklist missing | Created `docs/governance/RELEASE_ACCEPTANCE_CHECKLIST.md` (200-point gate) |
 | Standardized architecture docs not uniform | Added `ARCHITECTURE.md` for 12 packages that lacked them; all 30 packages now have standardized architecture notes |
 | Deleted documentation portal | Restored `docs/` folder from git (README, chapters, ADRs, governance docs) |

@@ -1,4 +1,4 @@
-import { ECFError } from "@ecf/core";
+import { ECFError } from "@ecfjs/core";
 
 export class DatabaseException extends ECFError {
     constructor(message = "A database error occurred.", cause = null, context = {}) {

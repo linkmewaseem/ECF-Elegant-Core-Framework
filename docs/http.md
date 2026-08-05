@@ -1,13 +1,13 @@
-# HTTP Subsystem Documentation (`@ecf/http`, `@ecf/validation`, `@ecf/view`)
+# HTTP Subsystem Documentation (`@ecfjs/http`, `@ecfjs/validation`, `@ecfjs/view`)
 
 The HTTP Subsystem provides fast request routing, middleware pipelines, pipeline validation, and view rendering.
 
 ---
 
-## 🚦 HTTP Routing (`@ecf/http`)
+## 🚦 HTTP Routing (`@ecfjs/http`)
 
 ```js
-import { Router } from "@ecf/http";
+import { Router } from "@ecfjs/http";
 
 Router.get("/users", "UserController@index");
 Router.post("/users", "UserController@store");
@@ -15,10 +15,10 @@ Router.post("/users", "UserController@store");
 
 ---
 
-## 🔍 Validation Pipeline (`@ecf/validation`)
+## 🔍 Validation Pipeline (`@ecfjs/validation`)
 
 ```js
-import { Validator } from "@ecf/validation";
+import { Validator } from "@ecfjs/validation";
 
 const result = Validator.make(req.body, {
   email: "required|email",

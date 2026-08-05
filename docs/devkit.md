@@ -1,4 +1,4 @@
-# DevKit Documentation (`@ecf/devkit`)
+# DevKit Documentation (`@ecfjs/devkit`)
 
 Scaffolding CLI, AST code injection engine, YAML blueprint generator, package validator, and health doctor.
 

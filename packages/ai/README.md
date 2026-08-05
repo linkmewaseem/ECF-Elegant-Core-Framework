@@ -1,13 +1,13 @@
-# `@ecf/ai` — Enterprise AI Engine & LLM Platform
+# `@ecfjs/ai` — Enterprise AI Engine & LLM Platform
 
-`@ecf/ai` is the official first-party enterprise AI engine for ECF (Enterprise Core Framework). It provides multi-provider LLM chat (`AI.chat()`), token streaming (`AI.stream()`), state-managed conversation memory (`AI.memory()`), structured output validation, versioned prompt templates (`AI.prompt("support@v2")`), dedicated `EmbeddingManager`, modular RAG pipeline (`AI.rag()`), post-retrieval `ReRanker`, code/markdown chunkers (`Chunk.code()`), provider failover fallback, cost & token telemetry, model registry (`AI.model("gpt-4o")`), AI middleware pipeline, semantic caching, strict tool calling, autonomous agent planner with reflection loops (`Planner ➔ Executor ➔ Memory ➔ Reflection`), AI safety & moderation (`AI.moderate()`), Model Context Protocol (MCP) abstraction (`AI.mcp()`), DevTools AI collector (`AiCollector`), testing fake (`AI.fake()`), and 8 provider drivers (`OpenAI`, `Anthropic`, `Gemini`, `Ollama`, `OpenRouter`, `Groq`, `Memory`, `Null`).
+`@ecfjs/ai` is the official first-party enterprise AI engine for ECF (Enterprise Core Framework). It provides multi-provider LLM chat (`AI.chat()`), token streaming (`AI.stream()`), state-managed conversation memory (`AI.memory()`), structured output validation, versioned prompt templates (`AI.prompt("support@v2")`), dedicated `EmbeddingManager`, modular RAG pipeline (`AI.rag()`), post-retrieval `ReRanker`, code/markdown chunkers (`Chunk.code()`), provider failover fallback, cost & token telemetry, model registry (`AI.model("gpt-4o")`), AI middleware pipeline, semantic caching, strict tool calling, autonomous agent planner with reflection loops (`Planner ➔ Executor ➔ Memory ➔ Reflection`), AI safety & moderation (`AI.moderate()`), Model Context Protocol (MCP) abstraction (`AI.mcp()`), DevTools AI collector (`AiCollector`), testing fake (`AI.fake()`), and 8 provider drivers (`OpenAI`, `Anthropic`, `Gemini`, `Ollama`, `OpenRouter`, `Groq`, `Memory`, `Null`).
 
 ---
 
 ## 🌟 Key Capabilities
 
 ```js
-import { AI } from "@ecf/ai";
+import { AI } from "@ecfjs/ai";
 
 // 1. Multi-Provider Chat & Streaming
 const res = await AI.chat("Summarize enterprise security policies", { driver: "openai" });

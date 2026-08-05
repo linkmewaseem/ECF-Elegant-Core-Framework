@@ -1,4 +1,4 @@
-import { ILogDriver } from '@ecf/contracts';
+import { ILogDriver } from '@ecfjs/contracts';
 
 /**
  * Abstract Base Log Driver.

@@ -1,4 +1,4 @@
-import { IASTInjector } from '@ecf/contracts';
+import { IASTInjector } from '@ecfjs/contracts';
 
 /**
  * AST Code Injector Engine.

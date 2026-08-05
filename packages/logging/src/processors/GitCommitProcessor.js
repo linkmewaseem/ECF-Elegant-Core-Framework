@@ -1,4 +1,4 @@
-import { ILogProcessor } from '@ecf/contracts';
+import { ILogProcessor } from '@ecfjs/contracts';
 
 /**
  * Git Commit Hash Processor.

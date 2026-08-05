@@ -5,7 +5,7 @@ export class ModelGenerator extends CodeGenerator {
     await this.beforeGenerate(options);
 
     const names = this.formatNames(name);
-    const stub = `import { Model } from '@ecf/database';
+    const stub = `import { Model } from '@ecfjs/database';
 
 export class {{pascal}} extends Model {
   static table = '{{snake_plural}}';

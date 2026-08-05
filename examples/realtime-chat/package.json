@@ -8,10 +8,10 @@
     "test": "node --test tests/**/*.test.js"
   },
   "dependencies": {
-    "@ecf/broadcast": "workspace:*",
-    "@ecf/core": "workspace:*",
-    "@ecf/events": "workspace:*",
-    "@ecf/http": "workspace:*",
-    "@ecf/testing": "workspace:*"
+    "@ecfjs/broadcast": "workspace:*",
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/events": "workspace:*",
+    "@ecfjs/http": "workspace:*",
+    "@ecfjs/testing": "workspace:*"
   }
 }

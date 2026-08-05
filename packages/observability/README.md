@@ -1,6 +1,6 @@
-# `@ecf/observability` — Tracing & Metrics Platform
+# `@ecfjs/observability` — Tracing & Metrics Platform
 
-`@ecf/observability` is the distributed tracing and metrics platform for the ECF (Elegant Core Framework) ecosystem.
+`@ecfjs/observability` is the distributed tracing and metrics platform for the ECF (Elegant Core Framework) ecosystem.
 
 ---
 
@@ -16,7 +16,7 @@
 ## Quick Start
 
 ```javascript
-import { ObservabilityManager, Tracer } from "@ecf/observability";
+import { ObservabilityManager, Tracer } from "@ecfjs/observability";
 
 const tracer = Tracer.start("http.request");
 tracer.setTag("method", "GET");

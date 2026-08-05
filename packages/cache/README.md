@@ -1,6 +1,6 @@
-# `@ecf/cache` — Multi-Driver Cache Platform
+# `@ecfjs/cache` — Multi-Driver Cache Platform
 
-`@ecf/cache` is the multi-driver caching platform for the ECF (Elegant Core Framework) ecosystem.
+`@ecfjs/cache` is the multi-driver caching platform for the ECF (Elegant Core Framework) ecosystem.
 
 ---
 
@@ -10,15 +10,15 @@
 - **CacheLock** — atomic lock acquisition for stampede protection
 - **TaggedCache** — tag-based cache invalidation
 - **CacheStampedeProtection** — thundering herd mitigation
-- **CacheFacade** — static proxy via `@ecf/core` facade system
+- **CacheFacade** — static proxy via `@ecfjs/core` facade system
 
 ---
 
 ## Quick Start
 
 ```javascript
-import { Application } from "@ecf/core";
-import { CacheServiceProvider, Cache } from "@ecf/cache";
+import { Application } from "@ecfjs/core";
+import { CacheServiceProvider, Cache } from "@ecfjs/cache";
 
 const app = new Application();
 app.register(CacheServiceProvider);

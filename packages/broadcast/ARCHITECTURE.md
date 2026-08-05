@@ -1,7 +1,7 @@
-# `@ecf/broadcast` Architecture & Design Specification
+# `@ecfjs/broadcast` Architecture & Design Specification
 
 ## Overview
-`@ecf/broadcast` provides real-time event broadcasting, WebSockets, and pub-sub integration for ECF application pipelines.
+`@ecfjs/broadcast` provides real-time event broadcasting, WebSockets, and pub-sub integration for ECF application pipelines.
 
 ```text
 Application Event / Notification

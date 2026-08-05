@@ -1,6 +1,6 @@
-# @ecf/config — Package Architecture
+# @ecfjs/config — Package Architecture
 
-`@ecf/config` is the hierarchical configuration repository for the ECF ecosystem.
+`@ecfjs/config` is the hierarchical configuration repository for the ECF ecosystem.
 
 ## Core Components
 
@@ -11,8 +11,8 @@
 
 ## Dependencies
 
-- `@ecf/core`
+- `@ecfjs/core`
 
 ## Dependency Rules
 
-- MUST NOT depend on `@ecf/http`, `@ecf/database`, or transport-layer packages.
+- MUST NOT depend on `@ecfjs/http`, `@ecfjs/database`, or transport-layer packages.

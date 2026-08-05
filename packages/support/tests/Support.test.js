@@ -2,7 +2,7 @@ import { describe, test } from "node:test";
 import assert from "node:assert/strict";
 import { Str, Arr, Collection, LazyCollection, Fluent } from "../src/index.js";
 
-describe("@ecf/support — Utility Package Tests", () => {
+describe("@ecfjs/support — Utility Package Tests", () => {
 
   test("Str helper utilities (camel, snake, kebab, studly, slug)", () => {
     assert.equal(Str.camel("hello_world"), "helloWorld");

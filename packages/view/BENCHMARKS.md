@@ -1,4 +1,4 @@
-# @ecf/view — Benchmark SLAs
+# @ecfjs/view — Benchmark SLAs
 
 | Operation | Metric SLA | Status |
 |---|---|---|

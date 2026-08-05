@@ -2,7 +2,7 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { VideoProcessor, FFmpegDriver } from '../../src/index.js';
 
-describe('@ecf/media — VideoProcessor Unit Tests', () => {
+describe('@ecfjs/media — VideoProcessor Unit Tests', () => {
   test('Fluent options builder for video transcoding, thumbnails, sprites & HLS', () => {
     const driver = new FFmpegDriver({ mockMode: true });
     const video = new VideoProcessor(driver, 'sample.mp4');

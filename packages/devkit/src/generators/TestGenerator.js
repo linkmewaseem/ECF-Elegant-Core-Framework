@@ -3,7 +3,7 @@ import { CodeGenerator } from './CodeGenerator.js';
 export class TestGenerator extends CodeGenerator {
   async generate(name, options = {}) {
     const names = this.formatNames(name);
-    const stub = `import { test } from '@ecf/testing';
+    const stub = `import { test } from '@ecfjs/testing';
 
 test('{{pascal}} Test Feature', async ({ app, http, database }) => {
   const res = await http.get('/');

@@ -24,17 +24,17 @@ export class ProjectScaffolder {
         test: 'ecf test',
       },
       dependencies: {
-        '@ecf/core': 'workspace:*',
-        '@ecf/database': 'workspace:*',
-        '@ecf/http': 'workspace:*',
-        '@ecf/api': 'workspace:*',
-        '@ecf/logging': 'workspace:*',
+        '@ecfjs/core': 'workspace:*',
+        '@ecfjs/database': 'workspace:*',
+        '@ecfjs/http': 'workspace:*',
+        '@ecfjs/api': 'workspace:*',
+        '@ecfjs/logging': 'workspace:*',
       },
     };
 
     fs.writeFileSync(path.join(targetDir, 'package.json'), JSON.stringify(pkgJson, null, 2), 'utf-8');
 
-    const appJs = `import { Application } from '@ecf/core';
+    const appJs = `import { Application } from '@ecfjs/core';
 
 const app = new Application();
 app.listen(3000, () => {

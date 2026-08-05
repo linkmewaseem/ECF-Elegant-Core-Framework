@@ -42,13 +42,13 @@
     "@ecfjs/cache": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/config": {
+    "@ecfjs/config": {
       "optional": true
     },
-    "@ecf/events": {
+    "@ecfjs/events": {
       "optional": true
     },
-    "@ecf/cache": {
+    "@ecfjs/cache": {
       "optional": true
     }
   }

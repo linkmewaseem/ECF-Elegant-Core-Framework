@@ -1,5 +1,5 @@
 import os from 'node:os';
-import { ILogProcessor } from '@ecf/contracts';
+import { ILogProcessor } from '@ecfjs/contracts';
 
 /**
  * Hostname & PID Processor.

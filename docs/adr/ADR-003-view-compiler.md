@@ -1,7 +1,7 @@
 # ADR-003: AST-Based Directive View Compiler & Dependency Cache
 
 ## Status
-**Accepted** (Implemented in `@ecf/view`)
+**Accepted** (Implemented in `@ecfjs/view`)
 
 ## Context
 Simple regex-replacement template engines fail to handle complex nested directives (e.g. `@if` inside `@for` inside `@switch`, or `@break` / `@continue` loop targeting). We needed an enterprise-grade Blade-style view engine with fast compile times (<10ms) and automatic dependency tracking.

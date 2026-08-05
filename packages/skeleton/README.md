@@ -1,6 +1,6 @@
-# `@ecf/skeleton` — Application Scaffolding
+# `@ecfjs/skeleton` — Application Scaffolding
 
-`@ecf/skeleton` ECF projects ke liye **starting point** hai. Jab tum `ecf new my-app` chalate ho, `@ecf/cli` isi package ke andar se ek **blueprint** copy karta hai aur tumhara naya project bana deta hai — sahi folder structure, sahi imports, sahi providers, sab kuch already wired.
+`@ecfjs/skeleton` ECF projects ke liye **starting point** hai. Jab tum `ecf new my-app` chalate ho, `@ecfjs/cli` isi package ke andar se ek **blueprint** copy karta hai aur tumhara naya project bana deta hai — sahi folder structure, sahi imports, sahi providers, sab kuch already wired.
 
 ---
 
@@ -8,7 +8,7 @@
 
 ### Ye kya hai?
 
-Socho tumhe ghar banana hai (naya ECF project). `@ecf/skeleton` uss ghar ka **pehle se bana hua naksha (blueprint)** hai — deewarein kahan hongi, bijli ki wiring kaise hogi, sab decide kiya hua. Tumhe sirf apna furniture (business logic) daalna hai.
+Socho tumhe ghar banana hai (naya ECF project). `@ecfjs/skeleton` uss ghar ka **pehle se bana hua naksha (blueprint)** hai — deewarein kahan hongi, bijli ki wiring kaise hogi, sab decide kiya hua. Tumhe sirf apna furniture (business logic) daalna hai.
 
 ### Iska maqsad kya hai?
 
@@ -18,7 +18,7 @@ Bina skeleton ke, har naye project ke liye tumhe khud se decide karna padega: pr
 
 ## Do Blueprints — Kyun?
 
-Har project ki zaroorat alag hoti hai. Ek website jisme HTML pages dikhne hain (SSR), uski zaroorat alag hai us project se jo sirf mobile app ke liye JSON data deta hai (API). Isliye `@ecf/skeleton` **do alag blueprints** deta hai:
+Har project ki zaroorat alag hoti hai. Ek website jisme HTML pages dikhne hain (SSR), uski zaroorat alag hai us project se jo sirf mobile app ke liye JSON data deta hai (API). Isliye `@ecfjs/skeleton` **do alag blueprints** deta hai:
 
 ```
 v1/
@@ -29,7 +29,7 @@ v1/
 | | `v1/ssr` | `v1/api` |
 |---|---|---|
 | **Kab use karo** | Website, admin panel, koi bhi project jisme browser mein pages dikhne hain | Mobile app backend, microservice, koi bhi cheez jo sirf data deti ho |
-| View Engine (`@ecf/view`) | ✅ hai | ❌ nahi hai |
+| View Engine (`@ecfjs/view`) | ✅ hai | ❌ nahi hai |
 | Auth default | Session (cookie-based) | JWT (token-based) |
 | Primary routes | `routes/web.js` | `routes/api.js` |
 | CORS middleware | Nahi (same-origin views) | ✅ by default lagi hai |
@@ -44,12 +44,12 @@ ecf new my-app --type=ssr    # ya --type=api
 
 Jab ye command chalti hai:
 
-1. `@ecf/cli`, `@ecf/skeleton` ke andar se sahi blueprint (`v1/ssr` ya `v1/api`) copy karta hai `my-app/` folder mein
+1. `@ecfjs/cli`, `@ecfjs/skeleton` ke andar se sahi blueprint (`v1/ssr` ya `v1/api`) copy karta hai `my-app/` folder mein
 2. `ecf.config.js` mein project ka naam set karta hai
 3. `.env.example` ko `.env` bana ke basic values fill karta hai
 4. `package.json` ke dependencies install karta hai
 
-Bas — naya project ready, aur wo already `@ecf/http`, `@ecf/database` (postgres default), aur (agar SSR ho) `@ecf/view` ke saath wired hai.
+Bas — naya project ready, aur wo already `@ecfjs/http`, `@ecfjs/database` (postgres default), aur (agar SSR ho) `@ecfjs/view` ke saath wired hai.
 
 ---
 

@@ -1,4 +1,4 @@
-import { ServiceProvider } from "@ecf/core";
+import { ServiceProvider } from "@ecfjs/core";
 import ConsoleKernel from "./ConsoleKernel.js";
 
 export class ConsoleServiceProvider extends ServiceProvider {

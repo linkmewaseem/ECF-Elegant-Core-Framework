@@ -1,4 +1,4 @@
-# `@ecf/broadcast`
+# `@ecfjs/broadcast`
 
 Real-time Event Broadcasting Subsystem for ECF (Enterprise Core Framework).
 
@@ -11,14 +11,14 @@ Real-time Event Broadcasting Subsystem for ECF (Enterprise Core Framework).
 - **Middleware Pipeline**: Lifecycle steps (`Validate`, `Authorize`, `Serialize`, `Encrypt`, `Compress`, `Publish`, `Observe`).
 - **Presence Repositories**: Cluster-ready `MemoryPresenceRepository` & `RedisPresenceRepository`.
 - **Queue Integration**: Automatic queue routing for `ShouldBroadcast` vs sync execution for `ShouldBroadcastNow`.
-- **Notification Driver**: Native `broadcast` channel driver for `@ecf/notifications`.
+- **Notification Driver**: Native `broadcast` channel driver for `@ecfjs/notifications`.
 - **Testing Fake**: Rich assertions with `Broadcast.fake()`.
 - **DevTools Panel**: Horizon-style metrics for connections, channels, messages, and latency.
 
 ## Usage
 
 ```javascript
-import { Broadcast, PrivateChannel, ShouldBroadcast } from "@ecf/broadcast";
+import { Broadcast, PrivateChannel, ShouldBroadcast } from "@ecfjs/broadcast";
 
 // Authorization Rule
 Broadcast.channel("orders.{id}", (user, id) => {

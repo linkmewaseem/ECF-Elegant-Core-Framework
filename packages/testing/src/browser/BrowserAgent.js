@@ -1,7 +1,7 @@
 import assert from 'node:assert';
 
 /**
- * Headless Browser Testing Agent (@ecf/testing/browser).
+ * Headless Browser Testing Agent (@ecfjs/testing/browser).
  * Wraps browser interactions and element assertions.
  */
 export class BrowserAgent {

@@ -3,7 +3,7 @@ import { CodeGenerator } from './CodeGenerator.js';
 export class JobGenerator extends CodeGenerator {
   async generate(name, options = {}) {
     const names = this.formatNames(name);
-    const stub = `import { Job } from '@ecf/queue';
+    const stub = `import { Job } from '@ecfjs/queue';
 
 export class {{pascal}}Job extends Job {
   constructor(payload) {

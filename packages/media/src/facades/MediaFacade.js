@@ -6,7 +6,7 @@ let _instance = null;
  * MediaFacade — Static proxy to the bound MediaManager instance.
  *
  * Usage:
- *   import { Media } from '@ecf/media'
+ *   import { Media } from '@ecfjs/media'
  *
  *   Media.image(uploadedFile).resize(800, 600).webp().store("images", "s3")
  *   Media.extend("cloudinary", new CloudinaryDriver())

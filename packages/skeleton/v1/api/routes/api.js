@@ -1,4 +1,4 @@
-import { Route } from "@ecf/http";
+import { Route } from "@ecfjs/http";
 import UserController from "../app/Http/Controllers/UserController.js";
 
 export default function registerApiRoutes() {

@@ -1,7 +1,7 @@
 import { performance } from 'node:perf_hooks';
 import { TrieRouter } from '../../src/routing/TrieRouter.js';
 import { Pipeline } from '../../src/Pipeline.js';
-import { Validator } from '@ecf/validation';
+import { Validator } from '@ecfjs/validation';
 
 /**
  * Enterprise HTTP Engine Benchmark Suite.

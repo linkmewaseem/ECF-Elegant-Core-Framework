@@ -1,6 +1,6 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { Application } from "@ecf/core";
+import { Application } from "@ecfjs/core";
 import {
   Event,
   EventManager,
@@ -23,7 +23,7 @@ class UserSubscriber extends EventSubscriber {
   }
 }
 
-describe("@ecf/events — Enterprise Event System Tests", () => {
+describe("@ecfjs/events — Enterprise Event System Tests", () => {
 
   test("Event dispatching and listener resolution", async () => {
     const manager = new EventManager();

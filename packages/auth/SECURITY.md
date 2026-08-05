@@ -1,8 +1,8 @@
-# `@ecf/auth` — Security Policy & Production Deployment Checklist
+# `@ecfjs/auth` — Security Policy & Production Deployment Checklist
 
 ## Security Philosophy
 
-`@ecf/auth` is engineered under the principle of **Zero-Trust Security by Default**. All authentication and authorization interfaces enforce strict boundaries, constant-time byte comparisons, and encrypted secrets.
+`@ecfjs/auth` is engineered under the principle of **Zero-Trust Security by Default**. All authentication and authorization interfaces enforce strict boundaries, constant-time byte comparisons, and encrypted secrets.
 
 ---
 

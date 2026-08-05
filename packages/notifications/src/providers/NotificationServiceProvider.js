@@ -1,4 +1,4 @@
-import { ServiceProvider } from "@ecf/core";
+import { ServiceProvider } from "@ecfjs/core";
 import NotificationManager from "../internal/NotificationManager.js";
 
 export class NotificationServiceProvider extends ServiceProvider {

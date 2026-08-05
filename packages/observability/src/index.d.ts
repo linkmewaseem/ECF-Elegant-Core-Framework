@@ -1,4 +1,4 @@
-import { ServiceProvider } from '@ecf/core';
+import { ServiceProvider } from '@ecfjs/core';
 
 export abstract class IExporter {
   exportSpan(span: ISpan | object): void;

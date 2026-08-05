@@ -1,10 +1,15 @@
 {
-  "name": "@ecf/uuids",
+  "name": "@ecfjs/uuids",
   "version": "1.0.0",
   "description": "ECF ORM plugin that automatically assigns UUIDs as primary keys to models",
   "type": "module",
   "main": "index.js",
-  "keywords": ["ecf", "orm", "uuids", "uuid"],
+  "keywords": [
+    "ecf",
+    "orm",
+    "uuids",
+    "uuid"
+  ],
   "author": "ECF Team",
   "license": "MIT",
   "repository": {
@@ -12,5 +17,7 @@
     "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
     "directory": "packages/extensions/uuids"
   },
-  "engines": { "node": ">=22" }
+  "engines": {
+    "node": ">=22"
+  }
 }

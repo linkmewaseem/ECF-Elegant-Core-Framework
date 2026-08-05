@@ -1,6 +1,6 @@
-# @ecf/validation — Package Architecture
+# @ecfjs/validation — Package Architecture
 
-`@ecf/validation` is the rule-based validation engine for the ECF ecosystem.
+`@ecfjs/validation` is the rule-based validation engine for the ECF ecosystem.
 
 ## Core Components
 
@@ -13,9 +13,9 @@
 ## Dependencies
 
 - Zero dependencies on outer ECF packages (standalone validation engine).
-- Consumed by `@ecf/http` via `FormRequest` integration.
+- Consumed by `@ecfjs/http` via `FormRequest` integration.
 
 ## Dependency Rules
 
-- MUST NOT depend on `@ecf/http`, `@ecf/database`, or `@ecf/view`.
+- MUST NOT depend on `@ecfjs/http`, `@ecfjs/database`, or `@ecfjs/view`.
 - Public API is limited to `src/index.js` exports.

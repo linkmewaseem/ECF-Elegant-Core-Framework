@@ -54,15 +54,15 @@ This document defines the official **7-Stage Package Maturity Lifecycle** requir
 
 | Package Name | Current Stage | Target Release |
 |---|---|---|
-| `@ecf/core` | **Stage 6: Architecture Freeze** | v1.0.0 |
-| `@ecf/support` | **Stage 6: Architecture Freeze** | v1.0.0 |
-| `@ecf/database` | **Stage 6: Architecture Freeze** | v1.0.0 |
-| `@ecf/http` | **Stage 6: Architecture Freeze** | v1.0.0 |
-| `@ecf/view` | **Stage 6: Architecture Freeze** | v1.0.0 |
-| `@ecf/validation` | **Stage 6: Architecture Freeze** | v1.0.0 |
-| `@ecf/extensions` | **Stage 6: Architecture Freeze** | v1.0.0 |
-| `@ecf/skeleton` | **Stage 6: Architecture Freeze** | v1.0.0 |
-| `@ecf/cli` | **Stage 6: Architecture Freeze** | v1.0.0 |
-| `@ecf/console` | **Stage 1: Planning (Milestone 13)** | v1.0.0 |
-| `@ecf/devtools` | **Stage 1: Planning (Milestone 14)** | v1.0.0 |
-| `@ecf/queue` | **Stage 1: Planning (Milestone 15)** | v1.0.0 |
+| `@ecfjs/core` | **Stage 6: Architecture Freeze** | v1.0.0 |
+| `@ecfjs/support` | **Stage 6: Architecture Freeze** | v1.0.0 |
+| `@ecfjs/database` | **Stage 6: Architecture Freeze** | v1.0.0 |
+| `@ecfjs/http` | **Stage 6: Architecture Freeze** | v1.0.0 |
+| `@ecfjs/view` | **Stage 6: Architecture Freeze** | v1.0.0 |
+| `@ecfjs/validation` | **Stage 6: Architecture Freeze** | v1.0.0 |
+| `@ecfjs/extensions` | **Stage 6: Architecture Freeze** | v1.0.0 |
+| `@ecfjs/skeleton` | **Stage 6: Architecture Freeze** | v1.0.0 |
+| `@ecfjs/cli` | **Stage 6: Architecture Freeze** | v1.0.0 |
+| `@ecfjs/console` | **Stage 1: Planning (Milestone 13)** | v1.0.0 |
+| `@ecfjs/devtools` | **Stage 1: Planning (Milestone 14)** | v1.0.0 |
+| `@ecfjs/queue` | **Stage 1: Planning (Milestone 15)** | v1.0.0 |

@@ -1,6 +1,6 @@
-# `@ecf/http` — HTTP Transport Layer
+# `@ecfjs/http` — HTTP Transport Layer
 
-`@ecf/http` is the high-performance HTTP transport layer for the ECF (Elegant Core Framework) ecosystem — routing, middleware, request/response handling, and server lifecycle.
+`@ecfjs/http` is the high-performance HTTP transport layer for the ECF (Elegant Core Framework) ecosystem — routing, middleware, request/response handling, and server lifecycle.
 
 ---
 
@@ -12,7 +12,7 @@
 - **HttpKernel** — ties router + middleware + body parser into a single handler
 - **HttpServer** — wraps Node.js `http.createServer`
 - **Multi-Adapter** — Native, Express, and Fastify adapter support
-- **FormRequest** — validation integration via `@ecf/validation`
+- **FormRequest** — validation integration via `@ecfjs/validation`
 - **Rate Limiting**, **HTTP Cache**, **Content Negotiation**
 - **HttpTestCase** — HTTP testing harness
 
@@ -23,8 +23,8 @@
 ### 1. Bootstrap HTTP Stack
 
 ```javascript
-import { Application } from "@ecf/core";
-import { HttpServiceProvider, HttpServer, Route } from "@ecf/http";
+import { Application } from "@ecfjs/core";
+import { HttpServiceProvider, HttpServer, Route } from "@ecfjs/http";
 
 const app = new Application();
 app.register(HttpServiceProvider);
@@ -39,7 +39,7 @@ server.listen(3000, () => console.log("Listening on :3000"));
 ### 2. Middleware
 
 ```javascript
-import { MiddlewareRegistry } from "@ecf/http";
+import { MiddlewareRegistry } from "@ecfjs/http";
 
 MiddlewareRegistry.global(async (ctx, next) => {
   console.log(`${ctx.request.method()} ${ctx.request.path()}`);
@@ -50,7 +50,7 @@ MiddlewareRegistry.global(async (ctx, next) => {
 ### 3. Dynamic Routes
 
 ```javascript
-import { Route } from "@ecf/http";
+import { Route } from "@ecfjs/http";
 
 Route.get("/users/{id}", (req, res) => {
   const id = req.param("id");

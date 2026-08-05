@@ -1,4 +1,4 @@
-import { ServiceProvider } from "@ecf/core";
+import { ServiceProvider } from "@ecfjs/core";
 import StorageManager from "../internal/StorageManager.js";
 
 export class StorageServiceProvider extends ServiceProvider {

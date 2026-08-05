@@ -1,6 +1,6 @@
-# `@ecf/upload` — Enterprise File Ingestion Pipeline Platform
+# `@ecfjs/upload` — Enterprise File Ingestion Pipeline Platform
 
-`@ecf/upload` is a robust file ingestion pipeline platform for the ECF (Enterprise Core Framework) ecosystem.
+`@ecfjs/upload` is a robust file ingestion pipeline platform for the ECF (Enterprise Core Framework) ecosystem.
 
 ---
 
@@ -21,9 +21,9 @@
 ### 1. Basic Ingestion Pipeline
 
 ```javascript
-import { Application } from "@ecf/core";
-import { StorageServiceProvider } from "@ecf/storage";
-import { UploadServiceProvider, Upload, UploadedFile } from "@ecf/upload";
+import { Application } from "@ecfjs/core";
+import { StorageServiceProvider } from "@ecfjs/storage";
+import { UploadServiceProvider, Upload, UploadedFile } from "@ecfjs/upload";
 
 const app = new Application();
 app.register(StorageServiceProvider);

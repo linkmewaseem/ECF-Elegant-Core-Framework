@@ -8,18 +8,18 @@ This document defines the official **Cross-Package Compatibility Matrix** for al
 
 | Package Name | Compatible Core Version | Compatible Database | Compatible HTTP | Compatible View | Compatible Validation | Package Stability Status |
 |---|---|---|---|---|---|---|
-| **`@ecf/core`** | **1.x** | Optional | Optional | Optional | Optional | 🟢 Architecture Locked |
-| **`@ecf/support`** | **1.x** | Optional | Optional | Optional | Optional | 🟢 Architecture Locked |
-| **`@ecf/database`** | **1.x** | **1.x** | Optional | N/A | Optional | 🟢 Architecture Locked |
-| **`@ecf/validation`** | **1.x** | Optional | Optional | Optional | **1.x** | 🟢 Architecture Locked |
-| **`@ecf/http`** | **1.x** | Optional | **1.x** | Optional | **1.x** | 🟢 Architecture Locked |
-| **`@ecf/view`** | **1.x** | N/A | **1.x** | **1.x** | Optional | 🟢 Architecture Locked |
-| **`@ecf/extensions`** | **1.x** | **1.x** | Optional | N/A | Optional | 🟢 Architecture Locked |
-| **`@ecf/skeleton`** | **1.x** | **1.x** | **1.x** | **1.x** | **1.x** | 🟢 Architecture Locked |
-| **`@ecf/cli`** | **1.x** | **1.x** | **1.x** | **1.x** | **1.x** | 🟢 Architecture Locked |
-| **`@ecf/console`** | **1.x** | Optional | Optional | N/A | Optional | 🟡 In Development (M13) |
-| **`@ecf/devtools`** | **1.x** | **1.x** | **1.x** | **1.x** | Optional | 🟡 Planned (M14) |
-| **`@ecf/queue`** | **1.x** | **1.x** | Optional | N/A | Optional | 🟡 Planned (M15) |
+| **`@ecfjs/core`** | **1.x** | Optional | Optional | Optional | Optional | 🟢 Architecture Locked |
+| **`@ecfjs/support`** | **1.x** | Optional | Optional | Optional | Optional | 🟢 Architecture Locked |
+| **`@ecfjs/database`** | **1.x** | **1.x** | Optional | N/A | Optional | 🟢 Architecture Locked |
+| **`@ecfjs/validation`** | **1.x** | Optional | Optional | Optional | **1.x** | 🟢 Architecture Locked |
+| **`@ecfjs/http`** | **1.x** | Optional | **1.x** | Optional | **1.x** | 🟢 Architecture Locked |
+| **`@ecfjs/view`** | **1.x** | N/A | **1.x** | **1.x** | Optional | 🟢 Architecture Locked |
+| **`@ecfjs/extensions`** | **1.x** | **1.x** | Optional | N/A | Optional | 🟢 Architecture Locked |
+| **`@ecfjs/skeleton`** | **1.x** | **1.x** | **1.x** | **1.x** | **1.x** | 🟢 Architecture Locked |
+| **`@ecfjs/cli`** | **1.x** | **1.x** | **1.x** | **1.x** | **1.x** | 🟢 Architecture Locked |
+| **`@ecfjs/console`** | **1.x** | Optional | Optional | N/A | Optional | 🟡 In Development (M13) |
+| **`@ecfjs/devtools`** | **1.x** | **1.x** | **1.x** | **1.x** | Optional | 🟡 Planned (M14) |
+| **`@ecfjs/queue`** | **1.x** | **1.x** | Optional | N/A | Optional | 🟡 Planned (M15) |
 
 *Key:*
 - `1.x`: Indicates explicit dependency on v1.x interface contract of the named package.

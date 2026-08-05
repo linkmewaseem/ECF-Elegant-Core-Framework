@@ -1,4 +1,4 @@
-import { ServiceProvider } from '@ecf/core';
+import { ServiceProvider } from '@ecfjs/core';
 
 export class MediaFile {
   static fromBuffer(buffer: Buffer, options?: { mimeType?: string; originalName?: string }): MediaFile;

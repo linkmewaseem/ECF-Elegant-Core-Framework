@@ -14,7 +14,7 @@ describe('ASTInjector Unit Tests', () => {
 
   it('should inject route definitions and environment variables', () => {
     const injector = new ASTInjector();
-    const routeContent = `import { Router } from '@ecf/http';`;
+    const routeContent = `import { Router } from '@ecfjs/http';`;
     const updatedRoutes = injector.injectRoute(routeContent, `Router.get('/test', () => 'OK');`);
 
     assert.ok(updatedRoutes.includes("Router.get('/test', () => 'OK');"));

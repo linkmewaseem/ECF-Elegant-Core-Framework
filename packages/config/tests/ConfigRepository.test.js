@@ -1,6 +1,6 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { Application } from "@ecf/core";
+import { Application } from "@ecfjs/core";
 import {
   ConfigRepository,
   ConfigEncrypter,
@@ -8,7 +8,7 @@ import {
   Config,
 } from "../src/index.js";
 
-describe("@ecf/config — Enterprise Configuration Platform Tests", () => {
+describe("@ecfjs/config — Enterprise Configuration Platform Tests", () => {
 
   test("ConfigRepository dot-notation access and typed accessors", () => {
     const config = new ConfigRepository({

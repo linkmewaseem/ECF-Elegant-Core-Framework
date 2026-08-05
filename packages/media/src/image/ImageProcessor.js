@@ -242,7 +242,7 @@ export class ImageProcessor {
   async queueOn(diskName) {
     this.#queueDisk = diskName;
     if (!this.#queueManager) {
-      throw new MediaProcessingException("Queue integration not available. Register @ecf/queue in MediaServiceProvider.");
+      throw new MediaProcessingException("Queue integration not available. Register @ecfjs/queue in MediaServiceProvider.");
     }
     const { ProcessMediaJob } = await import('../queue/ProcessMediaJob.js');
     await this.#queueManager.dispatch(new ProcessMediaJob({
@@ -256,7 +256,7 @@ export class ImageProcessor {
   // ─── store() — Primary Execution Entry Point ──────────────────────────────
 
   /**
-   * Execute the full processing pipeline and store output via @ecf/storage.
+   * Execute the full processing pipeline and store output via @ecfjs/storage.
    * @param {string} directory - storage directory (e.g. "products/images")
    * @param {string} [disk="local"] - storage disk name
    * @returns {Promise<MediaResult>}

@@ -1,6 +1,6 @@
-# `@ecf/storage` — Enterprise Filesystem Abstraction Platform
+# `@ecfjs/storage` — Enterprise Filesystem Abstraction Platform
 
-`@ecf/storage` is a powerful, stream-first filesystem abstraction platform for the ECF (Enterprise Core Framework) ecosystem.
+`@ecfjs/storage` is a powerful, stream-first filesystem abstraction platform for the ECF (Enterprise Core Framework) ecosystem.
 
 ---
 
@@ -21,8 +21,8 @@
 ### 1. Basic Operations
 
 ```javascript
-import { Application } from "@ecf/core";
-import { StorageServiceProvider, Storage } from "@ecf/storage";
+import { Application } from "@ecfjs/core";
+import { StorageServiceProvider, Storage } from "@ecfjs/storage";
 
 const app = new Application();
 app.register(StorageServiceProvider);
@@ -44,7 +44,7 @@ const url = await Storage.temporaryUrl("documents/report.pdf", 3600);
 ### 2. Testing Fake
 
 ```javascript
-import { Storage } from "@ecf/storage";
+import { Storage } from "@ecfjs/storage";
 
 const fakeDisk = Storage.fake("avatars");
 await fakeDisk.put("waseem.png", "image-bytes");

@@ -3,10 +3,10 @@ import {
     Facade,
     CoreServiceProvider,
     LoggerServiceProvider,
-} from "@ecf/core";
-import { HttpServiceProvider } from "@ecf/http";
-import { DatabaseServiceProvider } from "@ecf/database";
-import { AuthServiceProvider } from "@ecf/auth";
+} from "@ecfjs/core";
+import { HttpServiceProvider } from "@ecfjs/http";
+import { DatabaseServiceProvider } from "@ecfjs/database";
+import { AuthServiceProvider } from "@ecfjs/auth";
 import providers from "./providers.js";
 import registerApiRoutes from "../routes/api.js";
 import registerHealthRoutes from "../routes/health.js";

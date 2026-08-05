@@ -2,7 +2,7 @@ import { describe, test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { EntryStore, DevToolsServer, RequestRecord } from '../../src/index.js';
 
-describe('@ecf/devtools — DevToolsServer Integration Tests', () => {
+describe('@ecfjs/devtools — DevToolsServer Integration Tests', () => {
   let server;
   let store;
 

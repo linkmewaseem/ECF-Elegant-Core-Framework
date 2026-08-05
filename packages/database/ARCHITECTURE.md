@@ -1,6 +1,6 @@
-# @ecf/database — Package Architecture
+# @ecfjs/database — Package Architecture
 
-`@ecf/database` is the enterprise ORM and AST QueryBuilder engine for the ECF ecosystem.
+`@ecfjs/database` is the enterprise ORM and AST QueryBuilder engine for the ECF ecosystem.
 
 ## Core Components
 - **`Connection` & Drivers**: SQLite, MySQL, and Postgres SQL dialect compilers.

@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { IArchitectureValidator } from '@ecf/contracts';
+import { IArchitectureValidator } from '@ecfjs/contracts';
 
 /**
  * Clean Architecture Boundary Validator (ecf architecture).

@@ -1,6 +1,6 @@
-# `@ecf/notifications` — Unified Multi-Channel Notification Platform
+# `@ecfjs/notifications` — Unified Multi-Channel Notification Platform
 
-`@ecf/notifications` is the official multi-channel notification platform for the ECF (Enterprise Core Framework) ecosystem.
+`@ecfjs/notifications` is the official multi-channel notification platform for the ECF (Enterprise Core Framework) ecosystem.
 
 ---
 
@@ -20,7 +20,7 @@
 ### 1. Creating a Notification
 
 ```javascript
-import { Notification } from "@ecf/notifications";
+import { Notification } from "@ecfjs/notifications";
 
 export class OrderShippedNotification extends Notification {
   constructor(order) {

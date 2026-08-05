@@ -13,16 +13,16 @@ ECF is not just a single framework—it is a comprehensive, modular software eco
 - Clear separation of concerns between core application lifecycle, HTTP transport, ORM data mapping, and view compilation.
 
 ### 2. 🧩 Package-First Decoupled Design
-- Every engine in ECF is designed as an independent, standalone package (`@ecf/core`, `@ecf/database`, `@ecf/http`, `@ecf/view`, `@ecf/validation`, `@ecf/support`).
+- Every engine in ECF is designed as an independent, standalone package (`@ecfjs/core`, `@ecfjs/database`, `@ecfjs/http`, `@ecfjs/view`, `@ecfjs/validation`, `@ecfjs/support`).
 - Core has zero knowledge of outer packages. No monolithic bloat.
 
 ### 3. ⚡ High-Performance Node-Native Engines
-- **AST View Engine (`@ecf/view`)**: High-speed directive compilation and template token caching (<10ms compile).
-- **Multi-Adapter HTTP Layer (`@ecf/http`)**: Zero-copy Trie router capable of >300,000 req/sec throughput.
-- **Hybrid ORM (`@ecf/database`)**: High-speed record hydration (>6M records/sec) with active dirty tracking, AST query builder, and scope intelligence.
+- **AST View Engine (`@ecfjs/view`)**: High-speed directive compilation and template token caching (<10ms compile).
+- **Multi-Adapter HTTP Layer (`@ecfjs/http`)**: Zero-copy Trie router capable of >300,000 req/sec throughput.
+- **Hybrid ORM (`@ecfjs/database`)**: High-speed record hydration (>6M records/sec) with active dirty tracking, AST query builder, and scope intelligence.
 
 ### 4. 🔌 Modular Plugin System
-- Official extension platform (`@ecf/extensions`) providing soft deletes, sluggable fields, automatic timestamps, audit logging, and UUID primary keys.
+- Official extension platform (`@ecfjs/extensions`) providing soft deletes, sluggable fields, automatic timestamps, audit logging, and UUID primary keys.
 
 ---
 

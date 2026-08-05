@@ -15,7 +15,7 @@ import {
   ExceptionCollector,
 } from '../../src/index.js';
 
-describe('@ecf/devtools — Collectors Unit Tests', () => {
+describe('@ecfjs/devtools — Collectors Unit Tests', () => {
   test('HttpCollector captures method, url, status, headers', () => {
     const record = new RequestRecord({ method: 'POST', url: '/api/v1/orders' });
     const collector = new HttpCollector();

@@ -6,16 +6,16 @@ Welcome to the official documentation portal for **ECF (Enterprise Core Framewor
 
 ## 📚 Documentation Chapters
 
-1. [Core Subsystem (`@ecf/core`, `@ecf/support`, `@ecf/config`, `@ecf/events`, `@ecf/contracts`)](file:///f:/ecf/docs/core.md)
-2. [HTTP Subsystem (`@ecf/http`, `@ecf/validation`, `@ecf/view`)](file:///f:/ecf/docs/http.md)
-3. [Database Subsystem (`@ecf/database`)](file:///f:/ecf/docs/database.md)
-4. [Enterprise Services (`@ecf/auth`, `@ecf/queue`, `@ecf/cache`, `@ecf/mail`, `@ecf/storage`, `@ecf/media`, `@ecf/broadcast`, `@ecf/notifications`, `@ecf/scheduler`)](file:///f:/ecf/docs/services.md)
-5. [API Platform (`@ecf/api`, `@ecf/search`)](file:///f:/ecf/docs/api-platform.md)
-6. [DevTools & Observability (`@ecf/devtools`, `@ecf/observability`)](file:///f:/ecf/docs/devtools.md)
-7. [Enterprise Testing Platform (`@ecf/testing`)](file:///f:/ecf/docs/testing.md)
-8. [Enterprise Logging & Channels (`@ecf/logging`)](file:///f:/ecf/docs/logging.md)
-9. [Enterprise DevKit (`@ecf/devkit`)](file:///f:/ecf/docs/devkit.md)
-10. [Enterprise AI Engine (`@ecf/ai`)](file:///f:/ecf/docs/ai.md)
+1. [Core Subsystem (`@ecfjs/core`, `@ecfjs/support`, `@ecfjs/config`, `@ecfjs/events`, `@ecfjs/contracts`)](file:///f:/ecf/docs/core.md)
+2. [HTTP Subsystem (`@ecfjs/http`, `@ecfjs/validation`, `@ecfjs/view`)](file:///f:/ecf/docs/http.md)
+3. [Database Subsystem (`@ecfjs/database`)](file:///f:/ecf/docs/database.md)
+4. [Enterprise Services (`@ecfjs/auth`, `@ecfjs/queue`, `@ecfjs/cache`, `@ecfjs/mail`, `@ecfjs/storage`, `@ecfjs/media`, `@ecfjs/broadcast`, `@ecfjs/notifications`, `@ecfjs/scheduler`)](file:///f:/ecf/docs/services.md)
+5. [API Platform (`@ecfjs/api`, `@ecfjs/search`)](file:///f:/ecf/docs/api-platform.md)
+6. [DevTools & Observability (`@ecfjs/devtools`, `@ecfjs/observability`)](file:///f:/ecf/docs/devtools.md)
+7. [Enterprise Testing Platform (`@ecfjs/testing`)](file:///f:/ecf/docs/testing.md)
+8. [Enterprise Logging & Channels (`@ecfjs/logging`)](file:///f:/ecf/docs/logging.md)
+9. [Enterprise DevKit (`@ecfjs/devkit`)](file:///f:/ecf/docs/devkit.md)
+10. [Enterprise AI Engine (`@ecfjs/ai`)](file:///f:/ecf/docs/ai.md)
 
 ---
 
@@ -40,18 +40,18 @@ Welcome to the official documentation portal for **ECF (Enterprise Core Framewor
 
 | Subsystem | Package | Standard / Reference |
 | :--- | :--- | :--- |
-| **Core** | `@ecf/core` | IoC Container & Service Providers |
-| **Support** | `@ecf/support` | Collections & Utilities |
-| **Config** | `@ecf/config` | Hierarchical Dot-Notation Config |
-| **Events** | `@ecf/events` | Priority Lifecycle Event Bus |
-| **Database** | `@ecf/database` | ORM, Schema & Migrations |
-| **HTTP** | `@ecf/http` | Express / Fastify / PSR-7 Router |
-| **Auth** | `@ecf/auth` | Guards, JWT, Session & Gates |
-| **Queue** | `@ecf/queue` | Delayed Jobs & Rate-Limited Workers |
-| **Logging** | `@ecf/logging` | Multi-Channel Monolog / Pino |
-| **Testing** | `@ecf/testing` | DI Test Runner & Sandbox |
-| **DevKit** | `@ecf/devkit` | Generators & AST Scaffolder |
-| **AI Engine** | `@ecf/ai` | Multi-Provider LLM & Vector RAG |
+| **Core** | `@ecfjs/core` | IoC Container & Service Providers |
+| **Support** | `@ecfjs/support` | Collections & Utilities |
+| **Config** | `@ecfjs/config` | Hierarchical Dot-Notation Config |
+| **Events** | `@ecfjs/events` | Priority Lifecycle Event Bus |
+| **Database** | `@ecfjs/database` | ORM, Schema & Migrations |
+| **HTTP** | `@ecfjs/http` | Express / Fastify / PSR-7 Router |
+| **Auth** | `@ecfjs/auth` | Guards, JWT, Session & Gates |
+| **Queue** | `@ecfjs/queue` | Delayed Jobs & Rate-Limited Workers |
+| **Logging** | `@ecfjs/logging` | Multi-Channel Monolog / Pino |
+| **Testing** | `@ecfjs/testing` | DI Test Runner & Sandbox |
+| **DevKit** | `@ecfjs/devkit` | Generators & AST Scaffolder |
+| **AI Engine** | `@ecfjs/ai` | Multi-Provider LLM & Vector RAG |
 
 ---
 

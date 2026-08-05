@@ -1,4 +1,4 @@
-import { Job } from "@ecf/queue";
+import { Job } from "@ecfjs/queue";
 
 export class SendQueuedMailableJob extends Job {
   constructor(mailable, recipient, mailerName = null) {

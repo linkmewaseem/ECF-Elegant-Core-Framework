@@ -1,4 +1,4 @@
-import { ServiceProvider } from "@ecf/core";
+import { ServiceProvider } from "@ecfjs/core";
 import Router from "../Router.js";
 import HttpKernel from "../HttpKernel.js";
 import HttpServer from "../HttpServer.js";

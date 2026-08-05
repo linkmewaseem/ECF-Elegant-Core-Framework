@@ -22,7 +22,7 @@ describe('BenchmarkEngine, SnapshotTesting & BrowserAgent Unit Tests', () => {
       async write() {}
       getCapabilities() { return {}; }
     }
-    const { ILogDriver } = await import('@ecf/contracts');
+    const { ILogDriver } = await import('@ecfjs/contracts');
     assert.ok(Contract.assertImplemented(new DummyDriver(), ILogDriver));
   });
 

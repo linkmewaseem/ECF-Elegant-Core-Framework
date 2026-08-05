@@ -1,4 +1,4 @@
-import { Broadcast } from '@ecf/broadcast';
+import { Broadcast } from '@ecfjs/broadcast';
 
 export function createChatServer() {
   return {

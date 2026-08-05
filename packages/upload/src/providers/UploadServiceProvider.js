@@ -1,4 +1,4 @@
-import { ServiceProvider } from "@ecf/core";
+import { ServiceProvider } from "@ecfjs/core";
 import UploadManager from "../internal/UploadManager.js";
 
 export class UploadServiceProvider extends ServiceProvider {

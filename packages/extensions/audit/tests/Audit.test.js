@@ -4,7 +4,7 @@ import { Application, Facade } from "../../../core/src/index.js";
 import { DatabaseServiceProvider, Model } from "../../../database/src/index.js";
 import AuditPlugin from "../AuditPlugin.js";
 
-describe("@ecf/audit First-Party Extension Integration Suite", () => {
+describe("@ecfjs/audit First-Party Extension Integration Suite", () => {
     let app;
     let dbManager;
 

@@ -1,4 +1,4 @@
-import { ServiceProvider } from "@ecf/core";
+import { ServiceProvider } from "@ecfjs/core";
 import ConnectionManager from "../ConnectionManager.js";
 import DatabaseManager from "../DatabaseManager.js";
 import MigrationRepository from "../migrations/MigrationRepository.js";

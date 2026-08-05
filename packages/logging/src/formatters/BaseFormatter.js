@@ -1,4 +1,4 @@
-import { ILogFormatter } from '@ecf/contracts';
+import { ILogFormatter } from '@ecfjs/contracts';
 
 /**
  * Base Log Formatter.

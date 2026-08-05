@@ -15,35 +15,35 @@ This document defines the **Master Ecosystem Architecture** for the ECF (Elegant
       ┌───────────────────────┬──────────────┴──────────────┬───────────────────────┐
       │                       │                             │                       │
 ┌─────▼───────┐        ┌──────▼──────┐               ┌──────▼──────┐         ┌──────▼──────┐
-│  @ecf/cli   │        │ @ecf/console│               │@ecf/devtools│         │ @ecf/queue  │
+│  @ecfjs/cli   │        │ @ecfjs/console│               │@ecfjs/devtools│         │ @ecfjs/queue  │
 └─────┬───────┘        └──────┬──────┘               └──────┬──────┘         └──────┬──────┘
       │                       │                             │                       │
       └───────────────────────┼─────────────────────────────┴───────────────────────┘
                               │
                ┌──────────────┴──────────────┐
-               │         @ecf/view           │
+               │         @ecfjs/view           │
                └──────────────┬──────────────┘
                               │
                ┌──────────────┴──────────────┐
-               │         @ecf/http           │
+               │         @ecfjs/http           │
                └──────────────┬──────────────┘
                               │
         ┌─────────────────────┴─────────────────────┐
         │                                           │
  ┌──────▼──────┐                             ┌──────▼──────┐
- │@ecf/database│                             │@ecf/validat.│
+ │@ecfjs/database│                             │@ecfjs/validat.│
  └──────┬──────┘                             └──────┬──────┘
         │                                           │
         └─────────────────────┬─────────────────────┘
                               │
                ┌──────────────┴──────────────┐
-               │        @ecf/extensions      │
+               │        @ecfjs/extensions      │
                └──────────────┬──────────────┘
                               │
         ┌─────────────────────┴─────────────────────┐
         │                                           │
  ┌──────▼──────┐                             ┌──────▼──────┐
- │  @ecf/core  │                             │@ecf/support │
+ │  @ecfjs/core  │                             │@ecfjs/support │
  └─────────────┘                             └─────────────┘
 ```
 
@@ -52,15 +52,15 @@ This document defines the **Master Ecosystem Architecture** for the ECF (Elegant
 ## 📐 Ecosystem Principles & Design Rules
 
 ### 1. Inversion of Control & Contract Isolation
-- **Core is Pure**: `@ecf/core` sits at the foundation and has zero knowledge of HTTP, View, Database, or CLI engines.
+- **Core is Pure**: `@ecfjs/core` sits at the foundation and has zero knowledge of HTTP, View, Database, or CLI engines.
 - **Provider-Based Wiring**: High-level features (e.g. HTTP routing, ORM models, Blade-like view rendering) register themselves via `ServiceProvider` classes.
 - **Contract-Driven Boundaries**: Low-level packages define abstract interfaces and contracts; higher-level engines implement or resolve them dynamically via the IoC Container.
 
 ### 2. Standalone Package Usability
-- Every engine (`@ecf/http`, `@ecf/view`, `@ecf/validation`, `@ecf/database`) can be installed and executed independently in any standard Node.js/ESM application without forcing the entire framework stack.
+- Every engine (`@ecfjs/http`, `@ecfjs/view`, `@ecfjs/validation`, `@ecfjs/database`) can be installed and executed independently in any standard Node.js/ESM application without forcing the entire framework stack.
 
-### 3. Utility Decoupling (`@ecf/support`)
-- Common data structures, string manipulation helpers, collection classes, and array utilities are housed in `@ecf/support`. This keeps `@ecf/core` ultra-lean while allowing all ecosystem packages to reuse high-performance utilities safely.
+### 3. Utility Decoupling (`@ecfjs/support`)
+- Common data structures, string manipulation helpers, collection classes, and array utilities are housed in `@ecfjs/support`. This keeps `@ecfjs/core` ultra-lean while allowing all ecosystem packages to reuse high-performance utilities safely.
 
 ---
 
@@ -68,23 +68,23 @@ This document defines the **Master Ecosystem Architecture** for the ECF (Elegant
 
 | Layer | Package Name | Primary Responsibility | Outer Dependencies |
 |---|---|---|---|
-| **Foundation** | `@ecf/core` | IoC Container, Application Lifecycle, Service Provider Engine, Config Manager, Logger, Event Dispatcher, DotEnv Loader. | *None (Zero dependencies)* |
-| **Utilities** | `@ecf/support` | Collections (`Collection`, `LazyCollection`), `Str`, `Arr`, `Macroable`, `Fluent`, `UUID/ULID`, Date Abstractions. | `@ecf/core` (Optional / Lean) |
-| **Data & Persistence** | `@ecf/database` | Connection Manager, Multi-Driver AST QueryBuilder (SQLite, MySQL, Postgres), Hybrid ORM, Scopes, Observers, Relations. | `@ecf/core`, `@ecf/support` |
-| **Validation** | `@ecf/validation` | Pipeline & Rule-based Validator (`required`, `email`, `min`, `max`, `custom`), RuleRegistry, ValidationErrorBag. | *Standalone / @ecf/support* |
-| **Authentication** | `@ecf/auth` | Driver-based Authentication (Session, JWT, API Keys, Tokens), Password Hashing, Gates/Policies, MFA. | `@ecf/core`, `@ecf/support` |
-| **HTTP Transport** | `@ecf/http` | Request/Response abstraction, Trie-based Router, Middleware Pipeline, HttpKernel, Event Bus, Session & Cookie handling. | `@ecf/core`, `@ecf/validation` |
-| **Templating** | `@ecf/view` | AST Directive Parser (`@if`, `@for`, `@switch`, `@component`), Lexer, Compiler, ViewCache, Dependency Tracking, Custom Directives. | `@ecf/core`, `@ecf/http` |
-| **Extensions Platform** | `@ecf/extensions` | Modular plugins platform (`@ecf/soft-deletes`, `@ecf/timestamps`, `@ecf/uuids`, `@ecf/sluggable`, `@ecf/audit`). | `@ecf/database`, `@ecf/core` |
-| **Official First-Party Extensions** | `@ecf/commerce` | E-commerce utilities, cart management, currency handling, and payment gateway adapters. | `@ecf/core`, `@ecf/support` |
-| **App Skeleton** | `@ecf/skeleton` | Full-stack project blueprint, Directory Layout (`app/`, `config/`, `routes/`, `views/`), App Bootstrap. | Core, DB, HTTP, View, Validation |
-| **Tooling & CLI** | `@ecf/cli` | Code Generators, Signature Parsing, Stub Compilers, Diagnostics (`ecf doctor`). | All core engines |
-| **Console Engine** | `@ecf/console` | Artisan-grade interactive CLI framework, command definitions, options/args validation, tables & progress bars. | `@ecf/core`, `@ecf/support` |
-| **Dev Tools** | `@ecf/devtools` | Request Debug Bar, SQL Query Timeline, Memory & Performance Profiler, Route Inspector. | `@ecf/core`, `@ecf/http`, `@ecf/database` |
-| **Queue & Events** | `@ecf/queue` | Background Jobs, Async Worker Pool, Scheduled Tasks, Memory / DB / Redis Drivers. | `@ecf/core`, `@ecf/database` |
+| **Foundation** | `@ecfjs/core` | IoC Container, Application Lifecycle, Service Provider Engine, Config Manager, Logger, Event Dispatcher, DotEnv Loader. | *None (Zero dependencies)* |
+| **Utilities** | `@ecfjs/support` | Collections (`Collection`, `LazyCollection`), `Str`, `Arr`, `Macroable`, `Fluent`, `UUID/ULID`, Date Abstractions. | `@ecfjs/core` (Optional / Lean) |
+| **Data & Persistence** | `@ecfjs/database` | Connection Manager, Multi-Driver AST QueryBuilder (SQLite, MySQL, Postgres), Hybrid ORM, Scopes, Observers, Relations. | `@ecfjs/core`, `@ecfjs/support` |
+| **Validation** | `@ecfjs/validation` | Pipeline & Rule-based Validator (`required`, `email`, `min`, `max`, `custom`), RuleRegistry, ValidationErrorBag. | *Standalone / @ecfjs/support* |
+| **Authentication** | `@ecfjs/auth` | Driver-based Authentication (Session, JWT, API Keys, Tokens), Password Hashing, Gates/Policies, MFA. | `@ecfjs/core`, `@ecfjs/support` |
+| **HTTP Transport** | `@ecfjs/http` | Request/Response abstraction, Trie-based Router, Middleware Pipeline, HttpKernel, Event Bus, Session & Cookie handling. | `@ecfjs/core`, `@ecfjs/validation` |
+| **Templating** | `@ecfjs/view` | AST Directive Parser (`@if`, `@for`, `@switch`, `@component`), Lexer, Compiler, ViewCache, Dependency Tracking, Custom Directives. | `@ecfjs/core`, `@ecfjs/http` |
+| **Extensions Platform** | `@ecfjs/extensions` | Modular plugins platform (`@ecfjs/soft-deletes`, `@ecfjs/timestamps`, `@ecfjs/uuids`, `@ecfjs/sluggable`, `@ecfjs/audit`). | `@ecfjs/database`, `@ecfjs/core` |
+| **Official First-Party Extensions** | `@ecfjs/commerce` | E-commerce utilities, cart management, currency handling, and payment gateway adapters. | `@ecfjs/core`, `@ecfjs/support` |
+| **App Skeleton** | `@ecfjs/skeleton` | Full-stack project blueprint, Directory Layout (`app/`, `config/`, `routes/`, `views/`), App Bootstrap. | Core, DB, HTTP, View, Validation |
+| **Tooling & CLI** | `@ecfjs/cli` | Code Generators, Signature Parsing, Stub Compilers, Diagnostics (`ecf doctor`). | All core engines |
+| **Console Engine** | `@ecfjs/console` | Artisan-grade interactive CLI framework, command definitions, options/args validation, tables & progress bars. | `@ecfjs/core`, `@ecfjs/support` |
+| **Dev Tools** | `@ecfjs/devtools` | Request Debug Bar, SQL Query Timeline, Memory & Performance Profiler, Route Inspector. | `@ecfjs/core`, `@ecfjs/http`, `@ecfjs/database` |
+| **Queue & Events** | `@ecfjs/queue` | Background Jobs, Async Worker Pool, Scheduled Tasks, Memory / DB / Redis Drivers. | `@ecfjs/core`, `@ecfjs/database` |
 
 ---
 
 ## 🔒 Encapsulation & Boundary Enforcement
-1. **No Downstream Import Leakage**: A lower layer MUST NEVER import symbols from a higher layer (e.g. `@ecf/core` ➔ `@ecf/http` is strictly forbidden).
+1. **No Downstream Import Leakage**: A lower layer MUST NEVER import symbols from a higher layer (e.g. `@ecfjs/core` ➔ `@ecfjs/http` is strictly forbidden).
 2. **Hidden Internal Implementations**: Internal compiler passes, AST node classes, and runtime registries are encapsulated under `src/internal/` or `src/compiler/` and are NOT exposed via package `exports`.

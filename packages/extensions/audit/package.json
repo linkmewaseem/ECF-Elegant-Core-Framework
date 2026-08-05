@@ -1,10 +1,15 @@
 {
-  "name": "@ecf/audit",
+  "name": "@ecfjs/audit",
   "version": "1.0.0",
   "description": "ECF ORM plugin that automatically tracks and logs all model changes with full audit trail",
   "type": "module",
   "main": "index.js",
-  "keywords": ["ecf", "orm", "audit", "auditing"],
+  "keywords": [
+    "ecf",
+    "orm",
+    "audit",
+    "auditing"
+  ],
   "author": "ECF Team",
   "license": "MIT",
   "repository": {
@@ -12,5 +17,7 @@
     "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
     "directory": "packages/extensions/audit"
   },
-  "engines": { "node": ">=22" }
+  "engines": {
+    "node": ">=22"
+  }
 }

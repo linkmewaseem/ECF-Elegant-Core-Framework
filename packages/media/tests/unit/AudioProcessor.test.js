@@ -2,7 +2,7 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { AudioProcessor, FFmpegDriver } from '../../src/index.js';
 
-describe('@ecf/media — AudioProcessor Unit Tests', () => {
+describe('@ecfjs/media — AudioProcessor Unit Tests', () => {
   test('Fluent options builder for audio normalization, trim, merge, waveform & spectrogram', () => {
     const driver = new FFmpegDriver({ mockMode: true });
     const audio = new AudioProcessor(driver, 'sample.mp3');

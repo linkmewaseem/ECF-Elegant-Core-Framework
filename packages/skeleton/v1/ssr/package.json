@@ -9,12 +9,12 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@ecf/core": "^1.0.0-rc.1",
-    "@ecf/http": "^1.0.0-rc.1",
-    "@ecf/view": "^1.0.0-rc.1",
-    "@ecf/database": "^1.0.0-rc.1",
-    "@ecf/auth": "^1.0.0-rc.1",
-    "@ecf/validation": "^1.0.0-rc.1",
+    "@ecfjs/core": "^1.0.0-rc.1",
+    "@ecfjs/http": "^1.0.0-rc.1",
+    "@ecfjs/view": "^1.0.0-rc.1",
+    "@ecfjs/database": "^1.0.0-rc.1",
+    "@ecfjs/auth": "^1.0.0-rc.1",
+    "@ecfjs/validation": "^1.0.0-rc.1",
     "pg": "^8.11.0"
   }
 }

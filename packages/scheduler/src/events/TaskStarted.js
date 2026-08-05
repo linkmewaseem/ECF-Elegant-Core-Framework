@@ -1,4 +1,4 @@
-import { Event } from '@ecf/events';
+import { Event } from '@ecfjs/events';
 
 export class TaskStarted extends Event {
   constructor(task) {

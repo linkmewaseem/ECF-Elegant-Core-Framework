@@ -1,4 +1,4 @@
-# @ecf/http — Benchmark SLAs
+# @ecfjs/http — Benchmark SLAs
 
 | Operation | Metric SLA | Status |
 |---|---|---|

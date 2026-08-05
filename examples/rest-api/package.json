@@ -8,12 +8,12 @@
     "test": "node --test tests/**/*.test.js"
   },
   "dependencies": {
-    "@ecf/api": "workspace:*",
-    "@ecf/auth": "workspace:*",
-    "@ecf/core": "workspace:*",
-    "@ecf/database": "workspace:*",
-    "@ecf/http": "workspace:*",
-    "@ecf/logging": "workspace:*",
-    "@ecf/testing": "workspace:*"
+    "@ecfjs/api": "workspace:*",
+    "@ecfjs/auth": "workspace:*",
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/database": "workspace:*",
+    "@ecfjs/http": "workspace:*",
+    "@ecfjs/logging": "workspace:*",
+    "@ecfjs/testing": "workspace:*"
   }
 }

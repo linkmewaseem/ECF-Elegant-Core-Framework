@@ -6,7 +6,7 @@ import { ModelBinder } from '../routing/ModelBinder.js';
  */
 export class ControllerResolver {
   /**
-   * @param {import('@ecf/core').Container} [container]
+   * @param {import('@ecfjs/core').Container} [container]
    * @param {ModelBinder} [modelBinder]
    */
   constructor(container = null, modelBinder = null) {

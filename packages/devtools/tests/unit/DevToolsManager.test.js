@@ -1,9 +1,9 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { Application } from '@ecf/core';
+import { Application } from '@ecfjs/core';
 import { DevToolsManager, DevToolsServiceProvider, RequestRecord } from '../../src/index.js';
 
-describe('@ecf/devtools — DevToolsManager & ServiceProvider Tests', () => {
+describe('@ecfjs/devtools — DevToolsManager & ServiceProvider Tests', () => {
   test('DevToolsManager records and retrieves entries', () => {
     const manager = new DevToolsManager({ maxEntries: 50 });
     const record = new RequestRecord({ url: '/test' }).seal();

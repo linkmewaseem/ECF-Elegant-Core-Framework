@@ -36,7 +36,7 @@ function makeManager(fake) {
 
 // ─── Tests ────────────────────────────────────────────────────────────────────
 
-describe("@ecf/media — Image Processing (Unit)", () => {
+describe("@ecfjs/media — Image Processing (Unit)", () => {
 
   describe("MediaFile", () => {
     it("creates from buffer", () => {

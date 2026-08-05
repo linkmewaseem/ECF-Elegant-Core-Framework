@@ -1,6 +1,6 @@
-# @ecf/devtools — Package Architecture
+# @ecfjs/devtools — Package Architecture
 
-`@ecf/devtools` is the real-time developer debugging platform for the ECF ecosystem.
+`@ecfjs/devtools` is the real-time developer debugging platform for the ECF ecosystem.
 
 ## Core Components
 
@@ -11,7 +11,7 @@
 
 ## Dependencies
 
-- `@ecf/core`
+- `@ecfjs/core`
 - Peer integrations with all major ECF packages via collector hooks.
 
 ## Dependency Rules

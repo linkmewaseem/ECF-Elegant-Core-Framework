@@ -17,247 +17,247 @@ importers:
 
   apps/halo:
     dependencies:
-      '@ecf/http':
+      '@ecfjs/http':
         specifier: workspace:*
         version: link:../../packages/http
-      '@ecf/validation':
+      '@ecfjs/validation':
         specifier: workspace:*
         version: link:../../packages/validation
-      '@ecf/view':
+      '@ecfjs/view':
         specifier: workspace:*
         version: link:../../packages/view
 
   apps/nexus:
     dependencies:
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@ecf/database':
+      '@ecfjs/database':
         specifier: workspace:*
         version: link:../../packages/database
-      '@ecf/http':
+      '@ecfjs/http':
         specifier: workspace:*
         version: link:../../packages/http
-      '@ecf/validation':
+      '@ecfjs/validation':
         specifier: workspace:*
         version: link:../../packages/validation
-      '@ecf/view':
+      '@ecfjs/view':
         specifier: workspace:*
         version: link:../../packages/view
 
   examples/ai-agent-rag:
     dependencies:
-      '@ecf/ai':
+      '@ecfjs/ai':
         specifier: workspace:*
         version: link:../../packages/ai
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@ecf/search':
+      '@ecfjs/search':
         specifier: workspace:*
         version: link:../../packages/search
-      '@ecf/testing':
+      '@ecfjs/testing':
         specifier: workspace:*
         version: link:../../packages/testing
 
   examples/realtime-chat:
     dependencies:
-      '@ecf/broadcast':
+      '@ecfjs/broadcast':
         specifier: workspace:*
         version: link:../../packages/broadcast
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@ecf/events':
+      '@ecfjs/events':
         specifier: workspace:*
         version: link:../../packages/events
-      '@ecf/http':
+      '@ecfjs/http':
         specifier: workspace:*
         version: link:../../packages/http
-      '@ecf/testing':
+      '@ecfjs/testing':
         specifier: workspace:*
         version: link:../../packages/testing
 
   examples/rest-api:
     dependencies:
-      '@ecf/api':
+      '@ecfjs/api':
         specifier: workspace:*
         version: link:../../packages/api
-      '@ecf/auth':
+      '@ecfjs/auth':
         specifier: workspace:*
         version: link:../../packages/auth
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@ecf/database':
+      '@ecfjs/database':
         specifier: workspace:*
         version: link:../../packages/database
-      '@ecf/http':
+      '@ecfjs/http':
         specifier: workspace:*
         version: link:../../packages/http
-      '@ecf/logging':
+      '@ecfjs/logging':
         specifier: workspace:*
         version: link:../../packages/logging
-      '@ecf/testing':
+      '@ecfjs/testing':
         specifier: workspace:*
         version: link:../../packages/testing
 
   packages/ai:
     dependencies:
-      '@ecf/contracts':
+      '@ecfjs/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/devtools':
+      '@ecfjs/devtools':
         specifier: workspace:*
         version: link:../devtools
-      '@ecf/logging':
+      '@ecfjs/logging':
         specifier: workspace:*
         version: link:../logging
-      '@ecf/media':
+      '@ecfjs/media':
         specifier: workspace:*
         version: link:../media
-      '@ecf/search':
+      '@ecfjs/search':
         specifier: workspace:*
         version: link:../search
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
   packages/api:
     dependencies:
-      '@ecf/auth':
+      '@ecfjs/auth':
         specifier: workspace:*
         version: link:../auth
-      '@ecf/cache':
+      '@ecfjs/cache':
         specifier: workspace:*
         version: link:../cache
-      '@ecf/config':
+      '@ecfjs/config':
         specifier: workspace:*
         version: link:../config
-      '@ecf/contracts':
+      '@ecfjs/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/devtools':
+      '@ecfjs/devtools':
         specifier: workspace:*
         version: link:../devtools
-      '@ecf/http':
+      '@ecfjs/http':
         specifier: workspace:*
         version: link:../http
-      '@ecf/observability':
+      '@ecfjs/observability':
         specifier: workspace:*
         version: link:../observability
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
   packages/auth:
     dependencies:
-      '@ecf/cache':
+      '@ecfjs/cache':
         specifier: workspace:*
         version: link:../cache
-      '@ecf/config':
+      '@ecfjs/config':
         specifier: workspace:*
         version: link:../config
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/database':
+      '@ecfjs/database':
         specifier: workspace:*
         version: link:../database
-      '@ecf/events':
+      '@ecfjs/events':
         specifier: workspace:*
         version: link:../events
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
   packages/broadcast:
     dependencies:
-      '@ecf/config':
+      '@ecfjs/config':
         specifier: workspace:*
         version: link:../config
-      '@ecf/contracts':
+      '@ecfjs/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/devtools':
+      '@ecfjs/devtools':
         specifier: workspace:*
         version: link:../devtools
-      '@ecf/events':
+      '@ecfjs/events':
         specifier: workspace:*
         version: link:../events
-      '@ecf/notifications':
+      '@ecfjs/notifications':
         specifier: workspace:*
         version: link:../notifications
-      '@ecf/observability':
+      '@ecfjs/observability':
         specifier: workspace:*
         version: link:../observability
-      '@ecf/queue':
+      '@ecfjs/queue':
         specifier: workspace:*
         version: link:../queue
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
   packages/cache:
     dependencies:
-      '@ecf/config':
+      '@ecfjs/config':
         specifier: workspace:*
         version: link:../config
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/events':
+      '@ecfjs/events':
         specifier: workspace:*
         version: link:../events
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
   packages/cli:
     dependencies:
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/database':
+      '@ecfjs/database':
         specifier: workspace:*
         version: link:../database
-      '@ecf/http':
+      '@ecfjs/http':
         specifier: workspace:*
         version: link:../http
-      '@ecf/skeleton':
+      '@ecfjs/skeleton':
         specifier: workspace:*
         version: link:../skeleton
-      '@ecf/view':
+      '@ecfjs/view':
         specifier: workspace:*
         version: link:../view
 
   packages/config:
     dependencies:
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/events':
+      '@ecfjs/events':
         specifier: workspace:*
         version: link:../events
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
   packages/console:
     dependencies:
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
@@ -267,151 +267,151 @@ importers:
 
   packages/database:
     dependencies:
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
 
   packages/devkit:
     dependencies:
-      '@ecf/cli':
+      '@ecfjs/cli':
         specifier: workspace:*
         version: link:../cli
-      '@ecf/config':
+      '@ecfjs/config':
         specifier: workspace:*
         version: link:../config
-      '@ecf/console':
+      '@ecfjs/console':
         specifier: workspace:*
         version: link:../console
-      '@ecf/contracts':
+      '@ecfjs/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/database':
+      '@ecfjs/database':
         specifier: workspace:*
         version: link:../database
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
   packages/devtools:
     dependencies:
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/observability':
+      '@ecfjs/observability':
         specifier: workspace:*
         version: link:../observability
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
   packages/events:
     dependencies:
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
   packages/http:
     dependencies:
-      '@ecf/auth':
+      '@ecfjs/auth':
         specifier: workspace:*
         version: link:../auth
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/validation':
+      '@ecfjs/validation':
         specifier: workspace:*
         version: link:../validation
 
   packages/logging:
     dependencies:
-      '@ecf/config':
+      '@ecfjs/config':
         specifier: workspace:*
         version: link:../config
-      '@ecf/contracts':
+      '@ecfjs/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/devtools':
+      '@ecfjs/devtools':
         specifier: workspace:*
         version: link:../devtools
-      '@ecf/events':
+      '@ecfjs/events':
         specifier: workspace:*
         version: link:../events
-      '@ecf/mail':
+      '@ecfjs/mail':
         specifier: workspace:*
         version: link:../mail
-      '@ecf/observability':
+      '@ecfjs/observability':
         specifier: workspace:*
         version: link:../observability
-      '@ecf/queue':
+      '@ecfjs/queue':
         specifier: workspace:*
         version: link:../queue
-      '@ecf/search':
+      '@ecfjs/search':
         specifier: workspace:*
         version: link:../search
-      '@ecf/storage':
+      '@ecfjs/storage':
         specifier: workspace:*
         version: link:../storage
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
   packages/mail:
     dependencies:
-      '@ecf/config':
+      '@ecfjs/config':
         specifier: workspace:*
         version: link:../config
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/events':
+      '@ecfjs/events':
         specifier: workspace:*
         version: link:../events
-      '@ecf/queue':
+      '@ecfjs/queue':
         specifier: workspace:*
         version: link:../queue
-      '@ecf/storage':
+      '@ecfjs/storage':
         specifier: workspace:*
         version: link:../storage
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
-      '@ecf/view':
+      '@ecfjs/view':
         specifier: workspace:*
         version: link:../view
 
   packages/media:
     dependencies:
-      '@ecf/config':
+      '@ecfjs/config':
         specifier: workspace:*
         version: link:../config
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/events':
+      '@ecfjs/events':
         specifier: workspace:*
         version: link:../events
-      '@ecf/notifications':
+      '@ecfjs/notifications':
         specifier: workspace:*
         version: link:../notifications
-      '@ecf/queue':
+      '@ecfjs/queue':
         specifier: workspace:*
         version: link:../queue
-      '@ecf/storage':
+      '@ecfjs/storage':
         specifier: workspace:*
         version: link:../storage
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
-      '@ecf/upload':
+      '@ecfjs/upload':
         specifier: workspace:*
         version: link:../upload
       sharp:
@@ -420,157 +420,157 @@ importers:
 
   packages/notifications:
     dependencies:
-      '@ecf/cache':
+      '@ecfjs/cache':
         specifier: workspace:*
         version: link:../cache
-      '@ecf/config':
+      '@ecfjs/config':
         specifier: workspace:*
         version: link:../config
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/database':
+      '@ecfjs/database':
         specifier: workspace:*
         version: link:../database
-      '@ecf/events':
+      '@ecfjs/events':
         specifier: workspace:*
         version: link:../events
-      '@ecf/mail':
+      '@ecfjs/mail':
         specifier: workspace:*
         version: link:../mail
-      '@ecf/queue':
+      '@ecfjs/queue':
         specifier: workspace:*
         version: link:../queue
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
   packages/observability:
     dependencies:
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/events':
+      '@ecfjs/events':
         specifier: workspace:*
         version: link:../events
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
   packages/queue:
     dependencies:
-      '@ecf/cache':
+      '@ecfjs/cache':
         specifier: workspace:*
         version: link:../cache
-      '@ecf/config':
+      '@ecfjs/config':
         specifier: workspace:*
         version: link:../config
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/database':
+      '@ecfjs/database':
         specifier: workspace:*
         version: link:../database
-      '@ecf/events':
+      '@ecfjs/events':
         specifier: workspace:*
         version: link:../events
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
   packages/scheduler:
     dependencies:
-      '@ecf/cache':
+      '@ecfjs/cache':
         specifier: workspace:*
         version: link:../cache
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/events':
+      '@ecfjs/events':
         specifier: workspace:*
         version: link:../events
-      '@ecf/observability':
+      '@ecfjs/observability':
         specifier: workspace:*
         version: link:../observability
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
   packages/search:
     dependencies:
-      '@ecf/broadcast':
+      '@ecfjs/broadcast':
         specifier: workspace:*
         version: link:../broadcast
-      '@ecf/cache':
+      '@ecfjs/cache':
         specifier: workspace:*
         version: link:../cache
-      '@ecf/config':
+      '@ecfjs/config':
         specifier: workspace:*
         version: link:../config
-      '@ecf/contracts':
+      '@ecfjs/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/database':
+      '@ecfjs/database':
         specifier: workspace:*
         version: link:../database
-      '@ecf/devtools':
+      '@ecfjs/devtools':
         specifier: workspace:*
         version: link:../devtools
-      '@ecf/events':
+      '@ecfjs/events':
         specifier: workspace:*
         version: link:../events
-      '@ecf/notifications':
+      '@ecfjs/notifications':
         specifier: workspace:*
         version: link:../notifications
-      '@ecf/observability':
+      '@ecfjs/observability':
         specifier: workspace:*
         version: link:../observability
-      '@ecf/queue':
+      '@ecfjs/queue':
         specifier: workspace:*
         version: link:../queue
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
   packages/skeleton:
     dependencies:
-      '@ecf/auth':
+      '@ecfjs/auth':
         specifier: workspace:*
         version: link:../auth
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/database':
+      '@ecfjs/database':
         specifier: workspace:*
         version: link:../database
-      '@ecf/http':
+      '@ecfjs/http':
         specifier: workspace:*
         version: link:../http
-      '@ecf/validation':
+      '@ecfjs/validation':
         specifier: workspace:*
         version: link:../validation
-      '@ecf/view':
+      '@ecfjs/view':
         specifier: workspace:*
         version: link:../view
 
   packages/storage:
     dependencies:
-      '@ecf/cache':
+      '@ecfjs/cache':
         specifier: workspace:*
         version: link:../cache
-      '@ecf/config':
+      '@ecfjs/config':
         specifier: workspace:*
         version: link:../config
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/events':
+      '@ecfjs/events':
         specifier: workspace:*
         version: link:../events
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
@@ -578,70 +578,70 @@ importers:
 
   packages/testing:
     dependencies:
-      '@ecf/api':
+      '@ecfjs/api':
         specifier: workspace:*
         version: link:../api
-      '@ecf/auth':
+      '@ecfjs/auth':
         specifier: workspace:*
         version: link:../auth
-      '@ecf/broadcast':
+      '@ecfjs/broadcast':
         specifier: workspace:*
         version: link:../broadcast
-      '@ecf/contracts':
+      '@ecfjs/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/database':
+      '@ecfjs/database':
         specifier: workspace:*
         version: link:../database
-      '@ecf/events':
+      '@ecfjs/events':
         specifier: workspace:*
         version: link:../events
-      '@ecf/http':
+      '@ecfjs/http':
         specifier: workspace:*
         version: link:../http
-      '@ecf/logging':
+      '@ecfjs/logging':
         specifier: workspace:*
         version: link:../logging
-      '@ecf/mail':
+      '@ecfjs/mail':
         specifier: workspace:*
         version: link:../mail
-      '@ecf/notifications':
+      '@ecfjs/notifications':
         specifier: workspace:*
         version: link:../notifications
-      '@ecf/queue':
+      '@ecfjs/queue':
         specifier: workspace:*
         version: link:../queue
-      '@ecf/search':
+      '@ecfjs/search':
         specifier: workspace:*
         version: link:../search
-      '@ecf/storage':
+      '@ecfjs/storage':
         specifier: workspace:*
         version: link:../storage
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
 
   packages/upload:
     dependencies:
-      '@ecf/config':
+      '@ecfjs/config':
         specifier: workspace:*
         version: link:../config
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/events':
+      '@ecfjs/events':
         specifier: workspace:*
         version: link:../events
-      '@ecf/storage':
+      '@ecfjs/storage':
         specifier: workspace:*
         version: link:../storage
-      '@ecf/support':
+      '@ecfjs/support':
         specifier: workspace:*
         version: link:../support
-      '@ecf/validation':
+      '@ecfjs/validation':
         specifier: workspace:*
         version: link:../validation
 
@@ -649,10 +649,10 @@ importers:
 
   packages/view:
     dependencies:
-      '@ecf/core':
+      '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
-      '@ecf/http':
+      '@ecfjs/http':
         specifier: workspace:*
         version: link:../http
 

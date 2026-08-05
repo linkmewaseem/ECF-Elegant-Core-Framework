@@ -1,6 +1,6 @@
-# `@ecf/console` — Artisan-Style Console Kernel
+# `@ecfjs/console` — Artisan-Style Console Kernel
 
-`@ecf/console` is the Artisan-style console command kernel for the ECF (Elegant Core Framework) ecosystem.
+`@ecfjs/console` is the Artisan-style console command kernel for the ECF (Elegant Core Framework) ecosystem.
 
 ---
 
@@ -18,7 +18,7 @@
 ## Quick Start
 
 ```javascript
-import { Command, ConsoleKernel } from "@ecf/console";
+import { Command, ConsoleKernel } from "@ecfjs/console";
 
 class HelloCommand extends Command {
   signature = "hello {name}";

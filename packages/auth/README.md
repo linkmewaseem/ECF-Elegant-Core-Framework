@@ -1,6 +1,6 @@
-# `@ecf/auth` — Enterprise Authentication & Authorization Platform
+# `@ecfjs/auth` — Enterprise Authentication & Authorization Platform
 
-`@ecf/auth` is an enterprise-grade authentication and authorization platform for the ECF (Enterprise Core Framework) ecosystem.
+`@ecfjs/auth` is an enterprise-grade authentication and authorization platform for the ECF (Enterprise Core Framework) ecosystem.
 
 ---
 
@@ -13,7 +13,7 @@
 - ⚡ **Authorization Engine**: `Gate` and `PolicyManager` supporting abilities, resource policies, `before`/`after` hooks, and role/permission resolvers.
 - 📱 **Multi-Factor Authentication**: RFC 6238 TOTP with AES encrypted secrets, window tolerance, step replay protection, and single-use recovery codes.
 - 🌐 **AsyncLocalStorage Isolation**: Isolated per-request auth context.
-- 🌉 **Zero-Duplication HTTP Bridge**: Full backward compatibility with `@ecf/http`.
+- 🌉 **Zero-Duplication HTTP Bridge**: Full backward compatibility with `@ecfjs/http`.
 
 ---
 
@@ -22,8 +22,8 @@
 ### 1. Register AuthServiceProvider
 
 ```javascript
-import { Application } from "@ecf/core";
-import { AuthServiceProvider, Auth, Gate } from "@ecf/auth";
+import { Application } from "@ecfjs/core";
+import { AuthServiceProvider, Auth, Gate } from "@ecfjs/auth";
 
 const app = new Application();
 app.register(AuthServiceProvider);
@@ -33,7 +33,7 @@ app.boot();
 ### 2. User Authentication
 
 ```javascript
-import { Auth } from "@ecf/auth";
+import { Auth } from "@ecfjs/auth";
 
 // Attempt Login with credentials
 const success = await Auth.attempt({ email: "alex@ecf.dev", password: "SecretPassword123" });
@@ -47,7 +47,7 @@ if (success) {
 ### 3. Password Hashing
 
 ```javascript
-import { PasswordHasher } from "@ecf/auth";
+import { PasswordHasher } from "@ecfjs/auth";
 
 const hasher = new PasswordHasher();
 const hash = await hasher.make("MyPassword123!");
@@ -59,7 +59,7 @@ const needsRehash = hasher.needsRehash(hash); // false
 ### 4. Gates & Policies
 
 ```javascript
-import { Gate } from "@ecf/auth";
+import { Gate } from "@ecfjs/auth";
 
 const gate = new Gate();
 gate.define("edit-post", (user, post) => user.id === post.userId);
@@ -70,7 +70,7 @@ const allowed = await gate.allows(user, "edit-post", post);
 ### 5. TOTP Two-Factor Authentication
 
 ```javascript
-import { TotpProvider } from "@ecf/auth";
+import { TotpProvider } from "@ecfjs/auth";
 
 const totp = new TotpProvider();
 const secretData = totp.generateSecret(user, "ECF App");

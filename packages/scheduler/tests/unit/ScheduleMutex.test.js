@@ -2,7 +2,7 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { ScheduleMutex } from '../../src/index.js';
 
-describe('@ecf/scheduler — ScheduleMutex Unit Tests', () => {
+describe('@ecfjs/scheduler — ScheduleMutex Unit Tests', () => {
   test('Lock acquisition, existence check, and unlock', async () => {
     const mutex = new ScheduleMutex();
     const taskName = 'command: queue:work';

@@ -13,7 +13,7 @@ import {
   Tracer,
 } from '../src/index.js';
 
-describe('@ecf/observability — Domain Hooks Tests', () => {
+describe('@ecfjs/observability — Domain Hooks Tests', () => {
   test('DatabaseHook query lifecycle tracking', () => {
     const metrics = new MetricsCollector();
     const timeline = new Timeline();

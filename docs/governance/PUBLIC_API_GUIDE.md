@@ -16,7 +16,7 @@ Every package in the ECF ecosystem must specify explicit entry points via the `"
 
 ```json
 {
-  "name": "@ecf/http",
+  "name": "@ecfjs/http",
   "version": "1.0.0-rc.1",
   "type": "module",
   "main": "./src/index.js",
@@ -34,12 +34,12 @@ Every package in the ECF ecosystem must specify explicit entry points via the `"
 Deep imports into package internals are strictly blocked by Node.js package resolution:
 ```javascript
 // ❌ FORBIDDEN & BLOCKED by package.json exports:
-import TrieNode from "@ecf/http/src/internal/TrieNode.js";
-import ASTCompiler from "@ecf/view/src/compiler/ASTCompiler.js";
+import TrieNode from "@ecfjs/http/src/internal/TrieNode.js";
+import ASTCompiler from "@ecfjs/view/src/compiler/ASTCompiler.js";
 
 // ✅ RECOMMENDED & SUPPORTED:
-import { Router, Request, Response } from "@ecf/http";
-import { ViewEngine } from "@ecf/view";
+import { Router, Request, Response } from "@ecfjs/http";
+import { ViewEngine } from "@ecfjs/view";
 ```
 
 ---

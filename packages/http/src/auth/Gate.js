@@ -1,7 +1,7 @@
-import { Gate as CoreGate } from "@ecf/auth";
+import { Gate as CoreGate } from "@ecfjs/auth";
 
 /**
- * Authorization Gate Manager bridge delegating to @ecf/auth.
+ * Authorization Gate Manager bridge delegating to @ecfjs/auth.
  */
 export class Gate {
   constructor() {

@@ -1,8 +1,8 @@
-# Architectural Threat Model — `@ecf/auth`
+# Architectural Threat Model — `@ecfjs/auth`
 
 ## 1. Overview & Trust Boundaries
 
-The `@ecf/auth` subsystem operates at the security perimeter of ECF applications. The trust boundaries are structured as follows:
+The `@ecfjs/auth` subsystem operates at the security perimeter of ECF applications. The trust boundaries are structured as follows:
 
 ```
 [ Unstrusted Client Request ]

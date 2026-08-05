@@ -1,7 +1,7 @@
 import { describe, test, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import { Readable } from "node:stream";
-import { Application, Facade, CoreServiceProvider } from "@ecf/core";
+import { Application, Facade, CoreServiceProvider } from "@ecfjs/core";
 import HttpServiceProvider from "../src/providers/HttpServiceProvider.js";
 import RouteNotFoundError from "../src/errors/RouteNotFoundError.js";
 import Route from "../src/facades/Route.js";

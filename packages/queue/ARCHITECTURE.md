@@ -1,24 +1,24 @@
-# `@ecf/queue` — Architecture Freeze Document (v1.0)
+# `@ecfjs/queue` — Architecture Freeze Document (v1.0)
 
 ## Overview
 
-`@ecf/queue` is the official Enterprise Asynchronous Execution Platform for the ECF (Enterprise Core Framework) ecosystem. It provides the central asynchronous backbone for Mail, Notifications, Media processing, Storage cleanup, and DevTools monitoring.
+`@ecfjs/queue` is the official Enterprise Asynchronous Execution Platform for the ECF (Enterprise Core Framework) ecosystem. It provides the central asynchronous backbone for Mail, Notifications, Media processing, Storage cleanup, and DevTools monitoring.
 
 ---
 
 ## 1. Monorepo Dependency Graph
 
 ```
-@ecf/core
+@ecfjs/core
     │
-@ecf/support
+@ecfjs/support
     │
-@ecf/queue (Milestone 18)
+@ecfjs/queue (Milestone 18)
     │
-@ecf/mail (Milestone 19)
+@ecfjs/mail (Milestone 19)
 ```
 
-`@ecf/queue` hard-requires only `@ecf/core` and `@ecf/support`. Config, Events, Cache, and Database act as optional peer integrations. There are **zero cyclic dependencies**.
+`@ecfjs/queue` hard-requires only `@ecfjs/core` and `@ecfjs/support`. Config, Events, Cache, and Database act as optional peer integrations. There are **zero cyclic dependencies**.
 
 ---
 

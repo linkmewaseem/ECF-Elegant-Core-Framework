@@ -2,7 +2,7 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { EntryStore, RequestRecord } from '../../src/index.js';
 
-describe('@ecf/devtools — EntryStore Unit Tests', () => {
+describe('@ecfjs/devtools — EntryStore Unit Tests', () => {
   test('EntryStore capacity bounding and FIFO eviction', () => {
     const store = new EntryStore({ capacity: 3 });
     const r1 = new RequestRecord({ url: '/r1' }).seal();

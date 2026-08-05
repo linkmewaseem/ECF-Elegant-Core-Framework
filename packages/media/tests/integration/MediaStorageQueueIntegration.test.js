@@ -7,7 +7,7 @@ import { MediaFile } from '../../src/core/MediaFile.js';
 import { MediaPipeline } from '../../src/pipeline/MediaPipeline.js';
 import { BuiltInProfiles } from '../../src/profiles/MediaProfile.js';
 
-describe("@ecf/media — Integration Tests", () => {
+describe("@ecfjs/media — Integration Tests", () => {
   function makeImageFile(name = "photo.jpg", mimeType = "image/jpeg", size = 2048) {
     return MediaFile.fromBuffer(Buffer.alloc(size, 0xab), { mimeType, originalName: name });
   }

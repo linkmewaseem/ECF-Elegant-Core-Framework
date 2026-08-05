@@ -3,7 +3,7 @@ import { CodeGenerator } from './CodeGenerator.js';
 export class CommandGenerator extends CodeGenerator {
   async generate(name, options = {}) {
     const names = this.formatNames(name);
-    const stub = `import { Command } from '@ecf/console';
+    const stub = `import { Command } from '@ecfjs/console';
 
 export class {{pascal}}Command extends Command {
   static signature = '{{kebab}}';

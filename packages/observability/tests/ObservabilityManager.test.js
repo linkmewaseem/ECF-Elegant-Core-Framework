@@ -1,13 +1,13 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { Application } from '@ecf/core';
+import { Application } from '@ecfjs/core';
 import {
   ObservabilityManager,
   ObservabilityServiceProvider,
   MemoryExporter,
 } from '../src/index.js';
 
-describe('@ecf/observability — ObservabilityManager & ServiceProvider Tests', () => {
+describe('@ecfjs/observability — ObservabilityManager & ServiceProvider Tests', () => {
   test('ObservabilityManager subsystem integration and domain hook lookup', () => {
     const manager = new ObservabilityManager({ defaultExporter: true });
     assert.ok(manager.metrics);

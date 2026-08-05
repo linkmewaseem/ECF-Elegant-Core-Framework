@@ -1,4 +1,4 @@
-import { ServiceProvider } from "@ecf/core";
+import { ServiceProvider } from "@ecfjs/core";
 import path from "node:path";
 import ViewManager from "../manager/ViewManager.js";
 import ViewLoader from "../loader/ViewLoader.js";

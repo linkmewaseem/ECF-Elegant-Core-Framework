@@ -4,7 +4,7 @@ import { Application, Facade } from "../../../core/src/index.js";
 import { DatabaseServiceProvider, Model } from "../../../database/src/index.js";
 import SluggablePlugin from "../SluggablePlugin.js";
 
-describe("@ecf/sluggable First-Party Extension Integration Suite", () => {
+describe("@ecfjs/sluggable First-Party Extension Integration Suite", () => {
     let app;
     let dbManager;
 

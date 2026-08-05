@@ -1,4 +1,4 @@
-import { ServiceProvider } from '@ecf/core';
+import { ServiceProvider } from '@ecfjs/core';
 import { ScheduleManager } from '../core/ScheduleManager.js';
 import { ScheduleRunCommand } from '../cli/ScheduleRunCommand.js';
 import { ScheduleListCommand } from '../cli/ScheduleListCommand.js';

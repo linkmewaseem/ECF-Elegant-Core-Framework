@@ -1,17 +1,17 @@
-# @ecf/cli — Package Architecture
+# @ecfjs/cli — Package Architecture
 
-`@ecf/cli` is the official command-line interface for the ECF ecosystem.
+`@ecfjs/cli` is the official command-line interface for the ECF ecosystem.
 
 ## Core Components
 
 - **Command Registry**: Registers and dispatches CLI commands.
 - **`ecf doctor`**: Validates Node version, workspace dependencies, and config integrity.
-- **Scaffolding Commands**: Delegates to `@ecf/devkit` for AST-based code generation.
+- **Scaffolding Commands**: Delegates to `@ecfjs/devkit` for AST-based code generation.
 
 ## Dependencies
 
-- `@ecf/core`
-- `@ecf/devkit`
+- `@ecfjs/core`
+- `@ecfjs/devkit`
 
 ## Dependency Rules
 

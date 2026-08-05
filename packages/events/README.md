@@ -1,6 +1,6 @@
-# `@ecf/events` — Priority Lifecycle Event Bus
+# `@ecfjs/events` — Priority Lifecycle Event Bus
 
-`@ecf/events` is the priority-aware event dispatcher for the ECF (Elegant Core Framework) ecosystem.
+`@ecfjs/events` is the priority-aware event dispatcher for the ECF (Elegant Core Framework) ecosystem.
 
 ---
 
@@ -17,8 +17,8 @@
 ## Quick Start
 
 ```javascript
-import { Application } from "@ecf/core";
-import { EventServiceProvider, Event } from "@ecf/events";
+import { Application } from "@ecfjs/core";
+import { EventServiceProvider, Event } from "@ecfjs/events";
 
 const app = new Application();
 app.register(EventServiceProvider);

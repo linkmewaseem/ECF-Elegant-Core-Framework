@@ -2,7 +2,7 @@
  * ProcessMediaJob — Background queue job for heavy media processing.
  *
  * Dispatched automatically when .queueOn(disk) is called on ImageProcessor.
- * Integrates with @ecf/queue via duck-typing (no hard dependency on Job base class).
+ * Integrates with @ecfjs/queue via duck-typing (no hard dependency on Job base class).
  */
 export class ProcessMediaJob {
   constructor({ mediaFile, transformations = [], variants = {}, profileName = null, disk = "local", directory = "media" }) {
@@ -13,7 +13,7 @@ export class ProcessMediaJob {
     this.disk = disk;
     this.directory = directory;
 
-    // @ecf/queue job metadata
+    // @ecfjs/queue job metadata
     this.jobName = "ProcessMediaJob";
     this.maxAttempts = 3;
     this.backoff = { type: "exponential", delay: 5000 };

@@ -1,6 +1,6 @@
-# `@ecf/view` — AST View Engine
+# `@ecfjs/view` — AST View Engine
 
-`@ecf/view` is the high-performance AST-based view compilation and rendering engine for the ECF (Elegant Core Framework) ecosystem.
+`@ecfjs/view` is the high-performance AST-based view compilation and rendering engine for the ECF (Elegant Core Framework) ecosystem.
 
 ---
 
@@ -11,14 +11,14 @@
 - **CompiledTemplate Cache** — sub-10ms compile with token caching
 - **Layout System** — `@extends`, `@section`, `@yield` directives
 - **Expression Evaluator** — safe template expression evaluation
-- **HTTP Integration** — `response.view()` rendering via `@ecf/http`
+- **HTTP Integration** — `response.view()` rendering via `@ecfjs/http`
 
 ---
 
 ## Quick Start
 
 ```javascript
-import { ViewEngine } from "@ecf/view";
+import { ViewEngine } from "@ecfjs/view";
 
 const engine = new ViewEngine({ viewsPath: "./resources/views" });
 const html = await engine.render("welcome", { name: "Alice" });

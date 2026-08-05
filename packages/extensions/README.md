@@ -1,4 +1,4 @@
-# @ecf/extensions
+# @ecfjs/extensions
 
 This package groups optional extension modules and feature add-ons for the ECF ecosystem. It is intended to host reusable extension patterns such as soft-delete behavior, UUID generation, timestamps, and slugging helpers.
 
@@ -11,7 +11,7 @@ This package groups optional extension modules and feature add-ons for the ECF e
 ## Usage
 
 ```js
-import { SluggableExtension } from "@ecf/extensions/sluggable";
+import { SluggableExtension } from "@ecfjs/extensions/sluggable";
 
 const slugger = new SluggableExtension();
 console.log(slugger.slugify("Hello World"));

@@ -4,7 +4,7 @@ export default class SluggablePlugin extends Plugin {
     constructor(options = {}) {
         super({
             id: "sluggable",
-            name: "@ecf/sluggable",
+            name: "@ecfjs/sluggable",
             version: "1.0.0",
             apiVersion: "1",
             framework: "^1.0.0",

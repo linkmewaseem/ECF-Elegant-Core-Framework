@@ -1,4 +1,4 @@
-import { ECFError } from "@ecf/core";
+import { ECFError } from "@ecfjs/core";
 
 export default class ViewError extends ECFError {
     constructor(message) {

@@ -4,7 +4,7 @@ import { MediaMetadata } from '../core/MediaMetadata.js';
 import assert from 'node:assert/strict';
 
 /**
- * MediaTestingFake — Zero-driver testing harness for @ecf/media.
+ * MediaTestingFake — Zero-driver testing harness for @ecfjs/media.
  *
  * Replaces SharpDriver with an in-memory fake that records all
  * operations without requiring the `sharp` native addon.

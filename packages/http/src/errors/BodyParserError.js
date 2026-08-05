@@ -1,4 +1,4 @@
-import {ECFError} from '@ecf/core';
+import {ECFError} from '@ecfjs/core';
 
 /**
  * Error thrown when a body parser-related error occurs.

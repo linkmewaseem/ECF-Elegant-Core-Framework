@@ -1,4 +1,4 @@
-import { Facade } from "@ecf/core";
+import { Facade } from "@ecfjs/core";
 
 class ConfigFacadeClass extends Facade {
   static accessor() {

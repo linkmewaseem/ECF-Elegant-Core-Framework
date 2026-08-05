@@ -1,4 +1,4 @@
-import { Route } from "@ecf/http";
+import { Route } from "@ecfjs/http";
 
 /**
  * Optional JSON routes for AJAX calls or webhooks from your SSR pages.

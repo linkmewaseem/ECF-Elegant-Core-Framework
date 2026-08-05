@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { test } from '@ecf/testing';
+import { test } from '@ecfjs/testing';
 import { askSupportBot } from '../app.js';
 
 describe('AI Agent RAG Sample App Unit Tests', () => {

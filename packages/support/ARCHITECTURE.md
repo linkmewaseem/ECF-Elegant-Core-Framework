@@ -1,6 +1,6 @@
-# @ecf/support — Package Architecture
+# @ecfjs/support — Package Architecture
 
-`@ecf/support` provides foundational collection and string utilities for the ECF ecosystem.
+`@ecfjs/support` provides foundational collection and string utilities for the ECF ecosystem.
 
 ## Core Components
 

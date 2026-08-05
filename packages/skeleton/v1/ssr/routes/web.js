@@ -1,4 +1,4 @@
-import { Route } from "@ecf/http";
+import { Route } from "@ecfjs/http";
 import HomeController from "../app/Http/Controllers/HomeController.js";
 
 export default function registerWebRoutes() {

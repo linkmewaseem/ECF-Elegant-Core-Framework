@@ -1,4 +1,4 @@
-import { ServiceProvider, ECFError } from "@ecf/core";
+import { ServiceProvider, ECFError } from "@ecfjs/core";
 
 export class ViewError extends ECFError {}
 

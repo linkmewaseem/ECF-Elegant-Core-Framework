@@ -1,13 +1,13 @@
-# `@ecf/testing` — Enterprise Testing Platform Documentation
+# `@ecfjs/testing` — Enterprise Testing Platform Documentation
 
-`@ecf/testing` is the official testing suite for ECF applications. It provides a native `node:test` wrapper with dependency-injected test context, app sandbox isolation, Playwright browser automation, RFC9457 HTTP assertions, database transaction rollbacks, model factories, mock clock time travel, snapshot testing, and unified subsystem fakes orchestration.
+`@ecfjs/testing` is the official testing suite for ECF applications. It provides a native `node:test` wrapper with dependency-injected test context, app sandbox isolation, Playwright browser automation, RFC9457 HTTP assertions, database transaction rollbacks, model factories, mock clock time travel, snapshot testing, and unified subsystem fakes orchestration.
 
 ---
 
 ## 🚀 Quick Example
 
 ```js
-import { test } from "@ecf/testing";
+import { test } from "@ecfjs/testing";
 
 test("Complete User Registration & Order Checkout", async ({ app, http, database, time, fake, factory }) => {
   // 1. Enable subsystem fakes with one call
@@ -46,9 +46,9 @@ test("Complete User Registration & Order Checkout", async ({ app, http, database
 - `assertDatabaseCount(table, count)`
 - `assertSoftDeleted(table, data)`
 
-### 3. Browser Automation (`@ecf/testing/browser`)
+### 3. Browser Automation (`@ecfjs/testing/browser`)
 ```js
-import { BrowserAgent } from "@ecf/testing/browser";
+import { BrowserAgent } from "@ecfjs/testing/browser";
 
 test("Browser Checkout", async ({ browser }) => {
   await browser.visit("/checkout");

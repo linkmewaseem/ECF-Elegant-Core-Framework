@@ -22,11 +22,11 @@ This document provides the **root-level package catalog** with ownership, maturi
 
 | Package | Owner | Stage | README | ARCHITECTURE | BENCHMARKS | Tests |
 |---|---|---|---|---|---|---|
-| `@ecf/core` | Core Team | 6 — Freeze | ✅ | ✅ | ✅ | ✅ |
-| `@ecf/support` | Core Team | 6 — Freeze | ✅ | ✅ | — | ✅ |
-| `@ecf/config` | Core Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
-| `@ecf/events` | Core Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
-| `@ecf/contracts` | Core Team | 6 — Freeze | ✅ | ✅ | — | ✅ |
+| `@ecfjs/core` | Core Team | 6 — Freeze | ✅ | ✅ | ✅ | ✅ |
+| `@ecfjs/support` | Core Team | 6 — Freeze | ✅ | ✅ | — | ✅ |
+| `@ecfjs/config` | Core Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
+| `@ecfjs/events` | Core Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
+| `@ecfjs/contracts` | Core Team | 6 — Freeze | ✅ | ✅ | — | ✅ |
 
 ---
 
@@ -34,9 +34,9 @@ This document provides the **root-level package catalog** with ownership, maturi
 
 | Package | Owner | Stage | README | ARCHITECTURE | BENCHMARKS | Tests |
 |---|---|---|---|---|---|---|
-| `@ecf/http` | HTTP Team | 6 — Freeze | ✅ | ✅ | ✅ | ✅ |
-| `@ecf/validation` | HTTP Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
-| `@ecf/view` | HTTP Team | 6 — Freeze | ✅ | ✅ | ✅ | ✅ |
+| `@ecfjs/http` | HTTP Team | 6 — Freeze | ✅ | ✅ | ✅ | ✅ |
+| `@ecfjs/validation` | HTTP Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
+| `@ecfjs/view` | HTTP Team | 6 — Freeze | ✅ | ✅ | ✅ | ✅ |
 
 ---
 
@@ -44,9 +44,9 @@ This document provides the **root-level package catalog** with ownership, maturi
 
 | Package | Owner | Stage | README | ARCHITECTURE | BENCHMARKS | Tests |
 |---|---|---|---|---|---|---|
-| `@ecf/database` | Data Team | 6 — Freeze | ✅ | ✅ | ✅ | ✅ |
-| `@ecf/cache` | Data Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
-| `@ecf/search` | Data Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
+| `@ecfjs/database` | Data Team | 6 — Freeze | ✅ | ✅ | ✅ | ✅ |
+| `@ecfjs/cache` | Data Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
+| `@ecfjs/search` | Data Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
 
 ---
 
@@ -54,16 +54,16 @@ This document provides the **root-level package catalog** with ownership, maturi
 
 | Package | Owner | Stage | README | ARCHITECTURE | BENCHMARKS | Tests |
 |---|---|---|---|---|---|---|
-| `@ecf/auth` | Security Team | 6 — Freeze | ✅ | ✅ | — | ✅ |
-| `@ecf/queue` | Services Team | 6 — Freeze | ✅ | ✅ | — | ✅ |
-| `@ecf/mail` | Services Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
-| `@ecf/storage` | Services Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
-| `@ecf/upload` | Services Team | 5 — Benchmarks | ✅ | ✅ | ✅ | ✅ |
-| `@ecf/media` | Services Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
-| `@ecf/broadcast` | Services Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
-| `@ecf/notifications` | Services Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
-| `@ecf/scheduler` | Services Team | 4 — Tests | ✅ | ✅ | — | ✅ |
-| `@ecf/logging` | Services Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
+| `@ecfjs/auth` | Security Team | 6 — Freeze | ✅ | ✅ | — | ✅ |
+| `@ecfjs/queue` | Services Team | 6 — Freeze | ✅ | ✅ | — | ✅ |
+| `@ecfjs/mail` | Services Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
+| `@ecfjs/storage` | Services Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
+| `@ecfjs/upload` | Services Team | 5 — Benchmarks | ✅ | ✅ | ✅ | ✅ |
+| `@ecfjs/media` | Services Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
+| `@ecfjs/broadcast` | Services Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
+| `@ecfjs/notifications` | Services Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
+| `@ecfjs/scheduler` | Services Team | 4 — Tests | ✅ | ✅ | — | ✅ |
+| `@ecfjs/logging` | Services Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
 
 ---
 
@@ -71,8 +71,8 @@ This document provides the **root-level package catalog** with ownership, maturi
 
 | Package | Owner | Stage | README | ARCHITECTURE | BENCHMARKS | Tests |
 |---|---|---|---|---|---|---|
-| `@ecf/api` | API Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
-| `@ecf/ai` | AI Team | 4 — Tests | ✅ | ✅ | — | ✅ |
+| `@ecfjs/api` | API Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
+| `@ecfjs/ai` | AI Team | 4 — Tests | ✅ | ✅ | — | ✅ |
 
 ---
 
@@ -80,13 +80,13 @@ This document provides the **root-level package catalog** with ownership, maturi
 
 | Package | Owner | Stage | README | ARCHITECTURE | BENCHMARKS | Tests |
 |---|---|---|---|---|---|---|
-| `@ecf/testing` | DevTools Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
-| `@ecf/devkit` | DevTools Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
-| `@ecf/devtools` | DevTools Team | 4 — Tests | ✅ | ✅ | — | ✅ |
-| `@ecf/cli` | DevTools Team | 4 — Tests | ✅ | ✅ | — | ✅ |
-| `@ecf/console` | DevTools Team | 4 — Tests | ✅ | ✅ | — | ✅ |
-| `@ecf/observability` | DevTools Team | 4 — Tests | ✅ | ✅ | — | ✅ |
-| `@ecf/skeleton` | DevTools Team | 4 — Tests | ✅ | ✅ | — | ✅ |
+| `@ecfjs/testing` | DevTools Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
+| `@ecfjs/devkit` | DevTools Team | 5 — Benchmarks | ✅ | ✅ | — | ✅ |
+| `@ecfjs/devtools` | DevTools Team | 4 — Tests | ✅ | ✅ | — | ✅ |
+| `@ecfjs/cli` | DevTools Team | 4 — Tests | ✅ | ✅ | — | ✅ |
+| `@ecfjs/console` | DevTools Team | 4 — Tests | ✅ | ✅ | — | ✅ |
+| `@ecfjs/observability` | DevTools Team | 4 — Tests | ✅ | ✅ | — | ✅ |
+| `@ecfjs/skeleton` | DevTools Team | 4 — Tests | ✅ | ✅ | — | ✅ |
 
 ---
 

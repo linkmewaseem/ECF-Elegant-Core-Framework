@@ -1,4 +1,4 @@
-import { ServiceProvider } from "@ecf/core";
+import { ServiceProvider } from "@ecfjs/core";
 import ConfigRepository from "./ConfigRepository.js";
 
 export class ConfigServiceProvider extends ServiceProvider {

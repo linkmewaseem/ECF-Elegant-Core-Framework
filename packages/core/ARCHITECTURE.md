@@ -1,6 +1,6 @@
-# @ecf/core — Package Architecture
+# @ecfjs/core — Package Architecture
 
-`@ecf/core` is the foundational dependency injection container and application bootstrapper for the ECF ecosystem. Every other package in the monorepo depends on it, directly or transitively.
+`@ecfjs/core` is the foundational dependency injection container and application bootstrapper for the ECF ecosystem. Every other package in the monorepo depends on it, directly or transitively.
 
 ## Core Components
 
@@ -17,7 +17,7 @@
 
 ## Built-in Service Providers
 
-`ConfigServiceProvider`, `LoggerServiceProvider`, `EventServiceProvider`, `EnvironmentServiceProvider`, `CoreServiceProvider`, and a re-exported `DatabaseServiceProvider` binding point. Downstream packages (`@ecf/http`, `@ecf/view`, `@ecf/database`, `@ecf/auth`, ...) each ship their own `ServiceProvider` subclass that consuming applications register explicitly — `@ecf/core` does not auto-register anything outside its own providers.
+`ConfigServiceProvider`, `LoggerServiceProvider`, `EventServiceProvider`, `EnvironmentServiceProvider`, `CoreServiceProvider`, and a re-exported `DatabaseServiceProvider` binding point. Downstream packages (`@ecfjs/http`, `@ecfjs/view`, `@ecfjs/database`, `@ecfjs/auth`, ...) each ship their own `ServiceProvider` subclass that consuming applications register explicitly — `@ecfjs/core` does not auto-register anything outside its own providers.
 
 ## Resolution Model
 
@@ -27,11 +27,11 @@
 
 ## Dependency Rules
 
-- **Zero dependencies on outer packages.** `@ecf/core` must never import `@ecf/http`, `@ecf/database`, `@ecf/view`, or any other package that depends on it. This is enforced structurally — violating it would create a circular package dependency across the monorepo.
-- Any package that needs container/application behavior imports `@ecf/core`; `@ecf/core` never imports back.
+- **Zero dependencies on outer packages.** `@ecfjs/core` must never import `@ecfjs/http`, `@ecfjs/database`, `@ecfjs/view`, or any other package that depends on it. This is enforced structurally — violating it would create a circular package dependency across the monorepo.
+- Any package that needs container/application behavior imports `@ecfjs/core`; `@ecfjs/core` never imports back.
 - `Facade` and `ServiceProvider` are the two integration points every other package builds on: new packages ship a `*ServiceProvider` (registered explicitly by the consuming app) and, optionally, one or more `Facade` subclasses for ergonomic static access.
 
 ## Known Constraints
 
 - `Application.boot()` instantiates each registered provider with `new ProviderClass()` — no constructor injection. Providers must do all their work inside `register(app)`/`boot(app)`, using the `app` argument.
-- `app.use(middleware)` and `app.listen(...)` both require bindings/handlers that only exist once an HTTP-capable provider (`HttpServiceProvider` from `@ecf/http`) has been registered. Calling either before that provider is registered throws a `ContainerError` with a message pointing at the missing registration.
+- `app.use(middleware)` and `app.listen(...)` both require bindings/handlers that only exist once an HTTP-capable provider (`HttpServiceProvider` from `@ecfjs/http`) has been registered. Calling either before that provider is registered throws a `ContainerError` with a message pointing at the missing registration.

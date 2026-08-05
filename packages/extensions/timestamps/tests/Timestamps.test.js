@@ -4,7 +4,7 @@ import { Application, Facade } from "../../../core/src/index.js";
 import { DatabaseServiceProvider, Model } from "../../../database/src/index.js";
 import TimestampsPlugin from "../TimestampsPlugin.js";
 
-describe("@ecf/timestamps First-Party Extension Integration Suite", () => {
+describe("@ecfjs/timestamps First-Party Extension Integration Suite", () => {
     let app;
     let dbManager;
 

@@ -2,7 +2,7 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { EventTask } from '../../src/index.js';
 
-describe('@ecf/scheduler — EventTask Unit Tests', () => {
+describe('@ecfjs/scheduler — EventTask Unit Tests', () => {
   test('Fluent frequency builders', () => {
     const task = new EventTask('callback', () => {});
     task.everyFiveMinutes();

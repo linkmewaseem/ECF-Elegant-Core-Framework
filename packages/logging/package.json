@@ -49,28 +49,28 @@
     "@ecfjs/storage": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/config": {
+    "@ecfjs/config": {
       "optional": true
     },
-    "@ecf/devtools": {
+    "@ecfjs/devtools": {
       "optional": true
     },
-    "@ecf/events": {
+    "@ecfjs/events": {
       "optional": true
     },
-    "@ecf/mail": {
+    "@ecfjs/mail": {
       "optional": true
     },
-    "@ecf/observability": {
+    "@ecfjs/observability": {
       "optional": true
     },
-    "@ecf/queue": {
+    "@ecfjs/queue": {
       "optional": true
     },
-    "@ecf/search": {
+    "@ecfjs/search": {
       "optional": true
     },
-    "@ecf/storage": {
+    "@ecfjs/storage": {
       "optional": true
     }
   }

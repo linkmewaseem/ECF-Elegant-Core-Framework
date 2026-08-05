@@ -1,4 +1,4 @@
-import { Route } from "@ecf/http";
+import { Route } from "@ecfjs/http";
 
 export default function registerHealthRoutes() {
     Route.get("/health", (req, res) => {

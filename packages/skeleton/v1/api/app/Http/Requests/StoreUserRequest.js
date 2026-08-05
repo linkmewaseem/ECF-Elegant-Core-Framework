@@ -1,4 +1,4 @@
-import { FormRequest } from "@ecf/http";
+import { FormRequest } from "@ecfjs/http";
 
 export class StoreUserRequest extends FormRequest {
     rules() {

@@ -1,5 +1,5 @@
 import { IResponse } from '../contracts/IResponse.js';
-import { Facade } from '@ecf/core';
+import { Facade } from '@ecfjs/core';
 
 /**
  * Base Abstract Response builder.

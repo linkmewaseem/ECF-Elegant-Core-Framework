@@ -1,4 +1,4 @@
-import { IAiManager } from '@ecf/contracts';
+import { IAiManager } from '@ecfjs/contracts';
 import { OpenAiDriver } from './drivers/OpenAiDriver.js';
 import { AnthropicDriver } from './drivers/AnthropicDriver.js';
 import { GeminiDriver } from './drivers/GeminiDriver.js';

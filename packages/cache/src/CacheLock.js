@@ -1,4 +1,4 @@
-import { Str } from "@ecf/support";
+import { Str } from "@ecfjs/support";
 import ICacheLock from "./contracts/ICacheLock.js";
 
 export class CacheLock extends ICacheLock {

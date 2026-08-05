@@ -1,4 +1,4 @@
-import { Migration } from "@ecf/database";
+import { Migration } from "@ecfjs/database";
 
 export default class CreateProductsTable extends Migration {
     async up(schema) {

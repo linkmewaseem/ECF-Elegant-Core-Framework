@@ -24,13 +24,13 @@ A clear and concise description of what you expected to happen.
 ## 💻 Code Example / Reproduction
 
 ```javascript
-import { Application } from "@ecf/core";
+import { Application } from "@ecfjs/core";
 // Minimal reproducible code snippet
 ```
 
 ## 🖥️ Environment
 
-- **ECF Package & Version**: `@ecf/core@1.0.0-rc.1` (or whichever package)
+- **ECF Package & Version**: `@ecfjs/core@1.0.0-rc.1` (or whichever package)
 - **Node.js Version**: `v22.x.x`
 - **OS**: [e.g. Windows / macOS / Ubuntu]
 - **Package Manager**: `pnpm`

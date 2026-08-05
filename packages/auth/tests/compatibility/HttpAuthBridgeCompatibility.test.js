@@ -9,7 +9,7 @@ class UserPolicy extends PolicyBridge {
   }
 }
 
-test("HttpAuthBridgeCompatibility - @ecf/http Gate and Policy delegation to @ecf/auth", async () => {
+test("HttpAuthBridgeCompatibility - @ecfjs/http Gate and Policy delegation to @ecfjs/auth", async () => {
   const gate = new GateBridge();
   gate.define("access-admin", (user) => user.isAdmin);
   gate.policy(Object, new UserPolicy());

@@ -1,32 +1,32 @@
-# `@ecf/auth` — Architecture Freeze Document (v1.0)
+# `@ecfjs/auth` — Architecture Freeze Document (v1.0)
 
 ## Overview
 
-`@ecf/auth` is the official Authentication & Authorization Platform for the ECF (Enterprise Core Framework) ecosystem. It provides a driver-based, modular, and security-hardened foundation for modern Node.js applications.
+`@ecfjs/auth` is the official Authentication & Authorization Platform for the ECF (Enterprise Core Framework) ecosystem. It provides a driver-based, modular, and security-hardened foundation for modern Node.js applications.
 
 ---
 
 ## 1. Monorepo Dependency Graph
 
 ```
-@ecf/core
+@ecfjs/core
     │
-@ecf/support
+@ecfjs/support
     │
-@ecf/events
+@ecfjs/events
     │
-@ecf/config
+@ecfjs/config
     │
-@ecf/cache
+@ecfjs/cache
     │
-@ecf/database
+@ecfjs/database
     │
-@ecf/auth (Milestone 15)
+@ecfjs/auth (Milestone 15)
     │
-@ecf/http
+@ecfjs/http
 ```
 
-`@ecf/auth` hard-requires only `@ecf/core` and `@ecf/support`. All other framework packages (`@ecf/events`, `@ecf/config`, `@ecf/cache`, `@ecf/database`, `@ecf/http`) act as optional integration peers. There are **zero cyclic dependencies**.
+`@ecfjs/auth` hard-requires only `@ecfjs/core` and `@ecfjs/support`. All other framework packages (`@ecfjs/events`, `@ecfjs/config`, `@ecfjs/cache`, `@ecfjs/database`, `@ecfjs/http`) act as optional integration peers. There are **zero cyclic dependencies**.
 
 ---
 

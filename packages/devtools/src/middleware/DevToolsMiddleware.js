@@ -1,4 +1,4 @@
-import { Tracer, TraceContext } from '@ecf/observability';
+import { Tracer, TraceContext } from '@ecfjs/observability';
 import { RequestRecord } from '../core/RequestRecord.js';
 import { PerformanceCollector } from '../collectors/PerformanceCollector.js';
 

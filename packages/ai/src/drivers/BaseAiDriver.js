@@ -1,4 +1,4 @@
-import { IAiDriver } from '@ecf/contracts';
+import { IAiDriver } from '@ecfjs/contracts';
 
 /**
  * Base AI Driver providing capability matrix and common formatting logic.

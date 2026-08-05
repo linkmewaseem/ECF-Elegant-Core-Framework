@@ -1,4 +1,4 @@
-# @ecf/extensions Architecture
+# @ecfjs/extensions Architecture
 
 ## Goals
 

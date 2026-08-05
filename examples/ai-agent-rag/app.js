@@ -1,4 +1,4 @@
-import { AI } from '@ecf/ai';
+import { AI } from '@ecfjs/ai';
 
 export async function askSupportBot(question) {
   const memory = AI.memory('session-user-1').addMessage('user', question);

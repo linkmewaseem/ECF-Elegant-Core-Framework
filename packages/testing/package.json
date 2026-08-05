@@ -56,40 +56,40 @@
     "@ecfjs/storage": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/api": {
+    "@ecfjs/api": {
       "optional": true
     },
-    "@ecf/auth": {
+    "@ecfjs/auth": {
       "optional": true
     },
-    "@ecf/broadcast": {
+    "@ecfjs/broadcast": {
       "optional": true
     },
-    "@ecf/database": {
+    "@ecfjs/database": {
       "optional": true
     },
-    "@ecf/events": {
+    "@ecfjs/events": {
       "optional": true
     },
-    "@ecf/http": {
+    "@ecfjs/http": {
       "optional": true
     },
-    "@ecf/logging": {
+    "@ecfjs/logging": {
       "optional": true
     },
-    "@ecf/mail": {
+    "@ecfjs/mail": {
       "optional": true
     },
-    "@ecf/notifications": {
+    "@ecfjs/notifications": {
       "optional": true
     },
-    "@ecf/queue": {
+    "@ecfjs/queue": {
       "optional": true
     },
-    "@ecf/search": {
+    "@ecfjs/search": {
       "optional": true
     },
-    "@ecf/storage": {
+    "@ecfjs/storage": {
       "optional": true
     }
   }

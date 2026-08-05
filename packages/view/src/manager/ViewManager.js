@@ -1,4 +1,4 @@
-import { ViewContract } from "@ecf/core";
+import { ViewContract } from "@ecfjs/core";
 import path from "node:path";
 import fsSync from "node:fs";
 import ViewCache from "../cache/ViewCache.js";

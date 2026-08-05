@@ -4,7 +4,7 @@ export default class SoftDeletesPlugin extends Plugin {
     constructor(options = {}) {
         super({
             id: "softDeletes",
-            name: "@ecf/soft-deletes",
+            name: "@ecfjs/soft-deletes",
             version: "1.0.0",
             apiVersion: "1",
             framework: "^1.0.0",

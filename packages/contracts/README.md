@@ -1,6 +1,6 @@
-# `@ecf/contracts` — Zero-Runtime Ecosystem SDK Contracts
+# `@ecfjs/contracts` — Zero-Runtime Ecosystem SDK Contracts
 
-`@ecf/contracts` contains the official zero-runtime interface definitions for the ECF (Enterprise Core Framework) ecosystem.
+`@ecfjs/contracts` contains the official zero-runtime interface definitions for the ECF (Enterprise Core Framework) ecosystem.
 
 ---
 
@@ -18,7 +18,7 @@
 ## Usage
 
 ```javascript
-import { INotificationChannel } from "@ecf/contracts";
+import { INotificationChannel } from "@ecfjs/contracts";
 
 export class CustomTelegramChannel extends INotificationChannel {
   name() {

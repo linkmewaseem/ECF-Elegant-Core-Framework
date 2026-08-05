@@ -1,6 +1,6 @@
-# `@ecf/config` — Hierarchical Configuration Platform
+# `@ecfjs/config` — Hierarchical Configuration Platform
 
-`@ecf/config` is the hierarchical dot-notation configuration repository for the ECF (Elegant Core Framework) ecosystem.
+`@ecfjs/config` is the hierarchical dot-notation configuration repository for the ECF (Elegant Core Framework) ecosystem.
 
 ---
 
@@ -9,15 +9,15 @@
 - **ConfigRepository** — dot-notation config access (`app.db.host`)
 - **EnvLoader** — environment variable overlay and `.env` integration
 - **ConfigEncrypter** — encrypted config value storage
-- **ConfigFacade** — static proxy via `@ecf/core` facade system
+- **ConfigFacade** — static proxy via `@ecfjs/core` facade system
 
 ---
 
 ## Quick Start
 
 ```javascript
-import { Application } from "@ecf/core";
-import { ConfigServiceProvider, Config } from "@ecf/config";
+import { Application } from "@ecfjs/core";
+import { ConfigServiceProvider, Config } from "@ecfjs/config";
 
 const app = new Application();
 app.register(ConfigServiceProvider);

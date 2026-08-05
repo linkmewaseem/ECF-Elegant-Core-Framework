@@ -1,4 +1,4 @@
-import { IDevKitManager } from '@ecf/contracts';
+import { IDevKitManager } from '@ecfjs/contracts';
 import { ModelGenerator } from './generators/ModelGenerator.js';
 import { ControllerGenerator } from './generators/ControllerGenerator.js';
 import { ResourceGenerator } from './generators/ResourceGenerator.js';

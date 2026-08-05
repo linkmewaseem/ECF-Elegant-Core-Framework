@@ -2,7 +2,7 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { CronParser } from '../../src/index.js';
 
-describe('@ecf/scheduler — CronParser Unit Tests', () => {
+describe('@ecfjs/scheduler — CronParser Unit Tests', () => {
   test('Wildcard matching (* * * * *)', () => {
     assert.equal(CronParser.isDue('* * * * *', new Date()), true);
   });

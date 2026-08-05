@@ -1,13 +1,13 @@
-# API Platform Documentation (`@ecf/api`, `@ecf/search`)
+# API Platform Documentation (`@ecfjs/api`, `@ecfjs/search`)
 
 The API Platform provides automated OpenAPI v3 spec generation, API resources, rate limiting, and full-text/vector search.
 
 ---
 
-## 🌐 API Resources (`@ecf/api`)
+## 🌐 API Resources (`@ecfjs/api`)
 
 ```js
-import { ApiResource } from "@ecf/api";
+import { ApiResource } from "@ecfjs/api";
 
 export class UserResource extends ApiResource {
   toArray() {

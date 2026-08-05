@@ -3,12 +3,12 @@ export default {
     version: "1.0.0",
     blueprint: "v1/ssr",
     packages: [
-        "@ecf/core",
-        "@ecf/http",
-        "@ecf/view",
-        "@ecf/database",
-        "@ecf/auth",
-        "@ecf/validation",
+        "@ecfjs/core",
+        "@ecfjs/http",
+        "@ecfjs/view",
+        "@ecfjs/database",
+        "@ecfjs/auth",
+        "@ecfjs/validation",
     ],
     plugins: {
         autoload: true,

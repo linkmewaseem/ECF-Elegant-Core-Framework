@@ -1,6 +1,6 @@
-# `@ecf/devtools` — Developer Debugging Platform
+# `@ecfjs/devtools` — Developer Debugging Platform
 
-`@ecf/devtools` is the real-time developer debugging and telemetry dashboard for the ECF (Elegant Core Framework) ecosystem.
+`@ecfjs/devtools` is the real-time developer debugging and telemetry dashboard for the ECF (Elegant Core Framework) ecosystem.
 
 ---
 
@@ -17,8 +17,8 @@
 ## Quick Start
 
 ```javascript
-import { Application } from "@ecf/core";
-import { DevToolsServiceProvider, DevTools } from "@ecf/devtools";
+import { Application } from "@ecfjs/core";
+import { DevToolsServiceProvider, DevTools } from "@ecfjs/devtools";
 
 const app = new Application();
 app.register(DevToolsServiceProvider);

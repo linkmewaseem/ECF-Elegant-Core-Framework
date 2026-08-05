@@ -1,4 +1,4 @@
-// AI-ready contracts for future @ecf/ai integration — zero implementation, pure interfaces
+// AI-ready contracts for future @ecfjs/ai integration — zero implementation, pure interfaces
 
 export class IImageAnalyzer {
   analyze(buffer) { throw new Error("AI contract interface method."); }

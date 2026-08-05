@@ -1,4 +1,4 @@
-import { Arr } from "@ecf/support";
+import { Arr } from "@ecfjs/support";
 import IConfigRepository from "./contracts/IConfigRepository.js";
 
 export class ConfigRepository extends IConfigRepository {

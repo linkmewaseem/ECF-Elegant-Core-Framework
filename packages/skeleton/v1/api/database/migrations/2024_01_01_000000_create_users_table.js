@@ -1,4 +1,4 @@
-import { Schema } from "@ecf/database";
+import { Schema } from "@ecfjs/database";
 
 export async function up() {
     await Schema.create("users", (table) => {

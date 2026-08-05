@@ -1,15 +1,15 @@
-# @ecf/media
+# @ecfjs/media
 
 > Enterprise Media Processing Platform for the ECF ecosystem.
 
-`@ecf/media` is not a simple image resize library — it is a complete **media ingestion, transformation, optimization, and storage pipeline** with middleware-based processing, plugin driver registry, media profiles, variant engine, responsive images, and full security hardening.
+`@ecfjs/media` is not a simple image resize library — it is a complete **media ingestion, transformation, optimization, and storage pipeline** with middleware-based processing, plugin driver registry, media profiles, variant engine, responsive images, and full security hardening.
 
 ---
 
 ## Installation
 
 ```bash
-pnpm add @ecf/media --filter my-app
+pnpm add @ecfjs/media --filter my-app
 
 # Optional: sharp for production image processing
 pnpm add sharp --filter my-app
@@ -22,7 +22,7 @@ pnpm add sharp --filter my-app
 ### Image Processing
 
 ```javascript
-import { Media } from '@ecf/media';
+import { Media } from '@ecfjs/media';
 
 // Resize, convert to WebP, strip metadata, store to S3
 const result = await Media.image(uploadedFile)
@@ -88,7 +88,7 @@ const result = await Media.image(uploadedFile)
 ### Background Queue Processing
 
 ```javascript
-// Non-blocking — dispatches to @ecf/queue
+// Non-blocking — dispatches to @ecfjs/queue
 await Media.image(uploadedFile)
     .resize(1920, 1080)
     .profile("hero")
@@ -137,7 +137,7 @@ await Media.image(file).optimize("web").store("images", "s3");
 Register community drivers to swap the processing engine:
 
 ```javascript
-import { Media } from '@ecf/media';
+import { Media } from '@ecfjs/media';
 import { CloudinaryDriver } from '@acme/ecf-cloudinary';
 import { ImagickDriver } from '@acme/ecf-imagick';
 
@@ -159,7 +159,7 @@ await Media.image(file, "imagick").resize(800, 600).store("images", "local");
 For advanced control, use the middleware-based pipeline:
 
 ```javascript
-import { MediaPipeline } from '@ecf/media';
+import { MediaPipeline } from '@ecfjs/media';
 
 const pipeline = new MediaPipeline();
 pipeline
@@ -195,7 +195,7 @@ All input passes through `MediaSecurityValidator`:
 ## Testing
 
 ```javascript
-import { MediaTestingFake } from '@ecf/media';
+import { MediaTestingFake } from '@ecfjs/media';
 
 const fake = MediaTestingFake.create();
 const manager = new MediaManager();
@@ -222,21 +222,21 @@ fake.assertWatermarked();   // ← would fail, watermark not applied
 ## Service Provider Registration
 
 ```javascript
-import { MediaServiceProvider } from '@ecf/media';
+import { MediaServiceProvider } from '@ecfjs/media';
 
 app.register(MediaServiceProvider);
 ```
 
-Auto-detects and wires `@ecf/storage`, `@ecf/queue`, and `@ecf/events` if registered.
+Auto-detects and wires `@ecfjs/storage`, `@ecfjs/queue`, and `@ecfjs/events` if registered.
 
 ---
 
 ## AI-Ready Contracts
 
-Future `@ecf/ai` integration:
+Future `@ecfjs/ai` integration:
 
 ```javascript
-import { IBackgroundRemover, IFaceDetector } from '@ecf/media';
+import { IBackgroundRemover, IFaceDetector } from '@ecfjs/media';
 
 class ReplicateBackgroundRemover extends IBackgroundRemover {
     async remove(buffer, options) { /* ... */ }

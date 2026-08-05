@@ -1,7 +1,7 @@
 /**
- * @ecf/skeleton — Blueprint Registry
+ * @ecfjs/skeleton — Blueprint Registry
  *
- * This package exports blueprint metadata used by @ecf/cli and dev tools
+ * This package exports blueprint metadata used by @ecfjs/cli and dev tools
  * to scaffold new ECF applications.
  */
 

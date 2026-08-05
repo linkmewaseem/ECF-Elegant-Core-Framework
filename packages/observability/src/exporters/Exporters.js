@@ -3,7 +3,7 @@ import { RingBuffer } from '../storage/RingBuffer.js';
 
 /**
  * MemoryExporter — stores spans, metrics, and timeline entries in in-memory RingBuffers.
- * Primary exporter used by @ecf/devtools.
+ * Primary exporter used by @ecfjs/devtools.
  */
 export class MemoryExporter extends IExporter {
   #spans;

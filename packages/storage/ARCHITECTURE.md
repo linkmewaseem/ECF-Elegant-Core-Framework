@@ -1,34 +1,34 @@
-# `@ecf/storage` — Architecture Freeze Document (v1.0)
+# `@ecfjs/storage` — Architecture Freeze Document (v1.0)
 
 ## Overview
 
-`@ecf/storage` is the official Filesystem Abstraction Platform for the ECF (Enterprise Core Framework) ecosystem. It delivers a 2-Layer architecture combining a high-performance **Storage Core** with extensible **Enterprise Decorators & Pools**.
+`@ecfjs/storage` is the official Filesystem Abstraction Platform for the ECF (Enterprise Core Framework) ecosystem. It delivers a 2-Layer architecture combining a high-performance **Storage Core** with extensible **Enterprise Decorators & Pools**.
 
 ---
 
 ## 1. Monorepo Dependency Graph
 
 ```
-@ecf/core
+@ecfjs/core
     │
-@ecf/support
+@ecfjs/support
     │
-@ecf/events
+@ecfjs/events
     │
-@ecf/config
+@ecfjs/config
     │
-@ecf/cache
+@ecfjs/cache
     │
-@ecf/database
+@ecfjs/database
     │
-@ecf/auth
+@ecfjs/auth
     │
-@ecf/storage (Milestone 16)
+@ecfjs/storage (Milestone 16)
     │
-@ecf/http
+@ecfjs/http
 ```
 
-`@ecf/storage` hard-requires only `@ecf/core` and `@ecf/support`. Config, Events, and Cache act as optional peer integrations. There are **zero cyclic dependencies**.
+`@ecfjs/storage` hard-requires only `@ecfjs/core` and `@ecfjs/support`. Config, Events, and Cache act as optional peer integrations. There are **zero cyclic dependencies**.
 
 ---
 

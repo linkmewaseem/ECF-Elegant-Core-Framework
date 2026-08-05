@@ -5,7 +5,7 @@ export default class UuidsPlugin extends Plugin {
     constructor(options = {}) {
         super({
             id: "uuids",
-            name: "@ecf/uuids",
+            name: "@ecfjs/uuids",
             version: "1.0.0",
             apiVersion: "1",
             framework: "^1.0.0",

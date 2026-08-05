@@ -2,7 +2,7 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { Timeline, MemoryExporter, Tracer, TraceContext } from '../src/index.js';
 
-describe('@ecf/observability — Timeline Tests', () => {
+describe('@ecfjs/observability — Timeline Tests', () => {
   test('Record timeline events and forward to exporter', () => {
     const timeline = new Timeline();
     const exporter = new MemoryExporter();

@@ -15,21 +15,21 @@ export class PackageScaffolder {
     }
 
     const pkgJson = {
-      name: `@ecf/${packageName}`,
+      name: `@ecfjs/${packageName}`,
       version: '1.0.0-rc.1',
       type: 'module',
       main: './src/index.js',
       types: './src/index.d.ts',
       scripts: { test: 'node --test tests/**/*.test.js' },
-      dependencies: { '@ecf/contracts': 'workspace:*', '@ecf/core': 'workspace:*', '@ecf/support': 'workspace:*' },
+      dependencies: { '@ecfjs/contracts': 'workspace:*', '@ecfjs/core': 'workspace:*', '@ecfjs/support': 'workspace:*' },
     };
 
     fs.writeFileSync(path.join(targetDir, 'package.json'), JSON.stringify(pkgJson, null, 2), 'utf-8');
 
-    const readme = `# @ecf/${packageName}\n\nThird-party package for ECF ecosystem.\n`;
+    const readme = `# @ecfjs/${packageName}\n\nThird-party package for ECF ecosystem.\n`;
     fs.writeFileSync(path.join(targetDir, 'README.md'), readme, 'utf-8');
 
-    const adr = `# Architecture Decision Record (ADR) — @ecf/${packageName}\n\n## Status\nApproved\n`;
+    const adr = `# Architecture Decision Record (ADR) — @ecfjs/${packageName}\n\n## Status\nApproved\n`;
     fs.writeFileSync(path.join(targetDir, 'ARCHITECTURE.md'), adr, 'utf-8');
 
     const dirs = ['src/contracts', 'src/drivers', 'src/facades', 'src/testing', 'src/collectors', 'tests/unit'];

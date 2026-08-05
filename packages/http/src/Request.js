@@ -45,7 +45,7 @@ export default class Request {
     async validate(rules, customMessages = {}, customAttributes = {}) {
         let Validator;
         try {
-            Validator = (await import("@ecf/validation")).Validator;
+            Validator = (await import("@ecfjs/validation")).Validator;
         } catch {
             Validator = (await import("../../validation/src/index.js")).Validator;
         }

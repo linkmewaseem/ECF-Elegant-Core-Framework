@@ -41,7 +41,7 @@ export class MediaFile {
   }
 
   /**
-   * Factory: from an @ecf/upload UploadedFile duck-type
+   * Factory: from an @ecfjs/upload UploadedFile duck-type
    */
   static fromUploadedFile(uploadedFile) {
     return new MediaFile({

@@ -1,6 +1,6 @@
-# @ecf/console — Package Architecture
+# @ecfjs/console — Package Architecture
 
-`@ecf/console` is the Artisan-style console command kernel for the ECF ecosystem.
+`@ecfjs/console` is the Artisan-style console command kernel for the ECF ecosystem.
 
 ## Core Components
 
@@ -13,7 +13,7 @@
 
 ## Dependencies
 
-- `@ecf/core`
+- `@ecfjs/core`
 
 ## Dependency Rules
 

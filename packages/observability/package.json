@@ -40,7 +40,7 @@
     "@ecfjs/events": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/events": {
+    "@ecfjs/events": {
       "optional": true
     }
   }

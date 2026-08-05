@@ -13,10 +13,10 @@ export class StubPublisher {
     }
 
     const stubs = {
-      'model.stub': `import { Model } from '@ecf/database';\n\nexport class {{pascal}} extends Model {}\nexport default {{pascal}};\n`,
+      'model.stub': `import { Model } from '@ecfjs/database';\n\nexport class {{pascal}} extends Model {}\nexport default {{pascal}};\n`,
       'controller.stub': `export class {{pascal}}Controller {}\nexport default {{pascal}}Controller;\n`,
-      'job.stub': `import { Job } from '@ecf/queue';\n\nexport class {{pascal}}Job extends Job {}\nexport default {{pascal}}Job;\n`,
-      'resource.stub': `import { ApiResource } from '@ecf/api';\n\nexport class {{pascal}}Resource extends ApiResource {}\nexport default {{pascal}}Resource;\n`,
+      'job.stub': `import { Job } from '@ecfjs/queue';\n\nexport class {{pascal}}Job extends Job {}\nexport default {{pascal}}Job;\n`,
+      'resource.stub': `import { ApiResource } from '@ecfjs/api';\n\nexport class {{pascal}}Resource extends ApiResource {}\nexport default {{pascal}}Resource;\n`,
     };
 
     const published = [];

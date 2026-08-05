@@ -1,4 +1,4 @@
-import { IDevKitManager, ICodeGenerator, IASTInjector, IArchitectureValidator } from '@ecf/contracts';
+import { IDevKitManager, ICodeGenerator, IASTInjector, IArchitectureValidator } from '@ecfjs/contracts';
 
 export class DevKitManager extends IDevKitManager {
   make(generatorName: string, targetName: string, options?: any): Promise<any>;

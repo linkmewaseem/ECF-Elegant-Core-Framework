@@ -1,7 +1,7 @@
 import { BaseDriver } from './BaseDriver.js';
 
 /**
- * Mail Driver — sends log alerts via @ecf/mail if available.
+ * Mail Driver — sends log alerts via @ecfjs/mail if available.
  */
 export class MailDriver extends BaseDriver {
   constructor(options = {}) {

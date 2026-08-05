@@ -1,6 +1,6 @@
-# @ecf/http — Package Architecture
+# @ecfjs/http — Package Architecture
 
-`@ecf/http` is the high-performance HTTP transport layer for the ECF ecosystem.
+`@ecfjs/http` is the high-performance HTTP transport layer for the ECF ecosystem.
 
 ## Core Components
 - **`Router` & `TrieRouter`**: Radix Trie route matching engine for $O(K)$ path resolution.
@@ -11,5 +11,5 @@
 - **`HttpServer`**: Node `http.createServer` wrapper.
 
 ## Dependencies
-- `@ecf/core`
-- `@ecf/validation`
+- `@ecfjs/core`
+- `@ecfjs/validation`

@@ -3,7 +3,7 @@ import { CodeGenerator } from './CodeGenerator.js';
 export class ResourceGenerator extends CodeGenerator {
   async generate(name, options = {}) {
     const names = this.formatNames(name);
-    const stub = `import { ApiResource } from '@ecf/api';
+    const stub = `import { ApiResource } from '@ecfjs/api';
 
 export class {{pascal}}Resource extends ApiResource {
   toArray() {

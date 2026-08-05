@@ -1,5 +1,5 @@
 import assert from 'node:assert';
-import { ITestHttpClient } from '@ecf/contracts';
+import { ITestHttpClient } from '@ecfjs/contracts';
 
 /**
  * Fluent Response Assertion Wrapper.

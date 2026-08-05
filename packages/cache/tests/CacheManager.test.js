@@ -1,14 +1,14 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { Application } from "@ecf/core";
-import { EventManager } from "@ecf/events";
+import { Application } from "@ecfjs/core";
+import { EventManager } from "@ecfjs/events";
 import {
   CacheManager,
   CacheServiceProvider,
   Cache,
 } from "../src/index.js";
 
-describe("@ecf/cache — Enterprise Cache Abstraction Platform Tests", () => {
+describe("@ecfjs/cache — Enterprise Cache Abstraction Platform Tests", () => {
 
   test("CacheManager get, put, remember, and forget across stores", async () => {
     const manager = new CacheManager("memory");
@@ -68,7 +68,7 @@ describe("@ecf/cache — Enterprise Cache Abstraction Platform Tests", () => {
     assert.equal(tagged.get("user_1"), null);
   });
 
-  test("Cache events dispatched over @ecf/events", async () => {
+  test("Cache events dispatched over @ecfjs/events", async () => {
     const events = new EventManager();
     let hitEvent = false;
 

@@ -1,6 +1,6 @@
-# `@ecf/cli` — ECF Command-Line Interface
+# `@ecfjs/cli` — ECF Command-Line Interface
 
-`@ecf/cli` is the official command-line interface for the ECF (Elegant Core Framework) ecosystem.
+`@ecfjs/cli` is the official command-line interface for the ECF (Elegant Core Framework) ecosystem.
 
 ---
 
@@ -8,7 +8,7 @@
 
 - **`ecf doctor`** — environment and dependency health check
 - **Scaffolding Commands** — `make:controller`, `make:model`, and generator integration
-- **DevKit Integration** — AST-based code generation via `@ecf/devkit`
+- **DevKit Integration** — AST-based code generation via `@ecfjs/devkit`
 
 ---
 

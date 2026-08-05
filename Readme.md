@@ -68,52 +68,52 @@ ECF (Elegant Core Framework) is a **complete, enterprise-grade Node.js framework
 ECF Monorepo (35 packages)
 │
 ├── Foundation Layer
-│   ├── @ecf/core          — IoC container, app lifecycle, facades, logger, events, env
-│   ├── @ecf/contracts     — Interface contracts and shared type definitions
-│   └── @ecf/support       — Utility helpers: Arr, Str, Collection, Fluent, Macroable
+│   ├── @ecfjs/core          — IoC container, app lifecycle, facades, logger, events, env
+│   ├── @ecfjs/contracts     — Interface contracts and shared type definitions
+│   └── @ecfjs/support       — Utility helpers: Arr, Str, Collection, Fluent, Macroable
 │
 ├── HTTP & Presentation
-│   ├── @ecf/http          — Router, Request, Response, Middleware, HttpKernel, HttpServer
-│   ├── @ecf/validation    — Pipe-based validation engine, 40+ built-in rules, fluent builder
-│   └── @ecf/view          — AST template engine, layouts, components, directives
+│   ├── @ecfjs/http          — Router, Request, Response, Middleware, HttpKernel, HttpServer
+│   ├── @ecfjs/validation    — Pipe-based validation engine, 40+ built-in rules, fluent builder
+│   └── @ecfjs/view          — AST template engine, layouts, components, directives
 │
 ├── Data Layer
-│   ├── @ecf/database      — Eloquent Active Record ORM, schema builder, migrations, seeders
-│   ├── @ecf/cache         — Multi-driver cache with stampede protection
-│   └── @ecf/search        — Vector + full-text search, faceting, ReRanker pipeline
+│   ├── @ecfjs/database      — Eloquent Active Record ORM, schema builder, migrations, seeders
+│   ├── @ecfjs/cache         — Multi-driver cache with stampede protection
+│   └── @ecfjs/search        — Vector + full-text search, faceting, ReRanker pipeline
 │
 ├── Enterprise Services
-│   ├── @ecf/auth          — Guards, JWT, session, multi-driver auth
-│   ├── @ecf/queue         — BullMQ-compatible job queues, retries, batches
-│   ├── @ecf/mail          — Nodemailer, Mailable classes, queued delivery
-│   ├── @ecf/storage       — Local, S3, cloud drivers, URL signing, streams
-│   ├── @ecf/upload        — Multipart file uploads, MIME validation, size limits
-│   ├── @ecf/media         — Image resizing, audio/video transcoding (via sharp)
-│   ├── @ecf/broadcast     — WebSocket channels, presence, pub-sub
-│   ├── @ecf/notifications — Multi-channel alerts (email, SMS, Slack, push, in-app)
-│   ├── @ecf/scheduler     — Cron jobs, overlap prevention, distributed locking
-│   └── @ecf/logging       — 12 drivers, multi-channel rotation, OpenTelemetry, PII redaction
+│   ├── @ecfjs/auth          — Guards, JWT, session, multi-driver auth
+│   ├── @ecfjs/queue         — BullMQ-compatible job queues, retries, batches
+│   ├── @ecfjs/mail          — Nodemailer, Mailable classes, queued delivery
+│   ├── @ecfjs/storage       — Local, S3, cloud drivers, URL signing, streams
+│   ├── @ecfjs/upload        — Multipart file uploads, MIME validation, size limits
+│   ├── @ecfjs/media         — Image resizing, audio/video transcoding (via sharp)
+│   ├── @ecfjs/broadcast     — WebSocket channels, presence, pub-sub
+│   ├── @ecfjs/notifications — Multi-channel alerts (email, SMS, Slack, push, in-app)
+│   ├── @ecfjs/scheduler     — Cron jobs, overlap prevention, distributed locking
+│   └── @ecfjs/logging       — 12 drivers, multi-channel rotation, OpenTelemetry, PII redaction
 │
 ├── API Platform
-│   ├── @ecf/api           — OpenAPI generator, JSON:API resources, versioning
-│   └── @ecf/ai            — 8 AI drivers (OpenAI, Anthropic, Gemini, Ollama, Groq…), RAG, MCP
+│   ├── @ecfjs/api           — OpenAPI generator, JSON:API resources, versioning
+│   └── @ecfjs/ai            — 8 AI drivers (OpenAI, Anthropic, Gemini, Ollama, Groq…), RAG, MCP
 │
 ├── Developer Tooling
-│   ├── @ecf/testing       — DI test contexts, HTTP assertions, model factories, snapshots
-│   ├── @ecf/devkit        — AST code injection, YAML blueprint compiler, ecf doctor
-│   ├── @ecf/devtools      — Telescope-style dashboard, query inspector, job monitor
-│   ├── @ecf/cli           — ecf new, ecf make:*, ecf migrate, scaffold tooling
-│   ├── @ecf/console       — Artisan-style commands, argument parsing, interactive prompts
-│   ├── @ecf/observability — OpenTelemetry tracing, metrics, span instrumentation
-│   ├── @ecf/skeleton      — Application starter bootstrap structure
-│   └── @ecf/config        — Dot-notation config, environment layering, reactive events
+│   ├── @ecfjs/testing       — DI test contexts, HTTP assertions, model factories, snapshots
+│   ├── @ecfjs/devkit        — AST code injection, YAML blueprint compiler, ecf doctor
+│   ├── @ecfjs/devtools      — Telescope-style dashboard, query inspector, job monitor
+│   ├── @ecfjs/cli           — ecf new, ecf make:*, ecf migrate, scaffold tooling
+│   ├── @ecfjs/console       — Artisan-style commands, argument parsing, interactive prompts
+│   ├── @ecfjs/observability — OpenTelemetry tracing, metrics, span instrumentation
+│   ├── @ecfjs/skeleton      — Application starter bootstrap structure
+│   └── @ecfjs/config        — Dot-notation config, environment layering, reactive events
 │
 └── ORM Extensions
-    ├── @ecf/audit         — Full model change audit trail
-    ├── @ecf/sluggable     — Auto URL-friendly slugs
-    ├── @ecf/soft-deletes  — deleted_at soft delete behavior
-    ├── @ecf/timestamps    — created_at / updated_at auto-management
-    └── @ecf/uuids         — UUID primary keys
+    ├── @ecfjs/audit         — Full model change audit trail
+    ├── @ecfjs/sluggable     — Auto URL-friendly slugs
+    ├── @ecfjs/soft-deletes  — deleted_at soft delete behavior
+    ├── @ecfjs/timestamps    — created_at / updated_at auto-management
+    └── @ecfjs/uuids         — UUID primary keys
 ```
 
 ---
@@ -122,40 +122,40 @@ ECF Monorepo (35 packages)
 
 | Package | Version | Description |
 |---|---|---|
-| `@ecf/core` | `1.0.0-rc.1` | IoC container, application lifecycle, facades, config, logger, events, env |
-| `@ecf/contracts` | `1.0.0-rc.1` | Interface contracts and type definitions |
-| `@ecf/support` | `1.0.0-rc.1` | Arr, Str, Collection, LazyCollection, Fluent, Macroable |
-| `@ecf/http` | `1.0.0-rc.1` | Router, Request, Response, Middleware, HttpKernel, HttpServer |
-| `@ecf/validation` | `1.0.0-rc.1` | Pipe-based rules, fluent builder, nested fields, array wildcards |
-| `@ecf/view` | `1.0.0-rc.1` | AST template engine, layouts, components, directives |
-| `@ecf/database` | `1.0.0-rc.1` | Eloquent Active Record ORM, QueryBuilder, migrations, seeders |
-| `@ecf/cache` | `1.0.0-rc.1` | Multi-driver cache, stampede protection, tagged invalidation |
-| `@ecf/search` | `1.0.0-rc.1` | Vector + full-text search, faceting, ReRanker pipeline |
-| `@ecf/auth` | `1.0.0-rc.1` | Guards, JWT, session management, multi-driver auth |
-| `@ecf/queue` | `1.0.0-rc.1` | Job queues, retries, delayed jobs, batch processing |
-| `@ecf/mail` | `1.0.0-rc.1` | Nodemailer, Mailable classes, queued delivery |
-| `@ecf/storage` | `1.0.0-rc.1` | Local, S3, cloud drivers, URL signing, streams |
-| `@ecf/upload` | `1.0.0-rc.1` | Multipart uploads, MIME validation, size limits |
-| `@ecf/media` | `1.0.0-rc.1` | Image/audio/video processing via sharp |
-| `@ecf/broadcast` | `1.0.0-rc.1` | WebSocket channels, presence, event-driven pub-sub |
-| `@ecf/notifications` | `1.0.0-rc.1` | Email, SMS, Slack, push, in-app multi-channel notifications |
-| `@ecf/scheduler` | `1.0.0-rc.1` | Cron jobs, overlap prevention, distributed locking |
-| `@ecf/logging` | `1.0.0-rc.1` | 12 drivers, multi-channel rotation, OpenTelemetry, PII redaction |
-| `@ecf/api` | `1.0.0-rc.1` | OpenAPI generator, JSON:API resources, versioning, rate limiting |
-| `@ecf/ai` | `1.0.0-rc.1` | OpenAI/Anthropic/Gemini/Ollama/Groq drivers, streaming, RAG, MCP |
-| `@ecf/testing` | `1.0.0-rc.1` | DI test contexts, HTTP/DB assertions, model factories, time travel |
-| `@ecf/devkit` | `1.0.0-rc.1` | AST code injection, YAML blueprint compiler, ecf doctor/validate |
-| `@ecf/devtools` | `1.0.0-rc.1` | Telescope-style dashboard, query inspector, job monitor |
-| `@ecf/cli` | `1.0.0-rc.1` | `ecf new`, `ecf make:*`, `ecf migrate`, scaffold tooling |
-| `@ecf/console` | `1.0.0-rc.1` | Artisan-style commands, argument parsing, interactive prompts |
-| `@ecf/observability` | `1.0.0-rc.1` | OpenTelemetry tracing, metrics, span instrumentation |
-| `@ecf/skeleton` | `1.0.0-rc.1` | Application starter bootstrap structure |
-| `@ecf/config` | `1.0.0-rc.1` | Dot-notation config, environment layering, reactive events |
-| `@ecf/audit` | `1.0.0` | ORM plugin — full model change audit trail |
-| `@ecf/sluggable` | `1.0.0` | ORM plugin — auto URL-friendly slugs |
-| `@ecf/soft-deletes` | `1.0.0` | ORM plugin — deleted_at soft delete behavior |
-| `@ecf/timestamps` | `1.0.0` | ORM plugin — created_at / updated_at auto-management |
-| `@ecf/uuids` | `1.0.0` | ORM plugin — UUID primary keys |
+| `@ecfjs/core` | `1.0.0-rc.1` | IoC container, application lifecycle, facades, config, logger, events, env |
+| `@ecfjs/contracts` | `1.0.0-rc.1` | Interface contracts and type definitions |
+| `@ecfjs/support` | `1.0.0-rc.1` | Arr, Str, Collection, LazyCollection, Fluent, Macroable |
+| `@ecfjs/http` | `1.0.0-rc.1` | Router, Request, Response, Middleware, HttpKernel, HttpServer |
+| `@ecfjs/validation` | `1.0.0-rc.1` | Pipe-based rules, fluent builder, nested fields, array wildcards |
+| `@ecfjs/view` | `1.0.0-rc.1` | AST template engine, layouts, components, directives |
+| `@ecfjs/database` | `1.0.0-rc.1` | Eloquent Active Record ORM, QueryBuilder, migrations, seeders |
+| `@ecfjs/cache` | `1.0.0-rc.1` | Multi-driver cache, stampede protection, tagged invalidation |
+| `@ecfjs/search` | `1.0.0-rc.1` | Vector + full-text search, faceting, ReRanker pipeline |
+| `@ecfjs/auth` | `1.0.0-rc.1` | Guards, JWT, session management, multi-driver auth |
+| `@ecfjs/queue` | `1.0.0-rc.1` | Job queues, retries, delayed jobs, batch processing |
+| `@ecfjs/mail` | `1.0.0-rc.1` | Nodemailer, Mailable classes, queued delivery |
+| `@ecfjs/storage` | `1.0.0-rc.1` | Local, S3, cloud drivers, URL signing, streams |
+| `@ecfjs/upload` | `1.0.0-rc.1` | Multipart uploads, MIME validation, size limits |
+| `@ecfjs/media` | `1.0.0-rc.1` | Image/audio/video processing via sharp |
+| `@ecfjs/broadcast` | `1.0.0-rc.1` | WebSocket channels, presence, event-driven pub-sub |
+| `@ecfjs/notifications` | `1.0.0-rc.1` | Email, SMS, Slack, push, in-app multi-channel notifications |
+| `@ecfjs/scheduler` | `1.0.0-rc.1` | Cron jobs, overlap prevention, distributed locking |
+| `@ecfjs/logging` | `1.0.0-rc.1` | 12 drivers, multi-channel rotation, OpenTelemetry, PII redaction |
+| `@ecfjs/api` | `1.0.0-rc.1` | OpenAPI generator, JSON:API resources, versioning, rate limiting |
+| `@ecfjs/ai` | `1.0.0-rc.1` | OpenAI/Anthropic/Gemini/Ollama/Groq drivers, streaming, RAG, MCP |
+| `@ecfjs/testing` | `1.0.0-rc.1` | DI test contexts, HTTP/DB assertions, model factories, time travel |
+| `@ecfjs/devkit` | `1.0.0-rc.1` | AST code injection, YAML blueprint compiler, ecf doctor/validate |
+| `@ecfjs/devtools` | `1.0.0-rc.1` | Telescope-style dashboard, query inspector, job monitor |
+| `@ecfjs/cli` | `1.0.0-rc.1` | `ecf new`, `ecf make:*`, `ecf migrate`, scaffold tooling |
+| `@ecfjs/console` | `1.0.0-rc.1` | Artisan-style commands, argument parsing, interactive prompts |
+| `@ecfjs/observability` | `1.0.0-rc.1` | OpenTelemetry tracing, metrics, span instrumentation |
+| `@ecfjs/skeleton` | `1.0.0-rc.1` | Application starter bootstrap structure |
+| `@ecfjs/config` | `1.0.0-rc.1` | Dot-notation config, environment layering, reactive events |
+| `@ecfjs/audit` | `1.0.0` | ORM plugin — full model change audit trail |
+| `@ecfjs/sluggable` | `1.0.0` | ORM plugin — auto URL-friendly slugs |
+| `@ecfjs/soft-deletes` | `1.0.0` | ORM plugin — deleted_at soft delete behavior |
+| `@ecfjs/timestamps` | `1.0.0` | ORM plugin — created_at / updated_at auto-management |
+| `@ecfjs/uuids` | `1.0.0` | ORM plugin — UUID primary keys |
 
 ---
 
@@ -184,8 +184,8 @@ pnpm install
 ### HTTP Server
 
 ```js
-import { Application, Facade } from "@ecf/core";
-import { HttpServiceProvider, Route } from "@ecf/http";
+import { Application, Facade } from "@ecfjs/core";
+import { HttpServiceProvider, Route } from "@ecfjs/http";
 
 const app = new Application();
 app.register(HttpServiceProvider);
@@ -216,9 +216,9 @@ app.listen(3000, () => {
 ### With Database
 
 ```js
-import { Application, Facade } from "@ecf/core";
-import { HttpServiceProvider } from "@ecf/http";
-import { DatabaseServiceProvider, DB } from "@ecf/database";
+import { Application, Facade } from "@ecfjs/core";
+import { HttpServiceProvider } from "@ecfjs/http";
+import { DatabaseServiceProvider, DB } from "@ecfjs/database";
 
 const app = new Application();
 app.register(DatabaseServiceProvider);
@@ -241,10 +241,10 @@ const active = await User.where("active", true).orderBy("name").get();
 ### With Auth & Validation
 
 ```js
-import { Application, Facade } from "@ecf/core";
-import { HttpServiceProvider, Route } from "@ecf/http";
-import { Validator } from "@ecf/validation";
-import { AuthServiceProvider, Auth } from "@ecf/auth";
+import { Application, Facade } from "@ecfjs/core";
+import { HttpServiceProvider, Route } from "@ecfjs/http";
+import { Validator } from "@ecfjs/validation";
+import { AuthServiceProvider, Auth } from "@ecfjs/auth";
 
 const app = new Application();
 app.register(AuthServiceProvider);
@@ -284,7 +284,7 @@ Route.post("/login", async (req, res) => {
 The IoC container is the heart of ECF. It manages service bindings, singleton instances, and dependency resolution with built-in circular dependency detection.
 
 ```js
-import { Container, Application, ServiceProvider } from "@ecf/core";
+import { Container, Application, ServiceProvider } from "@ecfjs/core";
 
 // Low-level container
 const container = new Container();
@@ -339,7 +339,7 @@ app.boot();
 Providers give structure to service registration. Every provider extends `ServiceProvider` and implements `register()` and/or `boot()`.
 
 ```js
-import { ServiceProvider } from "@ecf/core";
+import { ServiceProvider } from "@ecfjs/core";
 
 class CacheProvider extends ServiceProvider {
     register(app) {
@@ -379,8 +379,8 @@ class CacheProvider extends ServiceProvider {
 Facades are static proxies to container services — clean, short-hand API without manual `app.make()`.
 
 ```js
-import { Config, Log, Event, Env } from "@ecf/core";
-import { Route } from "@ecf/http";
+import { Config, Log, Event, Env } from "@ecfjs/core";
+import { Route } from "@ecfjs/http";
 
 // Must call once after boot()
 Facade.setApplication(app);
@@ -418,7 +418,7 @@ Route.post("/users", [UserController, "store"]);
 `ConfigManager` supports dot-notation paths for deeply nested configuration.
 
 ```js
-import { ConfigManager } from "@ecf/core";
+import { ConfigManager } from "@ecfjs/core";
 
 const config = new ConfigManager();
 
@@ -439,7 +439,7 @@ config.has("database.host");              // true
 `LoggerManager` routes log calls to pluggable transports.
 
 ```js
-import { LoggerManager, ConsoleTransport, Transport } from "@ecf/core";
+import { LoggerManager, ConsoleTransport, Transport } from "@ecfjs/core";
 
 const logger = new LoggerManager();
 logger.addTransport(new ConsoleTransport());
@@ -468,7 +468,7 @@ logger.removeTransport(existingTransport);
 `EventManager` provides synchronous event broadcasting with built-in error isolation.
 
 ```js
-import { EventManager } from "@ecf/core";
+import { EventManager } from "@ecfjs/core";
 
 const events = new EventManager(logger);
 
@@ -498,7 +498,7 @@ DB_PASSWORD=secret
 ```
 
 ```js
-import { EnvManager, DotEnvLoader } from "@ecf/core";
+import { EnvManager, DotEnvLoader } from "@ecfjs/core";
 
 // Manual loading
 const parsed = DotEnvLoader.load("./.env"); // { APP_NAME: "ECF", ... }
@@ -520,7 +520,7 @@ env.clear();
 ### Routing
 
 ```js
-import { Route } from "@ecf/http";
+import { Route } from "@ecfjs/http";
 
 // All HTTP verbs
 Route.get("/",              (req, res) => res.json({ ok: true }));
@@ -632,7 +632,7 @@ Route.get("/demo", (req, res) => {
 ### Middleware
 
 ```js
-import { Middleware } from "@ecf/http";
+import { Middleware } from "@ecfjs/http";
 
 // Function-style
 const logger = (req, res, next) => {
@@ -669,10 +669,10 @@ Route.get("/dashboard", (req, res) => res.json({ secret: true }));
 
 ### Validation
 
-`@ecf/validation` provides a Laravel-inspired pipe validation engine.
+`@ecfjs/validation` provides a Laravel-inspired pipe validation engine.
 
 ```js
-import { Validator, Rule } from "@ecf/validation";
+import { Validator, Rule } from "@ecfjs/validation";
 
 const data = {
     name: "Alice",
@@ -724,11 +724,11 @@ validator.extend("uppercase", (value) => {
 
 ## Testing
 
-`@ecf/testing` provides a complete testing toolkit built on Node.js native `node:test`.
+`@ecfjs/testing` provides a complete testing toolkit built on Node.js native `node:test`.
 
 ```js
 import { test } from "node:test";
-import { TestApplication, TestHttpClient, makeFactory } from "@ecf/testing";
+import { TestApplication, TestHttpClient, makeFactory } from "@ecfjs/testing";
 
 // DI Test Context
 test("resolves service from container", async (t) => {
@@ -760,14 +760,14 @@ const users = UserFactory.createMany(5);
 const admin = UserFactory.state({ role: "admin" }).create();
 
 // Time Travel
-import { TimeTravel } from "@ecf/testing";
+import { TimeTravel } from "@ecfjs/testing";
 
 TimeTravel.freeze("2025-01-01T00:00:00Z");
 // ... test time-sensitive logic ...
 TimeTravel.restore();
 
 // Snapshot Testing
-import { Snapshot } from "@ecf/testing";
+import { Snapshot } from "@ecfjs/testing";
 Snapshot.assert("response-shape", actualData);
 ```
 
@@ -800,7 +800,7 @@ ecf undo
 ### AI Engine
 
 ```js
-import { AI, Driver } from "@ecf/ai";
+import { AI, Driver } from "@ecfjs/ai";
 
 // Simple chat
 const response = await AI.driver("openai").chat([
@@ -880,13 +880,13 @@ Architecture Decision Records (ADRs) are in [`docs/adr/`](docs/adr/).
 
 All milestones are complete. ECF ships 35 packages covering the full server-side framework stack:
 
-- ✅ **Foundation** — `@ecf/core`, `@ecf/contracts`, `@ecf/support`
-- ✅ **HTTP & Presentation** — `@ecf/http`, `@ecf/validation`, `@ecf/view`
-- ✅ **Data Layer** — `@ecf/database`, `@ecf/cache`, `@ecf/search`
-- ✅ **Enterprise Services** — `@ecf/auth`, `@ecf/queue`, `@ecf/mail`, `@ecf/storage`, `@ecf/upload`, `@ecf/media`, `@ecf/broadcast`, `@ecf/notifications`, `@ecf/scheduler`, `@ecf/logging`
-- ✅ **API Platform** — `@ecf/api`, `@ecf/ai`
-- ✅ **Developer Tooling** — `@ecf/testing`, `@ecf/devkit`, `@ecf/devtools`, `@ecf/cli`, `@ecf/console`, `@ecf/observability`, `@ecf/skeleton`, `@ecf/config`
-- ✅ **ORM Extensions** — `@ecf/audit`, `@ecf/sluggable`, `@ecf/soft-deletes`, `@ecf/timestamps`, `@ecf/uuids`
+- ✅ **Foundation** — `@ecfjs/core`, `@ecfjs/contracts`, `@ecfjs/support`
+- ✅ **HTTP & Presentation** — `@ecfjs/http`, `@ecfjs/validation`, `@ecfjs/view`
+- ✅ **Data Layer** — `@ecfjs/database`, `@ecfjs/cache`, `@ecfjs/search`
+- ✅ **Enterprise Services** — `@ecfjs/auth`, `@ecfjs/queue`, `@ecfjs/mail`, `@ecfjs/storage`, `@ecfjs/upload`, `@ecfjs/media`, `@ecfjs/broadcast`, `@ecfjs/notifications`, `@ecfjs/scheduler`, `@ecfjs/logging`
+- ✅ **API Platform** — `@ecfjs/api`, `@ecfjs/ai`
+- ✅ **Developer Tooling** — `@ecfjs/testing`, `@ecfjs/devkit`, `@ecfjs/devtools`, `@ecfjs/cli`, `@ecfjs/console`, `@ecfjs/observability`, `@ecfjs/skeleton`, `@ecfjs/config`
+- ✅ **ORM Extensions** — `@ecfjs/audit`, `@ecfjs/sluggable`, `@ecfjs/soft-deletes`, `@ecfjs/timestamps`, `@ecfjs/uuids`
 - ✅ **Governance** — Full architecture freeze, ADRs, governance docs, CI/CD pipeline
 
 ### 🔲 Upcoming — v1.0.0 Stable

@@ -70,7 +70,7 @@ export default class Application {
         if (typeof this.listenHandler !== "function") {
             throw new ContainerError(
                 'Application.listen() has no listen handler registered. ' +
-                'Register a provider (e.g. HttpServiceProvider from "@ecf/http") before calling listen().'
+                'Register a provider (e.g. HttpServiceProvider from "@ecfjs/http") before calling listen().'
             );
         }
     }

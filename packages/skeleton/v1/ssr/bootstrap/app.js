@@ -6,11 +6,11 @@ import {
     CoreServiceProvider,
     ConfigServiceProvider,
     LoggerServiceProvider,
-} from "@ecf/core";
-import { HttpServiceProvider, Route } from "@ecf/http";
-import { ViewServiceProvider } from "@ecf/view";
-import { DatabaseServiceProvider } from "@ecf/database";
-import { AuthServiceProvider } from "@ecf/auth";
+} from "@ecfjs/core";
+import { HttpServiceProvider, Route } from "@ecfjs/http";
+import { ViewServiceProvider } from "@ecfjs/view";
+import { DatabaseServiceProvider } from "@ecfjs/database";
+import { AuthServiceProvider } from "@ecfjs/auth";
 import providers from "./providers.js";
 import registerWebRoutes from "../routes/web.js";
 import registerApiRoutes from "../routes/api.js";

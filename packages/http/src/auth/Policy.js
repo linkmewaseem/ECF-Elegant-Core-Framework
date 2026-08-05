@@ -1,4 +1,4 @@
-import { IPolicy } from "@ecf/auth";
+import { IPolicy } from "@ecfjs/auth";
 
 export class Policy extends IPolicy {
   async viewAny(user) {

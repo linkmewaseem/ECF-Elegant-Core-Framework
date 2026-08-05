@@ -1,6 +1,6 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { Application } from "@ecf/core";
+import { Application } from "@ecfjs/core";
 import {
   Command,
   ConsoleKernel,
@@ -21,7 +21,7 @@ class SendEmailsCommand extends Command {
   }
 }
 
-describe("@ecf/console — Enterprise Command Framework Tests", () => {
+describe("@ecfjs/console — Enterprise Command Framework Tests", () => {
 
   test("SignatureParser parses command signatures correctly", () => {
     const parsed = SignatureParser.parse("users:get {id : User ID} {--active}");

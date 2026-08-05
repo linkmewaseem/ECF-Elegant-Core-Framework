@@ -1,8 +1,8 @@
-# @ecf/media — Architecture Documentation
+# @ecfjs/media — Architecture Documentation
 
 ## Overview
 
-`@ecf/media` is an **Enterprise-grade Media Processing Platform** for the ECF ecosystem.
+`@ecfjs/media` is an **Enterprise-grade Media Processing Platform** for the ECF ecosystem.
 It is not a simple image resize wrapper — it is a complete media ingestion, transformation, optimization, and storage pipeline.
 
 ---
@@ -33,7 +33,7 @@ MediaFile (Core Value Object)
     │   ├── Stage: Transform → ImageProcessor / VideoProcessor / AudioProcessor
     │   ├── Stage: Optimize
     │   ├── Stage: Encode
-    │   └── Stage: Store → @ecf/storage
+    │   └── Stage: Store → @ecfjs/storage
     │
     ├── Driver Layer (Plugin Registry)
     │   ├── SharpDriver (sharp — native image processing)
@@ -49,14 +49,14 @@ MediaFile (Core Value Object)
     │   ├── ProfileRegistry (named lookup)
     │   └── Built-in profiles: product, avatar, hero, banner
     │
-    ├── Queue Integration (@ecf/queue)
+    ├── Queue Integration (@ecfjs/queue)
     │   └── ProcessMediaJob (background processing for heavy operations)
     │
-    ├── Events (@ecf/events)
+    ├── Events (@ecfjs/events)
     │   ├── MediaLoaded → MediaValidated → MediaTransforming → MediaOptimized
     │   └── MediaEncoded → MediaStored → MediaProcessed | MediaFailed | MediaDeleted
     │
-    └── Storage (@ecf/storage)
+    └── Storage (@ecfjs/storage)
          └── Writes primary + all variant outputs to configured disk
 ```
 
@@ -92,7 +92,7 @@ packages/media/src/
  ├── events/
  │    └── MediaEvents.js          ← 9 lifecycle events
  ├── queue/
- │    └── ProcessMediaJob.js      ← @ecf/queue job for background processing
+ │    └── ProcessMediaJob.js      ← @ecfjs/queue job for background processing
  ├── internal/
  │    └── MediaManager.js         ← driver registry + profile registry + factory
  ├── facades/
@@ -107,11 +107,11 @@ packages/media/src/
 
 ## Driver Plugin System
 
-`@ecf/media` uses an **open driver registry** — any third-party package can register a custom driver:
+`@ecfjs/media` uses an **open driver registry** — any third-party package can register a custom driver:
 
 ```javascript
 // Community driver example
-import { Media } from '@ecf/media';
+import { Media } from '@ecfjs/media';
 import { CloudinaryDriver } from '@acme/ecf-cloudinary';
 
 Media.extend("cloudinary", new CloudinaryDriver({ apiKey: "..." }));
@@ -197,12 +197,12 @@ All media inputs pass through `MediaSecurityValidator` before processing:
 
 ## AI-Ready Contracts
 
-`@ecf/media` ships zero-implementation AI contracts for future `@ecf/ai` integration:
+`@ecfjs/media` ships zero-implementation AI contracts for future `@ecfjs/ai` integration:
 
 ```javascript
-import { IImageAnalyzer, IBackgroundRemover, IFaceDetector } from '@ecf/media';
+import { IImageAnalyzer, IBackgroundRemover, IFaceDetector } from '@ecfjs/media';
 
-// Future usage (Phase 21C / @ecf/ai)
+// Future usage (Phase 21C / @ecfjs/ai)
 class ReplicateBackgroundRemover extends IBackgroundRemover {
     async remove(buffer, options) { /* ... */ }
 }

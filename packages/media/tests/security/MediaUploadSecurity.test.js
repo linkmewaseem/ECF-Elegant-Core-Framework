@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { MediaSecurityValidator } from '../../src/security/MediaSecurityValidator.js';
 import { MediaSecurityException, MediaValidationException } from '../../src/exceptions/MediaException.js';
 
-describe("@ecf/media — Security Tests", () => {
+describe("@ecfjs/media — Security Tests", () => {
 
   describe("Pixel Bomb Detection", () => {
     it("allows normal image dimensions", () => {

@@ -1,6 +1,6 @@
-# `@ecf/database` — Enterprise ORM & Query Builder
+# `@ecfjs/database` — Enterprise ORM & Query Builder
 
-`@ecf/database` is the enterprise ORM and AST QueryBuilder engine for the ECF (Elegant Core Framework) ecosystem.
+`@ecfjs/database` is the enterprise ORM and AST QueryBuilder engine for the ECF (Elegant Core Framework) ecosystem.
 
 ---
 
@@ -21,7 +21,7 @@
 ### 1. Define a Model
 
 ```javascript
-import { Model } from "@ecf/database";
+import { Model } from "@ecfjs/database";
 
 export class User extends Model {
   static table = "users";
@@ -32,7 +32,7 @@ export class User extends Model {
 ### 2. Query Builder
 
 ```javascript
-import { Connection } from "@ecf/database";
+import { Connection } from "@ecfjs/database";
 
 const users = await Connection.table("users")
   .where("active", true)

@@ -2,16 +2,16 @@ import { ASTInjector } from '../ast/ASTInjector.js';
 
 export class PackageRegistry {
   static PACKAGES = {
-    auth: { name: '@ecf/auth', provider: 'AuthServiceProvider', env: { AUTH_GUARD: 'web' } },
-    api: { name: '@ecf/api', provider: 'ApiServiceProvider', env: { API_PREFIX: '/api' } },
-    queue: { name: '@ecf/queue', provider: 'QueueServiceProvider', env: { QUEUE_CONNECTION: 'memory' } },
-    search: { name: '@ecf/search', provider: 'SearchServiceProvider', env: { SEARCH_DRIVER: 'memory' } },
-    logging: { name: '@ecf/logging', provider: 'LoggingServiceProvider', env: { LOG_CHANNEL: 'stack' } },
-    broadcast: { name: '@ecf/broadcast', provider: 'BroadcastServiceProvider', env: { BROADCAST_DRIVER: 'memory' } },
-    media: { name: '@ecf/media', provider: 'MediaServiceProvider', env: { MEDIA_DISK: 'local' } },
-    observability: { name: '@ecf/observability', provider: 'ObservabilityServiceProvider', env: { OBSERVABILITY_EXPORTER: 'memory' } },
-    devtools: { name: '@ecf/devtools', provider: 'DevToolsServiceProvider', env: { DEVTOOLS_ENABLED: 'true' } },
-    testing: { name: '@ecf/testing', provider: 'TestingServiceProvider', env: {} },
+    auth: { name: '@ecfjs/auth', provider: 'AuthServiceProvider', env: { AUTH_GUARD: 'web' } },
+    api: { name: '@ecfjs/api', provider: 'ApiServiceProvider', env: { API_PREFIX: '/api' } },
+    queue: { name: '@ecfjs/queue', provider: 'QueueServiceProvider', env: { QUEUE_CONNECTION: 'memory' } },
+    search: { name: '@ecfjs/search', provider: 'SearchServiceProvider', env: { SEARCH_DRIVER: 'memory' } },
+    logging: { name: '@ecfjs/logging', provider: 'LoggingServiceProvider', env: { LOG_CHANNEL: 'stack' } },
+    broadcast: { name: '@ecfjs/broadcast', provider: 'BroadcastServiceProvider', env: { BROADCAST_DRIVER: 'memory' } },
+    media: { name: '@ecfjs/media', provider: 'MediaServiceProvider', env: { MEDIA_DISK: 'local' } },
+    observability: { name: '@ecfjs/observability', provider: 'ObservabilityServiceProvider', env: { OBSERVABILITY_EXPORTER: 'memory' } },
+    devtools: { name: '@ecfjs/devtools', provider: 'DevToolsServiceProvider', env: { DEVTOOLS_ENABLED: 'true' } },
+    testing: { name: '@ecfjs/testing', provider: 'TestingServiceProvider', env: {} },
   };
 
   static get(packageName) {

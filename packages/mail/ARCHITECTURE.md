@@ -1,24 +1,24 @@
-# `@ecf/mail` — Architecture Freeze Document (v1.0)
+# `@ecfjs/mail` — Architecture Freeze Document (v1.0)
 
 ## Overview
 
-`@ecf/mail` is the official Enterprise Mail & Communication Platform for the ECF (Enterprise Core Framework) ecosystem. It provides multi-transport mail delivery (SMTP, Resend, Mailgun, Memory, Log, Null, Failover, LoadBalancer), Mailable abstractions, Markdown template rendering with automatic CSS inlining, attachment storage integration, and email testing fakes.
+`@ecfjs/mail` is the official Enterprise Mail & Communication Platform for the ECF (Enterprise Core Framework) ecosystem. It provides multi-transport mail delivery (SMTP, Resend, Mailgun, Memory, Log, Null, Failover, LoadBalancer), Mailable abstractions, Markdown template rendering with automatic CSS inlining, attachment storage integration, and email testing fakes.
 
 ---
 
 ## 1. Monorepo Dependency Graph
 
 ```
-@ecf/core
+@ecfjs/core
     │
-@ecf/support
+@ecfjs/support
     │
-@ecf/queue
+@ecfjs/queue
     │
-@ecf/mail (Milestone 19)
+@ecfjs/mail (Milestone 19)
 ```
 
-`@ecf/mail` hard-requires `@ecf/core`, `@ecf/support`, and `@ecf/queue`. Config, Events, View, and Storage act as optional peer integrations. There are **zero cyclic dependencies**.
+`@ecfjs/mail` hard-requires `@ecfjs/core`, `@ecfjs/support`, and `@ecfjs/queue`. Config, Events, View, and Storage act as optional peer integrations. There are **zero cyclic dependencies**.
 
 ---
 
@@ -47,7 +47,7 @@
                          ▼
         ┌──────────────────────────────────┐
         │ Queue Integration                │
-        │ (Delegates to @ecf/queue worker) │
+        │ (Delegates to @ecfjs/queue worker) │
         └──────────────────────────────────┘
 ```
 

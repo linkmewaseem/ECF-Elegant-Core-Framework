@@ -1,13 +1,13 @@
-# `@ecf/ai` — Enterprise AI Engine & LLM Platform Documentation
+# `@ecfjs/ai` — Enterprise AI Engine & LLM Platform Documentation
 
-`@ecf/ai` is the official first-party enterprise AI engine for ECF (Enterprise Core Framework).
+`@ecfjs/ai` is the official first-party enterprise AI engine for ECF (Enterprise Core Framework).
 
 ---
 
 ## 🚀 Quick Example
 
 ```js
-import { AI } from "@ecf/ai";
+import { AI } from "@ecfjs/ai";
 
 // 1. Multi-Provider Chat
 const res = await AI.chat("Explain dependency injection");

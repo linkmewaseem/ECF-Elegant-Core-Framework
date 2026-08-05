@@ -6,7 +6,7 @@ export default class AuditPlugin extends Plugin {
     constructor(options = {}) {
         super({
             id: "audit",
-            name: "@ecf/audit",
+            name: "@ecfjs/audit",
             version: "1.0.0",
             apiVersion: "1",
             framework: "^1.0.0",

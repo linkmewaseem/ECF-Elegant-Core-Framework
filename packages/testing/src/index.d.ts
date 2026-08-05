@@ -1,4 +1,4 @@
-import { ITestRunner, ITestHttpClient, ITestDatabase } from '@ecf/contracts';
+import { ITestRunner, ITestHttpClient, ITestDatabase } from '@ecfjs/contracts';
 
 export interface TestContext {
   t: any;

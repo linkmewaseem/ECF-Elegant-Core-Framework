@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { test } from '@ecf/testing';
+import { test } from '@ecfjs/testing';
 import { createChatServer } from '../app.js';
 
 describe('Realtime Chat Sample App Unit Tests', () => {

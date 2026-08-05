@@ -1,9 +1,9 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { Application } from '@ecf/core';
+import { Application } from '@ecfjs/core';
 import { ScheduleManager, SchedulerServiceProvider } from '../../src/index.js';
 
-describe('@ecf/scheduler — ScheduleManager Unit Tests', () => {
+describe('@ecfjs/scheduler — ScheduleManager Unit Tests', () => {
   test('ScheduleManager registers commands, jobs, callbacks', () => {
     const manager = new ScheduleManager();
 

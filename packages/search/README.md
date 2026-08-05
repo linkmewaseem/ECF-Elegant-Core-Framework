@@ -1,4 +1,4 @@
-# `@ecf/search`
+# `@ecfjs/search`
 
 Enterprise Search Platform for ECF (Enterprise Core Framework).
 
@@ -11,18 +11,18 @@ Enterprise Search Platform for ECF (Enterprise Core Framework).
 - **Ranking Engine**: Field weight boosting (`.boost("title", 10)`).
 - **Aggregations & Faceting**: Field aggregations (`avg`, `max`, `min`, `sum`, `count`) and facets.
 - **Index Aliases & Blue-Green Indexing**: Zero downtime index alias swapping (`products_v1`, `products_v2` -> `products`).
-- **Scout-style Automatic Model Indexing**: `Searchable` trait for automatic model syncing via `@ecf/queue`.
+- **Scout-style Automatic Model Indexing**: `Searchable` trait for automatic model syncing via `@ecfjs/queue`.
 - **Suggestions Engine**: Autocomplete, trending, and popular searches (`Search.suggest()`).
 - **Search DSL**: Elastic-style query objects (`Search.dsl({...})`).
 - **Driver Capability Matrix**: `driver.capabilities()`.
-- **Real-Time Broadcast Progress**: Live progress events (`40% -> 60% -> 100%`) via `@ecf/broadcast`.
+- **Real-Time Broadcast Progress**: Live progress events (`40% -> 60% -> 100%`) via `@ecfjs/broadcast`.
 - **DevTools Panel**: Horizon-style telemetry.
 - **Testing Fake**: Rich assertions with `Search.fake()`.
 
 ## Usage
 
 ```javascript
-import { Search, Searchable } from "@ecf/search";
+import { Search, Searchable } from "@ecfjs/search";
 
 // Querying
 const results = await Search.index("products")

@@ -1,6 +1,6 @@
-# `@ecf/scheduler` — Cron & Task Scheduling Platform
+# `@ecfjs/scheduler` — Cron & Task Scheduling Platform
 
-`@ecf/scheduler` is the cron-based task scheduling platform for the ECF (Elegant Core Framework) ecosystem.
+`@ecfjs/scheduler` is the cron-based task scheduling platform for the ECF (Elegant Core Framework) ecosystem.
 
 ---
 
@@ -16,7 +16,7 @@
 ## Quick Start
 
 ```javascript
-import { Schedule } from "@ecf/scheduler";
+import { Schedule } from "@ecfjs/scheduler";
 
 Schedule.call(() => console.log("Every minute"))
   .everyMinute();

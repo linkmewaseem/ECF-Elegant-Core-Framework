@@ -1,5 +1,5 @@
-import type { ServiceProvider, ECFError } from "@ecf/core";
-export { Application, Container, ServiceProvider, Facade, LoggerServiceProvider, CoreServiceProvider, ConfigManager, ConfigError, ContainerError, ECFError, ExceptionManager, Log } from "@ecf/core";
+import type { ServiceProvider, ECFError } from "@ecfjs/core";
+export { Application, Container, ServiceProvider, Facade, LoggerServiceProvider, CoreServiceProvider, ConfigManager, ConfigError, ContainerError, ECFError, ExceptionManager, Log } from "@ecfjs/core";
 
 export class Request {
     constructor(incomingMessage: any, bodyParserManager: any);

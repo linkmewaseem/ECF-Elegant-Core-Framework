@@ -34,11 +34,11 @@ Queue         ➔  Core, Database, Support
 
 | Source Package | Forbidden Target Import | Architectural Reason |
 |---|---|---|
-| `@ecf/core` | `@ecf/http`, `@ecf/database`, `@ecf/view`, `@ecf/cli` | Core is the IoC foundation. Zero outer package knowledge. |
-| `@ecf/support` | `@ecf/database`, `@ecf/http`, `@ecf/view` | Support contains pure utility primitives only. |
-| `@ecf/database` | `@ecf/view`, `@ecf/cli`, `@ecf/skeleton` | Database engine must be usable in CLI, API, or worker apps without rendering. |
-| `@ecf/view` | `@ecf/cli`, `@ecf/skeleton`, `@ecf/database` | View engine compiles templates independently of database ORM logic. |
-| `@ecf/validation` | `@ecf/http`, `@ecf/view`, `@ecf/database` | Validation is a standalone rule engine. |
+| `@ecfjs/core` | `@ecfjs/http`, `@ecfjs/database`, `@ecfjs/view`, `@ecfjs/cli` | Core is the IoC foundation. Zero outer package knowledge. |
+| `@ecfjs/support` | `@ecfjs/database`, `@ecfjs/http`, `@ecfjs/view` | Support contains pure utility primitives only. |
+| `@ecfjs/database` | `@ecfjs/view`, `@ecfjs/cli`, `@ecfjs/skeleton` | Database engine must be usable in CLI, API, or worker apps without rendering. |
+| `@ecfjs/view` | `@ecfjs/cli`, `@ecfjs/skeleton`, `@ecfjs/database` | View engine compiles templates independently of database ORM logic. |
+| `@ecfjs/validation` | `@ecfjs/http`, `@ecfjs/view`, `@ecfjs/database` | Validation is a standalone rule engine. |
 | Any Package | Monorepo Circular Import (A ➔ B ➔ A) | Causes module resolution deadlocks and breaks clean tree-shaking. |
 
 ---

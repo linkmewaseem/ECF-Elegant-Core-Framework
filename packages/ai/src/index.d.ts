@@ -1,4 +1,4 @@
-import { IAiManager, IAiDriver, IConversationMemory } from '@ecf/contracts';
+import { IAiManager, IAiDriver, IConversationMemory } from '@ecfjs/contracts';
 
 export class AiManager extends IAiManager {
   driver(name?: string): IAiDriver;

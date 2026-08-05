@@ -1,7 +1,7 @@
 import { LogManager } from './LogManager.js';
 
 /**
- * Service Provider for registering @ecf/logging in IoC container.
+ * Service Provider for registering @ecfjs/logging in IoC container.
  */
 export class LoggingServiceProvider {
   constructor(app) {

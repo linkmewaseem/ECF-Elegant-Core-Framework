@@ -1,6 +1,6 @@
-# @ecf/testing — Package Architecture
+# @ecfjs/testing — Package Architecture
 
-`@ecf/testing` is the DI-aware test platform for the ECF ecosystem.
+`@ecfjs/testing` is the DI-aware test platform for the ECF ecosystem.
 
 ## Core Components
 
@@ -15,8 +15,8 @@
 
 ## Dependencies
 
-- `@ecf/core`
-- Peer integrations with `@ecf/http`, `@ecf/database`, `@ecf/queue`, `@ecf/cache`
+- `@ecfjs/core`
+- Peer integrations with `@ecfjs/http`, `@ecfjs/database`, `@ecfjs/queue`, `@ecfjs/cache`
 
 ## Dependency Rules
 

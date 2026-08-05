@@ -65,7 +65,7 @@ export default class MigrationCreator {
 
     getStub(className, table = null, isCreate = true) {
         if (table && isCreate) {
-            return `import { Migration } from "@ecf/database";
+            return `import { Migration } from "@ecfjs/database";
 
 export default class ${className} extends Migration {
     async up(schema) {
@@ -83,7 +83,7 @@ export default class ${className} extends Migration {
         }
 
         if (table && !isCreate) {
-            return `import { Migration } from "@ecf/database";
+            return `import { Migration } from "@ecfjs/database";
 
 export default class ${className} extends Migration {
     async up(schema) {
@@ -101,7 +101,7 @@ export default class ${className} extends Migration {
 `;
         }
 
-        return `import { Migration } from "@ecf/database";
+        return `import { Migration } from "@ecfjs/database";
 
 export default class ${className} extends Migration {
     async up(schema) {

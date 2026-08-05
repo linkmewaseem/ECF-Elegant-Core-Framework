@@ -2,7 +2,7 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { MemoryExporter, RingBuffer, NullExporter, ConsoleExporter } from '../src/index.js';
 
-describe('@ecf/observability — Exporters & RingBuffer Tests', () => {
+describe('@ecfjs/observability — Exporters & RingBuffer Tests', () => {
   test('RingBuffer capacity rollover', () => {
     const buf = new RingBuffer(3);
     buf.push(1).push(2).push(3).push(4);

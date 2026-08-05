@@ -4,7 +4,7 @@ export default class TimestampsPlugin extends Plugin {
     constructor(options = {}) {
         super({
             id: "timestamps",
-            name: "@ecf/timestamps",
+            name: "@ecfjs/timestamps",
             version: "1.0.0",
             apiVersion: "1",
             framework: "^1.0.0",

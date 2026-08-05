@@ -1,6 +1,6 @@
-# `@ecf/testing` — Enterprise Test Platform
+# `@ecfjs/testing` — Enterprise Test Platform
 
-`@ecf/testing` is the DI-aware test runner, fakes orchestrator, and benchmark engine for the ECF (Elegant Core Framework) ecosystem.
+`@ecfjs/testing` is the DI-aware test runner, fakes orchestrator, and benchmark engine for the ECF (Elegant Core Framework) ecosystem.
 
 ---
 
@@ -20,7 +20,7 @@
 ## Quick Start
 
 ```javascript
-import { describe, it, TestApplication } from "@ecf/testing";
+import { describe, it, TestApplication } from "@ecfjs/testing";
 import assert from "node:assert/strict";
 
 describe("UserService", () => {

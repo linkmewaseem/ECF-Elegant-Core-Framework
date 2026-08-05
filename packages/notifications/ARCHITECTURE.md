@@ -1,24 +1,24 @@
-# `@ecf/notifications` — Architecture Freeze Document (v1.0)
+# `@ecfjs/notifications` — Architecture Freeze Document (v1.0)
 
 ## Overview
 
-`@ecf/notifications` is the official Enterprise Multi-Channel Notification Platform for the ECF (Enterprise Core Framework) ecosystem. It provides unified multi-channel communication across Mail, Database ORM notifications, Realtime Broadcasts, Webhooks (HMAC SHA-256 signed), Slack, Discord, Telegram, SMS (Twilio/Vonage), and Push notifications (FCM/OneSignal/Expo).
+`@ecfjs/notifications` is the official Enterprise Multi-Channel Notification Platform for the ECF (Enterprise Core Framework) ecosystem. It provides unified multi-channel communication across Mail, Database ORM notifications, Realtime Broadcasts, Webhooks (HMAC SHA-256 signed), Slack, Discord, Telegram, SMS (Twilio/Vonage), and Push notifications (FCM/OneSignal/Expo).
 
 ---
 
 ## 1. Monorepo Dependency Graph
 
 ```
-@ecf/core
+@ecfjs/core
     │
-@ecf/support
+@ecfjs/support
     │
-@ecf/mail & @ecf/queue
+@ecfjs/mail & @ecfjs/queue
     │
-@ecf/notifications (Milestone 20)
+@ecfjs/notifications (Milestone 20)
 ```
 
-`@ecf/notifications` hard-requires `@ecf/core`, `@ecf/support`, `@ecf/mail`, and `@ecf/queue`. Config, Events, Database, and Cache act as optional peer integrations. There are **zero cyclic dependencies**.
+`@ecfjs/notifications` hard-requires `@ecfjs/core`, `@ecfjs/support`, `@ecfjs/mail`, and `@ecfjs/queue`. Config, Events, Database, and Cache act as optional peer integrations. There are **zero cyclic dependencies**.
 
 ---
 

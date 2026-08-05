@@ -1,6 +1,6 @@
-# `@ecf/validation` — Enterprise Validation Engine
+# `@ecfjs/validation` — Enterprise Validation Engine
 
-`@ecf/validation` is the rule-based validation engine for the ECF (Elegant Core Framework) ecosystem.
+`@ecfjs/validation` is the rule-based validation engine for the ECF (Elegant Core Framework) ecosystem.
 
 ---
 
@@ -11,7 +11,7 @@
 - **ValidationErrorBag** — structured field-level error collection
 - **Built-in Rules** — `required`, `email`, `min`, `max`, `uuid`, `regex`, and 30+ more
 - **Conditional Rules** — `requiredIf`, `excludeIf`, and nested object validation
-- **HTTP Integration** — automatic 422 mapping via `@ecf/http` FormRequest
+- **HTTP Integration** — automatic 422 mapping via `@ecfjs/http` FormRequest
 
 ---
 
@@ -20,7 +20,7 @@
 ### 1. Basic Validation
 
 ```javascript
-import { Validator } from "@ecf/validation";
+import { Validator } from "@ecfjs/validation";
 
 const result = Validator.make(
   { email: "user@example.com", age: 25 },
@@ -35,7 +35,7 @@ if (result.fails()) {
 ### 2. Custom Rules
 
 ```javascript
-import { Validator, RuleRegistry } from "@ecf/validation";
+import { Validator, RuleRegistry } from "@ecfjs/validation";
 
 RuleRegistry.register("uppercase", (value) => value === value.toUpperCase());
 

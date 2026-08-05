@@ -1,4 +1,4 @@
-import { ILogManager } from '@ecf/contracts';
+import { ILogManager } from '@ecfjs/contracts';
 import { LogChannel } from './LogChannel.js';
 import { LogContext } from './LogContext.js';
 import { MemoryDriver } from './drivers/MemoryDriver.js';
@@ -145,7 +145,7 @@ export class LogManager extends ILogManager {
   }
 
   /**
-   * Search logged records (using internal memory or @ecf/search driver).
+   * Search logged records (using internal memory or @ecfjs/search driver).
    * @param {string} query
    * @returns {Promise<Array>}
    */

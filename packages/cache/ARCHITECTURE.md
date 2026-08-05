@@ -1,6 +1,6 @@
-# @ecf/cache — Package Architecture
+# @ecfjs/cache — Package Architecture
 
-`@ecf/cache` is the multi-driver caching platform for the ECF ecosystem.
+`@ecfjs/cache` is the multi-driver caching platform for the ECF ecosystem.
 
 ## Core Components
 
@@ -12,9 +12,9 @@
 
 ## Dependencies
 
-- `@ecf/core`
+- `@ecfjs/core`
 
 ## Dependency Rules
 
-- MUST NOT depend on `@ecf/http` or `@ecf/database`.
+- MUST NOT depend on `@ecfjs/http` or `@ecfjs/database`.
 - Driver implementations MUST implement `ICacheDriver` contract.

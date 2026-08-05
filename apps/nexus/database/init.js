@@ -1,4 +1,4 @@
-import { DB } from "@ecf/database";
+import { DB } from "@ecfjs/database";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 

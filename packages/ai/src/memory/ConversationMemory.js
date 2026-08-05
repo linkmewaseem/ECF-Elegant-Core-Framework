@@ -1,4 +1,4 @@
-import { IConversationMemory } from '@ecf/contracts';
+import { IConversationMemory } from '@ecfjs/contracts';
 
 /**
  * State-managed Conversation Memory (AI.memory(conversationId)).

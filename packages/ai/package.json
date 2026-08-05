@@ -46,16 +46,16 @@
     "@ecfjs/search": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/devtools": {
+    "@ecfjs/devtools": {
       "optional": true
     },
-    "@ecf/logging": {
+    "@ecfjs/logging": {
       "optional": true
     },
-    "@ecf/media": {
+    "@ecfjs/media": {
       "optional": true
     },
-    "@ecf/search": {
+    "@ecfjs/search": {
       "optional": true
     }
   }

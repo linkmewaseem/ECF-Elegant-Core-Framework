@@ -2,7 +2,7 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { Span, SlowThreshold } from '../src/index.js';
 
-describe('@ecf/observability — Span Tests', () => {
+describe('@ecfjs/observability — Span Tests', () => {
   test('Span initialization and default properties', () => {
     const span = new Span({ name: 'db.query', category: 'database' });
     assert.equal(span.getName(), 'db.query');

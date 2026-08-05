@@ -16,7 +16,7 @@ export class DailyDriver extends BaseDriver {
     this.maxFiles = options.maxFiles || options.days || 14;
     this.maxSizeBytes = options.maxSizeBytes || 10 * 1024 * 1024; // 10MB default size policy
     this.compress = options.compress ?? true;
-    this.storageDisk = options.storageDisk || null; // optional @ecf/storage disk instance for cloud archive
+    this.storageDisk = options.storageDisk || null; // optional @ecfjs/storage disk instance for cloud archive
     this.currentFileIndex = 0;
 
     this.ensureDirectory();

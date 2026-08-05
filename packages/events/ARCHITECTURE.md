@@ -1,6 +1,6 @@
-# @ecf/events — Package Architecture
+# @ecfjs/events — Package Architecture
 
-`@ecf/events` is the priority-aware event dispatcher for the ECF ecosystem.
+`@ecfjs/events` is the priority-aware event dispatcher for the ECF ecosystem.
 
 ## Core Components
 
@@ -9,13 +9,13 @@
 - **`ListenerRegistry`**: Priority-sorted listener storage and lookup.
 - **`EventSubscriber`**: Base class for class-based event subscription.
 - **`EventAutoDiscoverer`**: Scans and registers event listeners from directory structures.
-- **`ShouldQueue` / `ShouldBroadcast`**: Integration contracts for `@ecf/queue` and `@ecf/broadcast`.
+- **`ShouldQueue` / `ShouldBroadcast`**: Integration contracts for `@ecfjs/queue` and `@ecfjs/broadcast`.
 
 ## Dependencies
 
-- `@ecf/core`
+- `@ecfjs/core`
 
 ## Dependency Rules
 
-- MUST NOT depend on `@ecf/http` or `@ecf/database`.
+- MUST NOT depend on `@ecfjs/http` or `@ecfjs/database`.
 - Queue and broadcast integrations are optional peer dependencies via contracts.

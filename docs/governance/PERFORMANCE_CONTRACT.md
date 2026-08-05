@@ -8,12 +8,12 @@ This document defines the official **Performance Service Level Agreements (SLAs)
 
 | Component / Engine | Key Metric | Target SLA Benchmark | Target Metric Description |
 |---|---|---|---|
-| **HTTP Transport Engine (`@ecf/http`)** | **Throughput** | **`> 300,000 req/sec`** | High-concurrency throughput on standard HTTP routing with zero-copy Trie matching. |
-| **View Engine (`@ecf/view`)** | **Compilation Speed** | **`< 10ms`** | Warm compilation time for complex nested templates with expression evaluation. |
-| **ORM Hydration (`@ecf/database`)** | **Hydration Speed** | **`> 6,000,000 records/sec`** | Active Record + Data Mapper entity instantiation speed from raw SQL query results. |
-| **Database Caching (`@ecf/database`)** | **Cache Hit Ratio** | **`> 99%`** | Prepared AST statement and relation caching hit rate on repeat query execution. |
-| **CLI Tooling (`@ecf/cli` & `@ecf/console`)**| **Startup Latency** | **`< 200ms`** | Complete cold-start execution time from command invocation to output render. |
-| **IoC Container (`@ecf/core`)** | **Resolution Latency** | **`< 0.05ms`** | Singleton and transient dependency resolution time from container registry. |
+| **HTTP Transport Engine (`@ecfjs/http`)** | **Throughput** | **`> 300,000 req/sec`** | High-concurrency throughput on standard HTTP routing with zero-copy Trie matching. |
+| **View Engine (`@ecfjs/view`)** | **Compilation Speed** | **`< 10ms`** | Warm compilation time for complex nested templates with expression evaluation. |
+| **ORM Hydration (`@ecfjs/database`)** | **Hydration Speed** | **`> 6,000,000 records/sec`** | Active Record + Data Mapper entity instantiation speed from raw SQL query results. |
+| **Database Caching (`@ecfjs/database`)** | **Cache Hit Ratio** | **`> 99%`** | Prepared AST statement and relation caching hit rate on repeat query execution. |
+| **CLI Tooling (`@ecfjs/cli` & `@ecfjs/console`)**| **Startup Latency** | **`< 200ms`** | Complete cold-start execution time from command invocation to output render. |
+| **IoC Container (`@ecfjs/core`)** | **Resolution Latency** | **`< 0.05ms`** | Singleton and transient dependency resolution time from container registry. |
 
 ---
 

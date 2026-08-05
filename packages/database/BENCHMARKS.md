@@ -1,4 +1,4 @@
-# @ecf/database — Benchmark SLAs
+# @ecfjs/database — Benchmark SLAs
 
 | Operation | Metric SLA | Status |
 |---|---|---|

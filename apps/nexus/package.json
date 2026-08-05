@@ -4,11 +4,11 @@
   "type": "module",
   "private": true,
   "dependencies": {
-    "@ecf/core": "workspace:*",
-    "@ecf/http": "workspace:*",
-    "@ecf/view": "workspace:*",
-    "@ecf/validation": "workspace:*",
-    "@ecf/database": "workspace:*"
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/http": "workspace:*",
+    "@ecfjs/view": "workspace:*",
+    "@ecfjs/validation": "workspace:*",
+    "@ecfjs/database": "workspace:*"
   },
   "scripts": {
     "start": "node app.js"

@@ -1,6 +1,6 @@
 /**
  * AI-Ready Generator Abstraction Layer.
- * Prepares DevKit for Milestone 30 (@ecf/ai) code generation capabilities.
+ * Prepares DevKit for Milestone 30 (@ecfjs/ai) code generation capabilities.
  */
 export class AIStubGenerator {
   constructor(options = {}) {

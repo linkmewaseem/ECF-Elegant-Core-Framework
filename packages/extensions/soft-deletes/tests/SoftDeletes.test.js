@@ -4,7 +4,7 @@ import { Application, Facade } from "../../../core/src/index.js";
 import { DatabaseServiceProvider, Model } from "../../../database/src/index.js";
 import SoftDeletesPlugin from "../SoftDeletesPlugin.js";
 
-describe("@ecf/soft-deletes First-Party Extension Integration Suite", () => {
+describe("@ecfjs/soft-deletes First-Party Extension Integration Suite", () => {
     let app;
     let dbManager;
 

@@ -23,7 +23,7 @@ test("AuthIntegration - AuthServiceProvider and Facades in ECF Application Conta
   const hash = await hasher.make("Secret123");
   assert.ok(hash.startsWith("$ecf$"));
 
-  // Check HTTP Gate bridge delegating to @ecf/auth
+  // Check HTTP Gate bridge delegating to @ecfjs/auth
   const httpGate = new GateBridge();
   httpGate.define("view-dashboard", (user) => user && user.role === "admin");
 

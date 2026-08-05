@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { MediaTestingFake } from '../../src/testing/MediaTestingFake.js';
 import { MediaFile } from '../../src/core/MediaFile.js';
 
-describe("@ecf/media — MediaTestingFake", () => {
+describe("@ecfjs/media — MediaTestingFake", () => {
   function makeImageFile(name = "test.jpg", mimeType = "image/jpeg") {
     return MediaFile.fromBuffer(Buffer.from("FAKE_IMG_DATA"), { mimeType, originalName: name });
   }

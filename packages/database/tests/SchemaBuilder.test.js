@@ -5,7 +5,7 @@ import DatabaseManager from "../src/DatabaseManager.js";
 import SchemaBuilder from "../src/schema/SchemaBuilder.js";
 import Schema from "../src/facades/Schema.js";
 import DB from "../src/facades/DB.js";
-import { Container, Facade } from "@ecf/core";
+import { Container, Facade } from "@ecfjs/core";
 import DatabaseServiceProvider from "../src/providers/DatabaseServiceProvider.js";
 
 describe("SchemaBuilder Integration & Facade Tests", () => {

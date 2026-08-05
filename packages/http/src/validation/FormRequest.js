@@ -1,4 +1,4 @@
-import { Validator } from '@ecf/validation';
+import { Validator } from '@ecfjs/validation';
 import ValidationException from '../exceptions/ValidationException.js';
 import ForbiddenException from '../exceptions/ForbiddenException.js';
 

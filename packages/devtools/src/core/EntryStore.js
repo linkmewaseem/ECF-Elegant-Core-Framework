@@ -1,4 +1,4 @@
-import { RingBuffer } from '@ecf/observability';
+import { RingBuffer } from '@ecfjs/observability';
 
 /**
  * EntryStore — In-memory ring buffer storing up to maxEntries RequestRecords.

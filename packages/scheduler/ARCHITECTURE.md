@@ -1,6 +1,6 @@
-# @ecf/scheduler — Package Architecture
+# @ecfjs/scheduler — Package Architecture
 
-`@ecf/scheduler` is the cron-based task scheduling platform for the ECF ecosystem.
+`@ecfjs/scheduler` is the cron-based task scheduling platform for the ECF ecosystem.
 
 ## Core Components
 
@@ -11,8 +11,8 @@
 
 ## Dependencies
 
-- `@ecf/core`
-- Optional integration with `@ecf/queue` for queued scheduled tasks.
+- `@ecfjs/core`
+- Optional integration with `@ecfjs/queue` for queued scheduled tasks.
 
 ## Dependency Rules
 

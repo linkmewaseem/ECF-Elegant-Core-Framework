@@ -1,4 +1,4 @@
-import { ServiceProvider } from "@ecf/core";
+import { ServiceProvider } from "@ecfjs/core";
 import GuardManager from "../authentication/GuardManager.js";
 import AuthManager from "../authentication/AuthManager.js";
 import PasswordHasher from "../authentication/passwords/PasswordHasher.js";

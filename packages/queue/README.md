@@ -1,6 +1,6 @@
-# `@ecf/queue` — Enterprise Asynchronous Execution Platform
+# `@ecfjs/queue` — Enterprise Asynchronous Execution Platform
 
-`@ecf/queue` is the foundational background job queue platform for the ECF (Enterprise Core Framework) ecosystem.
+`@ecfjs/queue` is the foundational background job queue platform for the ECF (Enterprise Core Framework) ecosystem.
 
 ---
 
@@ -21,7 +21,7 @@
 ### 1. Defining a Job
 
 ```javascript
-import { Job, WithoutOverlapping } from "@ecf/queue";
+import { Job, WithoutOverlapping } from "@ecfjs/queue";
 
 export class ProcessInvoiceJob extends Job {
   constructor(invoiceId) {
@@ -50,7 +50,7 @@ await ProcessInvoiceJob.dispatch(42);
 ### 2. Testing Fake
 
 ```javascript
-import { Queue } from "@ecf/queue";
+import { Queue } from "@ecfjs/queue";
 
 const fakeQueue = Queue.fake();
 

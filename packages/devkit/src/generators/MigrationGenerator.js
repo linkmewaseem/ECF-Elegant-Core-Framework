@@ -4,7 +4,7 @@ export class MigrationGenerator extends CodeGenerator {
   async generate(name, options = {}) {
     const names = this.formatNames(name);
     const timestamp = new Date().toISOString().replace(/[-T:.Z]/g, '').slice(0, 14);
-    const stub = `import { Schema } from '@ecf/database';
+    const stub = `import { Schema } from '@ecfjs/database';
 
 export class Create{{pascal}}Table {
   async up() {

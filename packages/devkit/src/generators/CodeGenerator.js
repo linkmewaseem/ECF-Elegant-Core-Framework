@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { ICodeGenerator } from '@ecf/contracts';
+import { ICodeGenerator } from '@ecfjs/contracts';
 import { StubCompiler } from './StubCompiler.js';
 
 /**

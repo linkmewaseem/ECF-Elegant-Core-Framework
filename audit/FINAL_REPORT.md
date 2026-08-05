@@ -17,7 +17,7 @@ ECF shows a strong architectural foundation for a modular framework ecosystem. T
 
 ## Package Highlights
 
-### @ecf/core
+### @ecfjs/core
 Overall: 9.2/10
 
 Good
@@ -34,7 +34,7 @@ Improvements
 - Add beginner-friendly usage examples
 - Add more package-level API docs
 
-### @ecf/http
+### @ecfjs/http
 Overall: 8.8/10
 
 Good

@@ -2,7 +2,7 @@ import { describe, test, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { Tracer, MemoryExporter, TraceContext } from '../src/index.js';
 
-describe('@ecf/observability — Tracer Tests', () => {
+describe('@ecfjs/observability — Tracer Tests', () => {
   let exporter;
 
   beforeEach(() => {

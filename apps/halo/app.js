@@ -1,6 +1,6 @@
-import { Application, Facade, CoreServiceProvider, LoggerServiceProvider, HttpServiceProvider, Route, Middleware, Log, ValidationException } from "@ecf/http";
-import { ViewServiceProvider } from "@ecf/view";
-import { Rule } from "@ecf/validation";
+import { Application, Facade, CoreServiceProvider, LoggerServiceProvider, HttpServiceProvider, Route, Middleware, Log, ValidationException } from "@ecfjs/http";
+import { ViewServiceProvider } from "@ecfjs/view";
+import { Rule } from "@ecfjs/validation";
 
 const app = new Application();
 
@@ -123,7 +123,7 @@ Route.get("/users/{id}", async (req, res) => {
 
 // 6. User Creation Handler (POST) using fluent Rule builder & conditional validation
 Route.post("/user", async (req, res) => {
-    // Perform validation using @ecf/validation engine with fluent Rule builder & Phase 2/3 rules
+    // Perform validation using @ecfjs/validation engine with fluent Rule builder & Phase 2/3 rules
     const validated = await req.validate({
         name: [Rule.required(), Rule.alphaDash(), Rule.min(2)],
         email: [Rule.required(), Rule.email()],

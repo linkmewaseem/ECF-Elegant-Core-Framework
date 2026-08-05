@@ -1,8 +1,8 @@
-# `@ecf/core`
+# `@ecfjs/core`
 
 **IoC Container & Application Foundation for the ECF ecosystem.**
 
-`@ecf/core` provides the dependency injection container, application lifecycle, service provider system, facades, and the foundational config/logger/event/env utilities that every other ECF package builds on.
+`@ecfjs/core` provides the dependency injection container, application lifecycle, service provider system, facades, and the foundational config/logger/event/env utilities that every other ECF package builds on.
 
 [![Version](https://img.shields.io/badge/version-1.0.0--rc.1-blue.svg)](https://github.com/linkmewaseem/ECF-Elegant-Core-Framework)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -29,7 +29,7 @@
 ## Installation
 
 ```bash
-pnpm add @ecf/core
+pnpm add @ecfjs/core
 ```
 
 ---
@@ -37,7 +37,7 @@ pnpm add @ecf/core
 ## Quick Start
 
 ```javascript
-import { Application, ServiceProvider, Facade } from "@ecf/core";
+import { Application, ServiceProvider, Facade } from "@ecfjs/core";
 
 class AppServiceProvider extends ServiceProvider {
     // register() and boot() both receive the Application instance as their
@@ -65,7 +65,7 @@ Facade.setApplication(app);
 `Container` is the low-level dependency injection store. `Application` wraps it, but you can use `Container` directly if you don't need the provider lifecycle.
 
 ```javascript
-import { Container } from "@ecf/core";
+import { Container } from "@ecfjs/core";
 
 const container = new Container();
 
@@ -93,10 +93,10 @@ container.flush();          // clears all bindings, instances, and resolution st
 
 ## Application
 
-`Application` extends `Container` with a service-provider lifecycle, global HTTP middleware registration, and a pluggable `listen()` entrypoint (wired up by `@ecf/http`'s `HttpServiceProvider`).
+`Application` extends `Container` with a service-provider lifecycle, global HTTP middleware registration, and a pluggable `listen()` entrypoint (wired up by `@ecfjs/http`'s `HttpServiceProvider`).
 
 ```javascript
-import { Application, ServiceProvider } from "@ecf/core";
+import { Application, ServiceProvider } from "@ecfjs/core";
 
 class MailProvider extends ServiceProvider {
     register(app) {
@@ -122,9 +122,9 @@ app.boot();
 | `flush()` | Delegates to the internal `Container` |
 | `register(ProviderClass)` | Queues a provider class. Throws `ContainerError` if `ProviderClass` doesn't extend `ServiceProvider`. Registering the same class twice is a no-op |
 | `boot()` | Instantiates every registered provider and calls `register(app)` then `boot(app)` on each, in registration order |
-| `use(middleware)` | Registers global HTTP middleware. Requires a `"middleware.registry"` binding — normally provided by `HttpServiceProvider` from `@ecf/http` |
+| `use(middleware)` | Registers global HTTP middleware. Requires a `"middleware.registry"` binding — normally provided by `HttpServiceProvider` from `@ecfjs/http` |
 | `listen(...args)` | Delegates to a listen handler registered via `registerListenHandler()`. Throws `ContainerError` if no handler is registered — register `HttpServiceProvider` first |
-| `registerListenHandler(fn)` | Used by packages like `@ecf/http` to wire `app.listen(port, host, cb)` to an actual server. Application code does not normally call this directly |
+| `registerListenHandler(fn)` | Used by packages like `@ecfjs/http` to wire `app.listen(port, host, cb)` to an actual server. Application code does not normally call this directly |
 
 > **Note:** `app.boot()` instantiates each provider with `new ProviderClass()` — no constructor arguments are passed. Anything a provider needs must come through the `app` parameter passed to `register()`/`boot()`, not through the provider's constructor.
 
@@ -135,7 +135,7 @@ app.boot();
 Every provider extends `ServiceProvider` and may implement `register(app)` and/or `boot(app)`:
 
 ```javascript
-import { ServiceProvider } from "@ecf/core";
+import { ServiceProvider } from "@ecfjs/core";
 
 class CacheProvider extends ServiceProvider {
     register(app) {
@@ -152,7 +152,7 @@ class CacheProvider extends ServiceProvider {
 }
 ```
 
-**Built-in providers shipped in `@ecf/core`:**
+**Built-in providers shipped in `@ecfjs/core`:**
 
 | Provider | Binding | Purpose |
 |---|---|---|
@@ -161,7 +161,7 @@ class CacheProvider extends ServiceProvider {
 | `EventServiceProvider` | `"event"` | Registers `EventManager` |
 | `EnvironmentServiceProvider` | `"env"` | Loads `.env` from `process.cwd()` and registers `EnvManager` |
 | `CoreServiceProvider` | — | Bootstraps the other core providers together |
-| `DatabaseServiceProvider` | `"database"` | Registers the database connection and ORM (re-exported here; primary implementation lives in `@ecf/database`) |
+| `DatabaseServiceProvider` | `"database"` | Registers the database connection and ORM (re-exported here; primary implementation lives in `@ecfjs/database`) |
 
 ---
 
@@ -170,7 +170,7 @@ class CacheProvider extends ServiceProvider {
 Facades are static proxies over container bindings — they let you call `Config.get(...)` instead of `app.make("config").get(...)`.
 
 ```javascript
-import { Config, Log, Event, Env } from "@ecf/core";
+import { Config, Log, Event, Env } from "@ecfjs/core";
 
 // Call once, immediately after app.boot()
 Facade.setApplication(app);
@@ -194,7 +194,7 @@ Env.has("APP_KEY");
 **Writing a custom facade:**
 
 ```javascript
-import { Facade } from "@ecf/core";
+import { Facade } from "@ecfjs/core";
 
 class Cache extends Facade {
     static accessor() {
@@ -216,7 +216,7 @@ export default Facade.create(Cache);
 Dot-notation key/value store for configuration values.
 
 ```javascript
-import { ConfigManager } from "@ecf/core";
+import { ConfigManager } from "@ecfjs/core";
 
 const config = new ConfigManager();
 
@@ -235,7 +235,7 @@ config.get("database.missing.nested");    // null — default `defaultValue` is 
 Transport-based logger. `LoggerManager` itself holds no output logic — it dispatches to whatever `Transport` instances are attached.
 
 ```javascript
-import { LoggerManager, ConsoleTransport, Transport } from "@ecf/core";
+import { LoggerManager, ConsoleTransport, Transport } from "@ecfjs/core";
 
 const logger = new LoggerManager();
 logger.addTransport(new ConsoleTransport());
@@ -265,7 +265,7 @@ Log levels, from least to most severe: `debug` → `info` → `warning` → `err
 Synchronous, error-isolated pub/sub.
 
 ```javascript
-import { EventManager } from "@ecf/core";
+import { EventManager } from "@ecfjs/core";
 
 const events = new EventManager(logger); // logger is optional, used to report listener errors
 
@@ -287,7 +287,7 @@ events.clear();                // removes all events and listeners
 `EnvironmentServiceProvider` loads `.env` from `process.cwd()` automatically when registered and booted.
 
 ```javascript
-import { EnvManager, DotEnvLoader } from "@ecf/core";
+import { EnvManager, DotEnvLoader } from "@ecfjs/core";
 
 // Manual loading, without going through a provider
 const parsed = DotEnvLoader.load("./.env"); // { APP_NAME: "ECF", ... }
@@ -305,7 +305,7 @@ env.clear();
 
 ## Error Types
 
-`@ecf/core` throws typed errors so calling code can distinguish failure modes with `instanceof`:
+`@ecfjs/core` throws typed errors so calling code can distinguish failure modes with `instanceof`:
 
 | Error | Thrown by |
 |---|---|

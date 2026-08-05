@@ -1,5 +1,5 @@
 import assert from 'node:assert';
-import { ITestDatabase } from '@ecf/contracts';
+import { ITestDatabase } from '@ecfjs/contracts';
 
 /**
  * Test Database Sandbox & Assertions.

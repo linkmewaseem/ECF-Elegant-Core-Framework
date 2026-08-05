@@ -1,4 +1,4 @@
-import { Str } from "@ecf/support";
+import { Str } from "@ecfjs/support";
 
 export class EventContext {
   constructor(eventName, payload = {}, options = {}) {

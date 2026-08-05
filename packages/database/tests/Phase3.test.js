@@ -1,6 +1,6 @@
 import { describe, test, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
-import { Application, Facade } from "@ecf/core";
+import { Application, Facade } from "@ecfjs/core";
 import DatabaseServiceProvider from "../src/providers/DatabaseServiceProvider.js";
 import Model from "../src/orm/Model.js";
 import Relation from "../src/orm/relations/Relation.js";

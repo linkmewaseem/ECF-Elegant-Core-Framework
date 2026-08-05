@@ -45,4 +45,4 @@ This document outlines the **Automated Quality Gate Flow** for publishing releas
 - **Pass Criteria**: Zero circular dependency warnings.
 
 ### Stage 7: Automated Package Publication (`pnpm publish`)
-- **Action**: Tags GitHub release and publishes updated package versions to npm registry under `@ecf/*` namespace.
+- **Action**: Tags GitHub release and publishes updated package versions to npm registry under `@ecfjs/*` namespace.

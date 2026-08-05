@@ -1,4 +1,4 @@
-import { Facade } from '@ecf/core';
+import { Facade } from '@ecfjs/core';
 
 class ScheduleFacadeClass extends Facade {
   static accessor() {

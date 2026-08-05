@@ -2,7 +2,7 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { MetricsCollector, MemoryExporter } from '../src/index.js';
 
-describe('@ecf/observability — MetricsCollector Tests', () => {
+describe('@ecfjs/observability — MetricsCollector Tests', () => {
   test('Counter increments and decrements', () => {
     const collector = new MetricsCollector();
     collector.increment('cache.hits');

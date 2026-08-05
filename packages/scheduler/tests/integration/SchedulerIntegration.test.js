@@ -1,12 +1,12 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { Application } from '@ecf/core';
-import { EventManager, EventServiceProvider } from '@ecf/events';
-import { ObservabilityManager, ObservabilityServiceProvider } from '@ecf/observability';
+import { Application } from '@ecfjs/core';
+import { EventManager, EventServiceProvider } from '@ecfjs/events';
+import { ObservabilityManager, ObservabilityServiceProvider } from '@ecfjs/observability';
 import { ScheduleManager, SchedulerServiceProvider, TaskStarted, TaskFinished } from '../../src/index.js';
 
-describe('@ecf/scheduler — Integration Tests', () => {
-  test('Integration with @ecf/events and @ecf/observability', async () => {
+describe('@ecfjs/scheduler — Integration Tests', () => {
+  test('Integration with @ecfjs/events and @ecfjs/observability', async () => {
     const app = new Application();
     app.register(EventServiceProvider);
     app.register(ObservabilityServiceProvider);

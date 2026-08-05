@@ -1,4 +1,4 @@
-import { ServiceProvider } from '@ecf/core';
+import { ServiceProvider } from '@ecfjs/core';
 import { ObservabilityManager } from './ObservabilityManager.js';
 import { ConsoleExporter, MemoryExporter, NullExporter } from './exporters/Exporters.js';
 

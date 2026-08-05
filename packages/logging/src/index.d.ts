@@ -1,4 +1,4 @@
-import { ILogManager, ILogDriver, ILogFormatter, ILogProcessor, ILogMasker } from '@ecf/contracts';
+import { ILogManager, ILogDriver, ILogFormatter, ILogProcessor, ILogMasker } from '@ecfjs/contracts';
 
 export type LogLevel = 'emergency' | 'alert' | 'critical' | 'error' | 'warning' | 'notice' | 'info' | 'debug' | 'trace';
 

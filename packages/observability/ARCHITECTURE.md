@@ -1,6 +1,6 @@
-# @ecf/observability — Package Architecture
+# @ecfjs/observability — Package Architecture
 
-`@ecf/observability` is the distributed tracing and metrics platform for the ECF ecosystem.
+`@ecfjs/observability` is the distributed tracing and metrics platform for the ECF ecosystem.
 
 ## Core Components
 
@@ -11,9 +11,9 @@
 
 ## Dependencies
 
-- `@ecf/core`
+- `@ecfjs/core`
 
 ## Dependency Rules
 
-- MUST NOT depend on `@ecf/http` directly; integrates via middleware hooks.
+- MUST NOT depend on `@ecfjs/http` directly; integrates via middleware hooks.
 - Trace context MUST propagate through AsyncLocalStorage.

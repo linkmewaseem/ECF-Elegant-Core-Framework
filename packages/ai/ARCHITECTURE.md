@@ -1,4 +1,4 @@
-# Architecture Decision Record (ADR) — `@ecf/ai`
+# Architecture Decision Record (ADR) — `@ecfjs/ai`
 
 ## Status
 Approved & Implemented

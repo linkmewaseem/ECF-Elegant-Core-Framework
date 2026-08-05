@@ -5,7 +5,7 @@ import { MediaFile } from '../../src/core/MediaFile.js';
 import { MediaManager } from '../../src/internal/MediaManager.js';
 import { MediaPipeline } from '../../src/pipeline/MediaPipeline.js';
 
-describe("@ecf/media — Performance Benchmarks", () => {
+describe("@ecfjs/media — Performance Benchmarks", () => {
   function makeImageFile(size = 512 * 1024) {
     return MediaFile.fromBuffer(Buffer.alloc(size, 0xab), {
       mimeType: "image/jpeg",

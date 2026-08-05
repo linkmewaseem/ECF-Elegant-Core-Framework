@@ -1,7 +1,7 @@
-# `@ecf/search` Architecture & Design Specification
+# `@ecfjs/search` Architecture & Design Specification
 
 ## Overview
-`@ecf/search` provides an enterprise search platform for ECF applications.
+`@ecfjs/search` provides an enterprise search platform for ECF applications.
 
 ```text
 Search Query / Model Save
@@ -34,4 +34,4 @@ DriverRegistry ──► Search Pipeline (Normalize -> Tokenizer -> Synonym -> R
 2. **`Indexer`**: Document indexing, removal, blue-green alias management (`IndexAliasManager`), and chunked bulk workers.
 3. **`QueryEngine`**: Pipeline execution, ranking boosts, aggregations, faceting, highlighting, and driver invocation.
 4. **`DriverCapabilities`**: Capability matrix inspection (`facet`, `highlight`, `vector`, `geo`, `aggregate`, `dsl`).
-5. **AI Preparation**: Marker contracts for Milestone 30 (`@ecf/ai`).
+5. **AI Preparation**: Marker contracts for Milestone 30 (`@ecfjs/ai`).

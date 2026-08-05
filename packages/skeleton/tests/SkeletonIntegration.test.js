@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createApp as createSsrApp } from '../v1/ssr/bootstrap/app.js';
 import { createApp as createApiApp } from '../v1/api/bootstrap/app.js';
-import { NativeRequest, AbstractResponse } from '@ecf/http';
+import { NativeRequest, AbstractResponse } from '@ecfjs/http';
 
 test('Skeleton SSR Blueprint Integration Test', async () => {
   const app = createSsrApp();

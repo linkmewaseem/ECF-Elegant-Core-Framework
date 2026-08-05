@@ -30,7 +30,7 @@ export class SharpDriver extends IMediaDriver {
       return this.#sharp;
     } catch {
       throw new MediaProcessingException(
-        'Sharp is not installed. Run: pnpm add sharp --filter @ecf/media'
+        'Sharp is not installed. Run: pnpm add sharp --filter @ecfjs/media'
       );
     }
   }

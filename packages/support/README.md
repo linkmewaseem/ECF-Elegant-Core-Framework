@@ -1,6 +1,6 @@
-# `@ecf/support` — Collections & Utilities
+# `@ecfjs/support` — Collections & Utilities
 
-`@ecf/support` provides foundational collection and string utilities for the ECF (Elegant Core Framework) ecosystem.
+`@ecfjs/support` provides foundational collection and string utilities for the ECF (Elegant Core Framework) ecosystem.
 
 ---
 
@@ -18,7 +18,7 @@
 ## Quick Start
 
 ```javascript
-import { Collection, Str } from "@ecf/support";
+import { Collection, Str } from "@ecfjs/support";
 
 const names = new Collection([{ name: "Alice" }, { name: "Bob" }])
   .pluck("name")

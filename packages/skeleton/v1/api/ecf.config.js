@@ -3,11 +3,11 @@ export default {
     version: "1.0.0",
     blueprint: "v1/api",
     packages: [
-        "@ecf/core",
-        "@ecf/http",
-        "@ecf/database",
-        "@ecf/auth",
-        "@ecf/validation",
+        "@ecfjs/core",
+        "@ecfjs/http",
+        "@ecfjs/database",
+        "@ecfjs/auth",
+        "@ecfjs/validation",
     ],
     plugins: {
         autoload: true,

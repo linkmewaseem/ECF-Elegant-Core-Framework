@@ -1,4 +1,4 @@
-import { UnauthorizedException } from "@ecf/http";
+import { UnauthorizedException } from "@ecfjs/http";
 
 export class Authenticate {
     async handle(request, next) {

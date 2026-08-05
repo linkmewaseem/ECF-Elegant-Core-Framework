@@ -1,6 +1,6 @@
-# @ecf/view — Package Architecture
+# @ecfjs/view — Package Architecture
 
-`@ecf/view` is the high-performance AST template engine for the ECF ecosystem.
+`@ecfjs/view` is the high-performance AST template engine for the ECF ecosystem.
 
 ## Core Components
 - **`Lexer` & `Tokenizer`**: Template token stream extractor.

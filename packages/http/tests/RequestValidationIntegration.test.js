@@ -19,7 +19,7 @@ function makeFakeBodyParserManager(parsedBody = {}) {
     };
 }
 
-describe("Request.validate() Integration in @ecf/http", () => {
+describe("Request.validate() Integration in @ecfjs/http", () => {
     test("returns validated input data when rules pass", async () => {
         const bpm = makeFakeBodyParserManager({ email: "user@example.com", name: "Waseem", unwanted: "x" });
         const req = new Request(makeFakeIncomingMessage(), bpm);

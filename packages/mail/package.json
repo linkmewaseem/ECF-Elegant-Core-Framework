@@ -44,16 +44,16 @@
     "@ecfjs/storage": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/config": {
+    "@ecfjs/config": {
       "optional": true
     },
-    "@ecf/events": {
+    "@ecfjs/events": {
       "optional": true
     },
-    "@ecf/view": {
+    "@ecfjs/view": {
       "optional": true
     },
-    "@ecf/storage": {
+    "@ecfjs/storage": {
       "optional": true
     }
   }

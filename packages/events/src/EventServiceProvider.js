@@ -1,4 +1,4 @@
-import { ServiceProvider } from "@ecf/core";
+import { ServiceProvider } from "@ecfjs/core";
 import EventDispatcher from "./EventDispatcher.js";
 import EventManager from "./EventManager.js";
 

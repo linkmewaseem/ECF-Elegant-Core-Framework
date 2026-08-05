@@ -1,7 +1,7 @@
-import { Application, Facade, CoreServiceProvider, LoggerServiceProvider, HttpServiceProvider, Route, Middleware, Log, ValidationException } from "@ecf/http";
-import { ViewServiceProvider } from "@ecf/view";
-import { Rule } from "@ecf/validation";
-import { DatabaseServiceProvider, DB, Schema } from "@ecf/database";
+import { Application, Facade, CoreServiceProvider, LoggerServiceProvider, HttpServiceProvider, Route, Middleware, Log, ValidationException } from "@ecfjs/http";
+import { ViewServiceProvider } from "@ecfjs/view";
+import { Rule } from "@ecfjs/validation";
+import { DatabaseServiceProvider, DB, Schema } from "@ecfjs/database";
 import { initializeDatabase } from "./database/init.js";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -105,7 +105,7 @@ Route.get("/products/new", (req, res) => {
 
 // 4. Product Store Handler (POST /products)
 Route.post("/products", async (req, res) => {
-    // Validate request data using @ecf/validation engine with fluent Rule builder
+    // Validate request data using @ecfjs/validation engine with fluent Rule builder
     const validated = await req.validate({
         name: [Rule.required(), Rule.string(), Rule.min(3)],
         category: [Rule.required(), Rule.in(["Electronics", "Peripherals", "Hardware", "Accessories"])],
@@ -187,7 +187,7 @@ Route.group({ prefix: "/api/v1" }, (router) => {
 
         return res.json({
             framework: "ECF Enterprise Web Framework v1.0",
-            packages: ["@ecf/core", "@ecf/http", "@ecf/view", "@ecf/validation", "@ecf/database"],
+            packages: ["@ecfjs/core", "@ecfjs/http", "@ecfjs/view", "@ecfjs/validation", "@ecfjs/database"],
             metrics: {
                 totalItems,
                 maxPrice,

@@ -1,7 +1,7 @@
 # ADR-008: Search Platform Architecture & Execution Pipeline
 
 ## Status
-**Accepted** (Implemented in `@ecf/search`)
+**Accepted** (Implemented in `@ecfjs/search`)
 
 ## Context
 Applications in modern web architectures require fast, reliable full-text search, filtering, faceting, aggregations, highlighting, and automatic model indexing across multiple search backends (Memory, SQL Database, Meilisearch, Typesense, Elasticsearch). Prior to Milestone 25, search relied on raw SQL LIKE queries or ad-hoc filtering.
@@ -17,13 +17,13 @@ Applications in modern web architectures require fast, reliable full-text search
 3. **Search Middleware Pipeline**:
    Search requests execute through an extensible pipeline: `Normalize` -> `Tokenizer` -> `Synonym` -> `Stemmer` -> `SpellCorrector` -> `QueryExpander` -> `Driver` -> `Ranker` -> `Highlight`.
 4. **Scout-style Automatic Model Indexing**:
-   Models implementing the `Searchable` trait hook into lifecycle events to dispatch asynchronous `ImportSearchableJob` and `RemoveSearchableJob` tasks into `@ecf/queue`.
+   Models implementing the `Searchable` trait hook into lifecycle events to dispatch asynchronous `ImportSearchableJob` and `RemoveSearchableJob` tasks into `@ecfjs/queue`.
 5. **Zero-Downtime Blue-Green Re-Indexing**:
-   Bulk re-indexing uses `IndexAliasManager` to create a temporary index (`products_v2`), chunk documents through background queue workers, stream live progress (`40% -> 60% -> 100%`) via `@ecf/broadcast`, and atomically swap the index alias (`products -> products_v2`).
+   Bulk re-indexing uses `IndexAliasManager` to create a temporary index (`products_v2`), chunk documents through background queue workers, stream live progress (`40% -> 60% -> 100%`) via `@ecfjs/broadcast`, and atomically swap the index alias (`products -> products_v2`).
 6. **Smart Cache Invalidation & DSL**:
    Search results can be cached (`.withCache(300)`). Model mutations automatically invalidate affected query cache tags. Supports both fluent query building and Elastic-style DSL query objects (`Search.dsl({ must: [...] })`).
 7. **AI Platform Readiness**:
-   Exposes marker contracts (`EmbeddingProvider`, `VectorStore`, `SemanticRanker`, `HybridSearch`, `LLMQueryExpander`) to enable seamless vector and hybrid search integration in Milestone 30 (`@ecf/ai`).
+   Exposes marker contracts (`EmbeddingProvider`, `VectorStore`, `SemanticRanker`, `HybridSearch`, `LLMQueryExpander`) to enable seamless vector and hybrid search integration in Milestone 30 (`@ecfjs/ai`).
 
 ## Consequences
 

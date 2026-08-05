@@ -1,6 +1,6 @@
 import { IRequest } from '../contracts/IRequest.js';
 import AttributeBag from '../AttributeBag.js';
-import { Validator } from '@ecf/validation';
+import { Validator } from '@ecfjs/validation';
 import ValidationException from '../exceptions/ValidationException.js';
 
 /**

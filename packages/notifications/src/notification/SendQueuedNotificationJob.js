@@ -1,4 +1,4 @@
-import { Job } from "@ecf/queue";
+import { Job } from "@ecfjs/queue";
 
 export class SendQueuedNotificationJob extends Job {
   constructor(notifiable, notification, channels = null) {

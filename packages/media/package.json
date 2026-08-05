@@ -47,16 +47,16 @@
     "sharp": "^0.33.5"
   },
   "peerDependenciesMeta": {
-    "@ecf/config": {
+    "@ecfjs/config": {
       "optional": true
     },
-    "@ecf/events": {
+    "@ecfjs/events": {
       "optional": true
     },
-    "@ecf/upload": {
+    "@ecfjs/upload": {
       "optional": true
     },
-    "@ecf/notifications": {
+    "@ecfjs/notifications": {
       "optional": true
     },
     "sharp": {

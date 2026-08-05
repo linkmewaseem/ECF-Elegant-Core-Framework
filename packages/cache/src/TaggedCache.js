@@ -1,4 +1,4 @@
-import { Arr } from "@ecf/support";
+import { Arr } from "@ecfjs/support";
 
 export class TaggedCache {
   constructor(store, tags = []) {

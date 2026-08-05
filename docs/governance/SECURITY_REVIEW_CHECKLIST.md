@@ -21,7 +21,7 @@ This document defines the **formal security review checklist** that must be comp
 
 ## Package-Specific Checklists
 
-### `@ecf/auth`
+### `@ecfjs/auth`
 
 | # | Control | Status |
 |---|---|---|
@@ -33,7 +33,7 @@ This document defines the **formal security review checklist** that must be comp
 | A6 | AsyncLocalStorage context isolation verified with adversarial tests | ☐ |
 | A7 | Password reset tokens are single-use, hashed, and rate-limited | ☐ |
 
-### `@ecf/http`
+### `@ecfjs/http`
 
 | # | Control | Status |
 |---|---|---|
@@ -44,7 +44,7 @@ This document defines the **formal security review checklist** that must be comp
 | H5 | CORS configuration validated and documented | ☐ |
 | H6 | Content-Type validation on JSON/form body parsers | ☐ |
 
-### `@ecf/database`
+### `@ecfjs/database`
 
 | # | Control | Status |
 |---|---|---|
@@ -52,7 +52,7 @@ This document defines the **formal security review checklist** that must be comp
 | D2 | Connection credentials not logged by query profiler | ☐ |
 | D3 | SQL injection tests for query builder edge cases | ☐ |
 
-### `@ecf/upload` / `@ecf/media` / `@ecf/storage`
+### `@ecfjs/upload` / `@ecfjs/media` / `@ecfjs/storage`
 
 | # | Control | Status |
 |---|---|---|
@@ -61,7 +61,7 @@ This document defines the **formal security review checklist** that must be comp
 | U3 | Path traversal prevented in file storage paths | ☐ |
 | U4 | Signed URL expiration enforced | ☐ |
 
-### `@ecf/queue`
+### `@ecfjs/queue`
 
 | # | Control | Status |
 |---|---|---|
@@ -69,14 +69,14 @@ This document defines the **formal security review checklist** that must be comp
 | Q2 | Payload checksum validation on deserialization | ☐ |
 | Q3 | Failed job repository does not expose sensitive payload data | ☐ |
 
-### `@ecf/notifications` / `@ecf/broadcast`
+### `@ecfjs/notifications` / `@ecfjs/broadcast`
 
 | # | Control | Status |
 |---|---|---|
 | N1 | Webhook signature verification (HMAC) enforced | ☐ |
 | N2 | Channel credentials encrypted in config | ☐ |
 
-### `@ecf/ai`
+### `@ecfjs/ai`
 
 | # | Control | Status |
 |---|---|---|

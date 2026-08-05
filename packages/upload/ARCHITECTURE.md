@@ -1,24 +1,24 @@
-# `@ecf/upload` — Architecture Freeze Document (v1.0)
+# `@ecfjs/upload` — Architecture Freeze Document (v1.0)
 
 ## Overview
 
-`@ecf/upload` is the official Enterprise File Ingestion Pipeline Platform for the ECF (Enterprise Core Framework) ecosystem. It provides high-performance binary MIME sniffing, image dimension extraction, an extensible middleware pipeline engine, virus quarantine routing, chunked/resumable Tus-style uploads, signed direct-to-storage uploads, and testing fakes.
+`@ecfjs/upload` is the official Enterprise File Ingestion Pipeline Platform for the ECF (Enterprise Core Framework) ecosystem. It provides high-performance binary MIME sniffing, image dimension extraction, an extensible middleware pipeline engine, virus quarantine routing, chunked/resumable Tus-style uploads, signed direct-to-storage uploads, and testing fakes.
 
 ---
 
 ## 1. Monorepo Dependency Graph
 
 ```
-@ecf/core
+@ecfjs/core
     │
-@ecf/support
+@ecfjs/support
     │
-@ecf/storage
+@ecfjs/storage
     │
-@ecf/upload (Milestone 17)
+@ecfjs/upload (Milestone 17)
 ```
 
-`@ecf/upload` depends only on `@ecf/core`, `@ecf/support`, and `@ecf/storage`. Config, Events, and Validation act as optional peer integrations. There are **zero cyclic dependencies**.
+`@ecfjs/upload` depends only on `@ecfjs/core`, `@ecfjs/support`, and `@ecfjs/storage`. Config, Events, and Validation act as optional peer integrations. There are **zero cyclic dependencies**.
 
 ---
 

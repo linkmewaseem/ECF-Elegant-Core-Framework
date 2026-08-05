@@ -100,7 +100,7 @@ export class MediaManager {
 
   /**
    * Create an ImageProcessor for the given file source.
-   * @param {MediaFile|Buffer|object} source - MediaFile, Buffer, or @ecf/upload UploadedFile
+   * @param {MediaFile|Buffer|object} source - MediaFile, Buffer, or @ecfjs/upload UploadedFile
    * @param {string} [driverName] - override driver (defaults to "sharp")
    * @returns {ImageProcessor}
    */
@@ -171,7 +171,7 @@ export class MediaManager {
     if (Buffer.isBuffer(source)) {
       return MediaFile.fromBuffer(source, { mimeType: `${expectedType}/jpeg`, originalName: `${expectedType}.jpg` });
     }
-    // Assume @ecf/upload UploadedFile duck-type
+    // Assume @ecfjs/upload UploadedFile duck-type
     return MediaFile.fromUploadedFile(source);
   }
 }

@@ -1,4 +1,4 @@
-import { Model } from "@ecf/database";
+import { Model } from "@ecfjs/database";
 
 export class User extends Model {
     static table = "users";

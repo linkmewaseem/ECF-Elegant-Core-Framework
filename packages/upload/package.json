@@ -43,13 +43,13 @@
     "@ecfjs/validation": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/config": {
+    "@ecfjs/config": {
       "optional": true
     },
-    "@ecf/events": {
+    "@ecfjs/events": {
       "optional": true
     },
-    "@ecf/validation": {
+    "@ecfjs/validation": {
       "optional": true
     }
   }

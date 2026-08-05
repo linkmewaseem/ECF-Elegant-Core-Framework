@@ -1,13 +1,13 @@
-# DevTools & Observability Documentation (`@ecf/devtools`, `@ecf/observability`)
+# DevTools & Observability Documentation (`@ecfjs/devtools`, `@ecfjs/observability`)
 
 Interactive developer dashboard and OpenTelemetry tracing telemetry.
 
 ---
 
-## 🛠️ DevTools Dashboard (`@ecf/devtools`)
+## 🛠️ DevTools Dashboard (`@ecfjs/devtools`)
 
 ```js
-import { DevTools } from "@ecf/devtools";
+import { DevTools } from "@ecfjs/devtools";
 
 DevTools.record("Query", { sql: "SELECT 1" });
 ```

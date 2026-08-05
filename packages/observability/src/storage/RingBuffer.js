@@ -4,7 +4,7 @@
  * When capacity is reached, oldest entries are overwritten.
  * No memory leak — always bounded.
  *
- * Used by: @ecf/observability (span storage), @ecf/devtools (request entries)
+ * Used by: @ecfjs/observability (span storage), @ecfjs/devtools (request entries)
  */
 export class RingBuffer {
   #buffer;

@@ -1,7 +1,7 @@
-# `@ecf/api` Architecture & Design Specification
+# `@ecfjs/api` Architecture & Design Specification
 
 ## Overview
-`@ecf/api` provides a complete, enterprise-grade API Platform for ECF applications.
+`@ecfjs/api` provides a complete, enterprise-grade API Platform for ECF applications.
 
 ```text
 HTTP Request
@@ -34,7 +34,7 @@ HTTP Response + OpenAPI Generator (/docs/api)
 ## Core Architectural Modules
 1. **API Resources (`ApiResource` & `ResourceCollection`)**: Laravel-style transformation with conditional fields (`when`, `merge`, `whenLoaded`, `whenCounted`), sparse fieldsets (`?fields=...`), include relations (`?include=...`), and cursor pagination (`nextCursor`, `prevCursor`).
 2. **Versioning (`ApiVersionManager`)**: Multi-strategy URI, Accept header, X-Api-Version header, and query param versioning.
-3. **Advanced Rate Limiting (`ApiRateLimiter`)**: Per User, Token, IP, and Route rate limiters backed by `@ecf/cache`.
+3. **Advanced Rate Limiting (`ApiRateLimiter`)**: Per User, Token, IP, and Route rate limiters backed by `@ecfjs/cache`.
 4. **Idempotency & ETags**: `Idempotency-Key` middleware and `If-None-Match` 304 Not Modified caching.
 5. **OpenAPI Generator & Swagger UI**: Route inspection building OpenAPI 3.0 specification and Swagger UI dashboard.
 6. **RFC-9457 Problem Details & Response Builder**: Fluent response helpers and standardized error payloads.

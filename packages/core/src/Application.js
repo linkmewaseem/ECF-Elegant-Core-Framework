@@ -1,8 +1,7 @@
 import Container from "./Container.js";
 import ContainerError from "./errors/ContainerError.js";
 import ServiceProvider from "./ServiceProvider.js";
-
-
+import ConfigManager from "./ConfigManager.js";
 
 export default class Application {
     constructor() {
@@ -46,14 +45,13 @@ export default class Application {
         this.providers.add(ProviderClass);
         return this;
     }
-    // Existing methods ke saath add karo
 
     use(middleware) {
         const registry = this.make("middleware.registry");
         registry.global(middleware);
         return this;
     }
-    // ✅ NAYA
+
     listen(...args) {
         this.assertListenHandlerRegistered();
         this.listenHandler(this, args);
@@ -75,6 +73,20 @@ export default class Application {
                 'Register a provider (e.g. HttpServiceProvider from "@ecf/http") before calling listen().'
             );
         }
+    }
+
+    configure(configMap) {
+        if (!this.has("config")) {
+            this.singleton("config", () => new ConfigManager());
+        }
+        const configManager = this.make("config");
+        configManager.loadMany(configMap);
+        return this;
+    }
+
+    async handle(rawRequest, rawResponse) {
+        const kernel = this.make("http.kernel");
+        return await kernel.handle(rawRequest, rawResponse);
     }
 
     boot() {

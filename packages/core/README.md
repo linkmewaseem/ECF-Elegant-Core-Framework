@@ -1,6 +1,8 @@
-# `@ecf/core` — IoC Container & Application Foundation
+# `@ecf/core`
 
-`@ecf/core` is the foundational IoC container and application bootstrapper for the ECF (Elegant Core Framework) ecosystem.
+**IoC Container & Application Foundation for the ECF ecosystem.**
+
+`@ecf/core` provides the dependency injection container, application lifecycle, service provider system, facades, and the foundational config/logger/event/env utilities that every other ECF package builds on.
 
 [![Version](https://img.shields.io/badge/version-1.0.0--rc.1-blue.svg)](https://github.com/linkmewaseem/ECF-Elegant-Core-Framework)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -8,16 +10,19 @@
 
 ---
 
-## Features
+## Table of Contents
 
-- **IoC Container** — bind factories, resolve singletons, detect circular dependencies.
-- **Application** wrapper with provider-based bootstrapping lifecycle (`register()`, `boot()`).
-- **ServiceProvider** base class for organized service registration and lifecycle hooks.
-- **Facade** system — static proxy shortcuts to container services.
-- **ConfigManager** — dot-notation configuration manager (`app.db.host`).
-- **LoggerManager** — pluggable transport-based logger (`info`, `warning`, `error`, `critical`).
-- **EventManager** — synchronous event bus with error isolation.
-- **EnvManager** + **DotEnvLoader** — `.env` file loading and typed environment variable access.
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Container](#container)
+- [Application](#application)
+- [Service Providers](#service-providers)
+- [Facades](#facades)
+- [ConfigManager](#configmanager)
+- [LoggerManager](#loggermanager)
+- [EventManager](#eventmanager)
+- [Environment (.env)](#environment-env)
+- [Error Types](#error-types)
 
 ---
 
@@ -34,19 +39,19 @@ pnpm add @ecf/core
 ```javascript
 import { Application, ServiceProvider, Facade } from "@ecf/core";
 
-// 1. Define a Service Provider
 class AppServiceProvider extends ServiceProvider {
-  register() {
-    this.container.singleton("greeting", () => "Hello from ECF Core!");
-  }
+    // register() and boot() both receive the Application instance as their
+    // only argument — there is no `this.container` on ServiceProvider.
+    register(app) {
+        app.singleton("greeting", () => "Hello from ECF Core!");
+    }
 
-  boot() {
-    const greeting = this.container.make("greeting");
-    console.log(greeting);
-  }
+    boot(app) {
+        const greeting = app.make("greeting");
+        console.log(greeting);
+    }
 }
 
-// 2. Instantiate and Boot Application
 const app = new Application();
 app.register(AppServiceProvider);
 app.boot();
@@ -55,98 +60,260 @@ Facade.setApplication(app);
 
 ---
 
-## Configuration
+## Container
 
-`ConfigManager` provides dot-notation configuration storage:
-
-```javascript
-import { ConfigManager } from "@ecf/core";
-
-const config = new ConfigManager();
-
-config.set("app.name", "ECF Enterprise");
-config.set("database.host", "127.0.0.1");
-config.set("database.port", 5432);
-
-console.log(config.get("app.name")); // "ECF Enterprise"
-console.log(config.get("database.port")); // 5432
-console.log(config.get("missing.key", "default_value")); // "default_value"
-```
-
----
-
-## Examples
-
-### 1. IoC Container & Singletons
+`Container` is the low-level dependency injection store. `Application` wraps it, but you can use `Container` directly if you don't need the provider lifecycle.
 
 ```javascript
 import { Container } from "@ecf/core";
 
 const container = new Container();
 
-// Transient binding (new instance on every make)
 container.bind("logger", () => ({ log: (msg) => console.log(msg) }));
-
-// Singleton binding (cached instance)
 container.singleton("config", () => ({ env: "production" }));
 
-const cfg1 = container.make("config");
-const cfg2 = container.make("config");
-console.log(cfg1 === cfg2); // true
+const logger = container.make("logger");
+container.has("config");    // true
+container.forget("config"); // removes the binding and any cached instance
+container.flush();          // clears all bindings, instances, and resolution state
 ```
 
-### 2. Static Facades
+| Method | Behavior |
+|---|---|
+| `bind(name, factory)` | Registers a transient binding — `factory` runs on every `make()` call |
+| `singleton(name, factory)` | Registers a binding whose `factory` runs once; the result is cached |
+| `make(name)` | Resolves a binding. **Throws `ContainerError`** if the binding doesn't exist — there is no default-value fallback |
+| `has(name)` | Returns `true`/`false` |
+| `forget(name)` | Removes a binding. Throws `ContainerError` if the binding doesn't exist |
+| `flush()` | Clears all bindings, cached instances, and in-progress resolution tracking |
+
+**Circular dependency detection:** `make()` tracks bindings currently being resolved. If a factory for `"a"` calls `container.make("b")`, and `"b"`'s factory calls back into `container.make("a")`, `Container` throws a `ContainerError` describing the full resolution chain instead of recursing infinitely.
+
+---
+
+## Application
+
+`Application` extends `Container` with a service-provider lifecycle, global HTTP middleware registration, and a pluggable `listen()` entrypoint (wired up by `@ecf/http`'s `HttpServiceProvider`).
 
 ```javascript
-import { Application, Config, Log, Event, Env, Facade } from "@ecf/core";
+import { Application, ServiceProvider } from "@ecf/core";
+
+class MailProvider extends ServiceProvider {
+    register(app) {
+        app.singleton("mailer", () => new Mailer());
+    }
+    boot(app) {
+        app.make("mailer").connect();
+    }
+}
 
 const app = new Application();
+app.register(MailProvider);
 app.boot();
+```
+
+| Method | Description |
+|---|---|
+| `bind(name, factory)` | Delegates to the internal `Container` |
+| `singleton(name, factory)` | Delegates to the internal `Container` |
+| `make(name)` | Delegates to the internal `Container` |
+| `has(name)` | Delegates to the internal `Container` |
+| `forget(name)` | Delegates to the internal `Container` |
+| `flush()` | Delegates to the internal `Container` |
+| `register(ProviderClass)` | Queues a provider class. Throws `ContainerError` if `ProviderClass` doesn't extend `ServiceProvider`. Registering the same class twice is a no-op |
+| `boot()` | Instantiates every registered provider and calls `register(app)` then `boot(app)` on each, in registration order |
+| `use(middleware)` | Registers global HTTP middleware. Requires a `"middleware.registry"` binding — normally provided by `HttpServiceProvider` from `@ecf/http` |
+| `listen(...args)` | Delegates to a listen handler registered via `registerListenHandler()`. Throws `ContainerError` if no handler is registered — register `HttpServiceProvider` first |
+| `registerListenHandler(fn)` | Used by packages like `@ecf/http` to wire `app.listen(port, host, cb)` to an actual server. Application code does not normally call this directly |
+
+> **Note:** `app.boot()` instantiates each provider with `new ProviderClass()` — no constructor arguments are passed. Anything a provider needs must come through the `app` parameter passed to `register()`/`boot()`, not through the provider's constructor.
+
+---
+
+## Service Providers
+
+Every provider extends `ServiceProvider` and may implement `register(app)` and/or `boot(app)`:
+
+```javascript
+import { ServiceProvider } from "@ecf/core";
+
+class CacheProvider extends ServiceProvider {
+    register(app) {
+        // Other providers may not be registered yet — only declare bindings here.
+        app.singleton("cache", () => new Map());
+    }
+
+    boot(app) {
+        // All providers are registered by this point — safe to resolve
+        // bindings owned by other providers.
+        const config = app.make("config");
+        console.log("Cache driver:", config.get("cache.driver"));
+    }
+}
+```
+
+**Built-in providers shipped in `@ecf/core`:**
+
+| Provider | Binding | Purpose |
+|---|---|---|
+| `ConfigServiceProvider` | `"config"` | Registers `ConfigManager` |
+| `LoggerServiceProvider` | `"logger"` | Registers `LoggerManager` with a `ConsoleTransport` attached |
+| `EventServiceProvider` | `"event"` | Registers `EventManager` |
+| `EnvironmentServiceProvider` | `"env"` | Loads `.env` from `process.cwd()` and registers `EnvManager` |
+| `CoreServiceProvider` | — | Bootstraps the other core providers together |
+| `DatabaseServiceProvider` | `"database"` | Registers the database connection and ORM (re-exported here; primary implementation lives in `@ecf/database`) |
+
+---
+
+## Facades
+
+Facades are static proxies over container bindings — they let you call `Config.get(...)` instead of `app.make("config").get(...)`.
+
+```javascript
+import { Config, Log, Event, Env } from "@ecf/core";
+
+// Call once, immediately after app.boot()
 Facade.setApplication(app);
 
-// Config Facade
-Config.set("app.name", "DemoApp");
+Config.set("app.name", "ECF");
+Config.get("app.name");               // "ECF"
+Config.get("missing.key", "default"); // "default"
 
-// Log Facade
-Log.info("Application booted successfully", { port: 3000 });
+Log.info("Server started", { port: 3000 });
+Log.warning("High memory usage");
+Log.error("Request failed", { status: 500 });
+Log.critical("Database unreachable");
 
-// Event Facade
-Event.listen("user.login", (payload) => console.log("User logged in:", payload.userId));
-Event.dispatch("user.login", { userId: 42 });
+Event.listen("user.created", (payload) => console.log("New user:", payload.name));
+Event.dispatch("user.created", { name: "Alice" });
 
-// Env Facade
-Env.get("APP_ENV", "development");
+Env.get("DB_HOST", "localhost");
+Env.has("APP_KEY");
+```
+
+**Writing a custom facade:**
+
+```javascript
+import { Facade } from "@ecf/core";
+
+class Cache extends Facade {
+    static accessor() {
+        return "cache"; // must match a container binding name
+    }
+}
+
+export default Facade.create(Cache);
+```
+
+`Facade.create()` wraps the class in a `Proxy`: any property access other than `accessor`, `getRoot`, or `setApplication` is resolved from the live container binding, and functions are automatically bound to the resolved instance.
+
+> `Facade.setApplication(app)` must be called exactly once, after `app.boot()`. Every facade shares the same static `app` reference — calling it again on any facade subclass updates it globally.
+
+---
+
+## ConfigManager
+
+Dot-notation key/value store for configuration values.
+
+```javascript
+import { ConfigManager } from "@ecf/core";
+
+const config = new ConfigManager();
+
+config.set("database.host", "localhost");
+config.get("database.host");              // "localhost"
+config.get("database.port", 5432);        // 5432 — default returned, key not set
+config.get("database.missing.nested");    // null — default `defaultValue` is null
+```
+
+`set(path, value)` and `get(path, defaultValue = null)` both accept dot-separated paths (e.g. `"database.connections.pg.port"`) and will create/traverse intermediate objects as needed. `get()` never throws for a missing path — it returns `defaultValue` (which defaults to `null`, not `undefined`).
+
+---
+
+## LoggerManager
+
+Transport-based logger. `LoggerManager` itself holds no output logic — it dispatches to whatever `Transport` instances are attached.
+
+```javascript
+import { LoggerManager, ConsoleTransport, Transport } from "@ecf/core";
+
+const logger = new LoggerManager();
+logger.addTransport(new ConsoleTransport());
+
+logger.info("App started");
+logger.warning("Disk space low", { free: "500MB" });
+logger.error("Request failed", { status: 500 });
+logger.critical("Database connection lost");
+logger.debug("Query executed", { sql: "SELECT * FROM users", ms: 3 });
+
+class FileTransport extends Transport {
+    log(level, message, context = {}) {
+        // write to a log file
+    }
+}
+
+logger.addTransport(new FileTransport());
+logger.removeTransport(existingTransportInstance);
+```
+
+Log levels, from least to most severe: `debug` → `info` → `warning` → `error` → `critical`.
+
+---
+
+## EventManager
+
+Synchronous, error-isolated pub/sub.
+
+```javascript
+import { EventManager } from "@ecf/core";
+
+const events = new EventManager(logger); // logger is optional, used to report listener errors
+
+events.listen("order.placed", (payload) => console.log("Order placed:", payload.orderId));
+
+// dispatch() returns an array of any errors thrown by listeners —
+// one listener throwing does not stop the others from running.
+const errors = events.dispatch("order.placed", { orderId: 42 });
+
+events.has("order.placed");
+events.forget("order.placed"); // removes all listeners for this event
+events.clear();                // removes all events and listeners
 ```
 
 ---
 
-## API Reference
+## Environment (.env)
 
-### Core Classes
+`EnvironmentServiceProvider` loads `.env` from `process.cwd()` automatically when registered and booted.
 
-| Class | Description |
+```javascript
+import { EnvManager, DotEnvLoader } from "@ecf/core";
+
+// Manual loading, without going through a provider
+const parsed = DotEnvLoader.load("./.env"); // { APP_NAME: "ECF", ... }
+
+const env = new EnvManager();
+env.set("APP_NAME", "ECF");
+env.get("APP_NAME");             // "ECF"
+env.get("MISSING", "fallback");  // "fallback"
+env.has("APP_NAME");             // true
+env.all();                       // { APP_NAME: "ECF", ... }
+env.clear();
+```
+
+---
+
+## Error Types
+
+`@ecf/core` throws typed errors so calling code can distinguish failure modes with `instanceof`:
+
+| Error | Thrown by |
 |---|---|
-| `Container` | IoC dependency injection container |
-| `Application` | Container wrapper adding provider lifecycle and bootstrapping |
-| `ServiceProvider` | Abstract base class for service providers |
-| `Facade` | Base proxy class for static service facades |
-| `ConfigManager` | Dot-notation nested configuration manager |
-| `LoggerManager` | Multi-transport log routing manager |
-| `EventManager` | Synchronous event listener bus |
-| `EnvManager` | Environment variable dictionary manager |
-
----
-
-## Testing
-
-Run unit tests for `@ecf/core`:
-
-```bash
-node --test
-```
+| `ContainerError` | `Container`/`Application` — missing bindings, circular dependencies, invalid provider classes, missing listen handler |
+| `ConfigError` | `ConfigManager` — invalid (non-string or empty) config path |
 
 ---
 
 ## License
 
-[MIT](LICENSE)
+MIT

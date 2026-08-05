@@ -52,7 +52,11 @@ export class AbstractRequest extends IRequest {
 
   wantsJson() {
     const accept = this.header('accept', '');
-    return accept.includes('application/json') || accept.includes('*/*');
+    return accept.includes('application/json');
+  }
+
+  expectsJson() {
+    return this.wantsJson();
   }
 
   all() {

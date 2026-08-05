@@ -537,6 +537,9 @@ importers:
 
   packages/skeleton:
     dependencies:
+      '@ecf/auth':
+        specifier: workspace:*
+        version: link:../auth
       '@ecf/core':
         specifier: workspace:*
         version: link:../core

@@ -37,27 +37,55 @@ validatePath(path) {
 }
 
     get(path, defaultValue = null) {
-    this.validatePath(path);
+        this.validatePath(path);
 
-    const keys = path.split(".");
-    let current = this.items;
+        const keys = path.split(".");
+        let current = this.items;
 
-    for (let i = 0; i < keys.length - 1; i++) {
-        const key = keys[i];
+        for (let i = 0; i < keys.length - 1; i++) {
+            const key = keys[i];
 
-        if (
-            current[key] === undefined ||
-            current[key] === null ||
-            typeof current[key] !== "object"
-        ) {
-            return defaultValue;
+            if (
+                current[key] === undefined ||
+                current[key] === null ||
+                typeof current[key] !== "object"
+            ) {
+                return defaultValue;
+            }
+
+            current = current[key];
         }
 
-        current = current[key];
+        const lastKey = keys[keys.length - 1];
+
+        return current[lastKey] !== undefined ? current[lastKey] : defaultValue;
     }
 
-    const lastKey = keys[keys.length - 1];
+    load(namespace, configObject) {
+        if (typeof namespace !== "string" || !namespace.trim()) {
+            throw new ConfigError("Config namespace must be a non-empty string.");
+        }
+        if (typeof configObject !== "object" || configObject === null) {
+            return this;
+        }
 
-    return current[lastKey] !== undefined ? current[lastKey] : defaultValue;
-}
+        this.items[namespace] = {
+            ...(this.items[namespace] || {}),
+            ...configObject,
+        };
+
+        return this;
+    }
+
+    loadMany(configMap) {
+        if (typeof configMap !== "object" || configMap === null) {
+            return this;
+        }
+
+        for (const [namespace, configObject] of Object.entries(configMap)) {
+            this.load(namespace, configObject);
+        }
+
+        return this;
+    }
 }

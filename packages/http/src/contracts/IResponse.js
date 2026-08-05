@@ -40,6 +40,10 @@ export class IResponse {
     throw new Error('Method download() must be implemented.');
   }
 
+  view(name, data = {}) {
+    throw new Error('Method view() must be implemented.');
+  }
+
   send(body) {
     throw new Error('Method send() must be implemented.');
   }

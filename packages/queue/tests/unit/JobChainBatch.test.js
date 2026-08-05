@@ -28,7 +28,7 @@ test("JobBatch - tracks parallel job execution and fires then callback", async (
     completedBatch = b;
   });
 
-  await new Promise(r => setTimeout(r, 50));
+  await batch.run();
   assert.ok(completedBatch);
   assert.equal(completedBatch.totalJobs, 2);
   assert.equal(completedBatch.failedJobs, 0);

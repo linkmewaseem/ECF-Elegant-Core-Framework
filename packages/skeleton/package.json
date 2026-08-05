@@ -3,7 +3,7 @@
   "version": "1.0.0-rc.1",
   "description": "ECF application skeleton — starter bootstrap structure for new ECF projects",
   "type": "module",
-  "main": "./v1/full/bootstrap/app.js",
+  "main": "./index.js",
   "scripts": {
     "test": "node --test"
   },
@@ -18,6 +18,7 @@
     "node": ">=22"
   },
   "dependencies": {
+    "@ecf/auth": "workspace:*",
     "@ecf/core": "workspace:*",
     "@ecf/database": "workspace:*",
     "@ecf/http": "workspace:*",

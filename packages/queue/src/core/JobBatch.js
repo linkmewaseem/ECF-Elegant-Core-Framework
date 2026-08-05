@@ -9,6 +9,7 @@ export class JobBatch {
     this.failedJobs = 0;
     this.thenCallback = null;
     this.catchCallback = null;
+    this.completed = false;
   }
 
   static dispatch(jobs = []) {
@@ -18,16 +19,22 @@ export class JobBatch {
   }
 
   then(callback) {
-    this.thenCallback = callback;
+    if (typeof callback === "function" && !this.completed) {
+      this.thenCallback = callback;
+    }
     return this;
   }
 
   catch(callback) {
-    this.catchCallback = callback;
+    if (typeof callback === "function" && !this.completed) {
+      this.catchCallback = callback;
+    }
     return this;
   }
 
   async run() {
+    if (this.completed) return this.result;
+
     const results = await Promise.allSettled(
       this.jobs.map(async (job) => {
         if (typeof job.handle === "function") {
@@ -47,11 +54,25 @@ export class JobBatch {
       }
     }
 
+    this.completed = true;
+
+    this.result = {
+      id: this.id,
+      jobs: this.jobs,
+      totalJobs: this.totalJobs,
+      pendingJobs: this.pendingJobs,
+      failedJobs: this.failedJobs,
+      run: () => Promise.resolve(this.result),
+    };
+
     if (!hasError && this.thenCallback) {
-      this.thenCallback(this);
+      this.thenCallback(this.result);
     }
-    return this;
+
+    return this.result;
   }
 }
 
 export default JobBatch;
+
+

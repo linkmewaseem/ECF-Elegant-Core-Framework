@@ -1,17 +1,19 @@
 import { IResponse } from '../contracts/IResponse.js';
+import { Facade } from '@ecf/core';
 
 /**
  * Base Abstract Response builder.
  * Provides fluid status, header, cookie, and serialization logic across runtimes.
  */
 export class AbstractResponse extends IResponse {
-  constructor() {
+  constructor(context = {}) {
     super();
     this.statusCode = 200;
     this.headersMap = new Map();
     this.cookiesMap = new Map();
     this.content = null;
     this.isSentFlag = false;
+    this.context = context || {};
   }
 
   status(code) {
@@ -61,6 +63,18 @@ export class AbstractResponse extends IResponse {
     return this;
   }
 
+  async view(name, data = {}) {
+    let viewEngine = this.context?.view;
+    if (!viewEngine && Facade.app && Facade.app.has('view')) {
+      viewEngine = Facade.app.make('view');
+    }
+    if (!viewEngine) {
+      throw new Error('No view engine registered. Did you forget to register a ViewServiceProvider?');
+    }
+    const html = await viewEngine.render(name, data);
+    return this.html(html);
+  }
+
   redirect(url, status = 302) {
     this.status(status);
     this.header('Location', url);
@@ -77,3 +91,4 @@ export class AbstractResponse extends IResponse {
     return this.isSentFlag;
   }
 }
+

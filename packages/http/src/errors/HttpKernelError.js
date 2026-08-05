@@ -1,4 +1,4 @@
-import {ECFError} from '@ecfjs/core';
+import { ECFError } from '@ecfjs/core';
 
 /**
  * Error thrown when an HTTP kernel-related error occurs.
@@ -6,6 +6,6 @@ import {ECFError} from '@ecfjs/core';
 export default class HttpKernelError extends ECFError {
     constructor(message) {
         super(message);
-         this.name = "HttpKernelError";
+        this.name = "HttpKernelError";
     }
 }

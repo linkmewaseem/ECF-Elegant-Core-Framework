@@ -17,6 +17,8 @@
     "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
     "directory": "packages/extensions/uuids"
   },
+  "files": ["*.js", "README.md", "ARCHITECTURE.md", "LICENSE"],
+  "publishConfig": { "access": "public" },
   "engines": {
     "node": ">=22"
   }

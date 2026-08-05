@@ -28,4 +28,4 @@ jobs:
         run: pnpm test
 
       - name: Dry Run Publish
-        run: pnpm publish --dry-run --no-git-checks
+        run: pnpm -r --filter "@ecfjs/*" pack --dry-run

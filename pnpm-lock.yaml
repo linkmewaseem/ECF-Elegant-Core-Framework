@@ -316,6 +316,16 @@ importers:
         specifier: workspace:*
         version: link:../support
 
+  packages/extensions/audit: {}
+
+  packages/extensions/sluggable: {}
+
+  packages/extensions/soft-deletes: {}
+
+  packages/extensions/timestamps: {}
+
+  packages/extensions/uuids: {}
+
   packages/http:
     dependencies:
       '@ecfjs/auth':

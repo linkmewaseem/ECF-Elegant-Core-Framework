@@ -15,7 +15,7 @@
     "test": "pnpm -r test",
     "lint": "pnpm exec tsc --noEmit",
     "typecheck": "pnpm exec tsc --noEmit",
-    "build:dry-run": "pnpm publish --dry-run --no-git-checks"
+    "build:dry-run": "pnpm -r --filter \"@ecfjs/*\" pack --dry-run"
   },
   "devDependencies": {
     "@types/node": "^26.1.2",

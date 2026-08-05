@@ -857,7 +857,7 @@ node --test packages/testing/tests/benchmarks/EcosystemBenchmark.test.js
 
 ## Architecture & Governance
 
-The full ecosystem architecture and governance documents live in [`docs/governance/`](docs/governance/):
+Start with the [documentation index](docs/README.md), [project structure](docs/PROJECT_STRUCTURE.md), and [publishing guide](docs/PUBLISHING.md). The full ecosystem architecture and governance documents live in [`docs/governance/`](docs/governance/):
 
 | Document | Description |
 |---|---|

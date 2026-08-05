@@ -55,4 +55,4 @@ jobs:
           git ls-files --others --exclude-standard || true
 
       - name: Package Bundle Dry-Run Audit
-        run: pnpm publish --dry-run --no-git-checks
+        run: pnpm -r --filter "@ecfjs/*" pack --dry-run

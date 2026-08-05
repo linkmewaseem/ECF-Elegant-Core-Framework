@@ -3,6 +3,7 @@ settings:
 
 packages:
   - "packages/*"
+  - "packages/extensions/*"
   - "apps/*"
   - "tools/*"
   - "examples/*"

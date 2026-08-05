@@ -29,6 +29,8 @@
     "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
     "directory": "packages/broadcast"
   },
+  "files": ["src", "README.md", "ARCHITECTURE.md", "LICENSE"],
+  "publishConfig": { "access": "public" },
   "engines": {
     "node": ">=22"
   },

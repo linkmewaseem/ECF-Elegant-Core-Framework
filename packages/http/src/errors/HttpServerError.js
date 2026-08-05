@@ -1,4 +1,4 @@
-import {ECFError} from '@ecfjs/core';
+import { ECFError } from '@ecfjs/core';
 
 /**
  * Error thrown when a pipeline-related error occurs.
@@ -6,6 +6,6 @@ import {ECFError} from '@ecfjs/core';
 export default class HttpServerError extends ECFError {
     constructor(message) {
         super(message);
-         this.name = "HttpServerError";
+        this.name = "HttpServerError";
     }
 }

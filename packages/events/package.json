@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/events",
+  "name": "@ecfjs/events",
   "version": "1.0.0-rc.1",
   "description": "ECF event bus with typed event classes, listeners, wildcards, and deferred dispatch",
   "type": "module",
@@ -14,7 +14,14 @@
   "scripts": {
     "test": "node --test"
   },
-  "keywords": ["ecf", "framework", "events", "event-bus", "listeners", "pub-sub"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "events",
+    "event-bus",
+    "listeners",
+    "pub-sub"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,7 +32,7 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/core": "workspace:*",
-    "@ecf/support": "workspace:*"
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/support": "workspace:*"
   }
 }

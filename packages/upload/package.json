@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/upload",
+  "name": "@ecfjs/upload",
   "version": "1.0.0-rc.1",
   "description": "ECF file upload middleware with multipart parsing, MIME validation, size limits, and storage routing",
   "type": "module",
@@ -14,7 +14,15 @@
   "scripts": {
     "test": "node --test tests/**/*.test.js"
   },
-  "keywords": ["ecf", "framework", "upload", "file-upload", "multipart", "mime", "storage"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "upload",
+    "file-upload",
+    "multipart",
+    "mime",
+    "storage"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,18 +33,24 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/core": "workspace:*",
-    "@ecf/support": "workspace:*",
-    "@ecf/storage": "workspace:*"
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/support": "workspace:*",
+    "@ecfjs/storage": "workspace:*"
   },
   "peerDependencies": {
-    "@ecf/config": "workspace:*",
-    "@ecf/events": "workspace:*",
-    "@ecf/validation": "workspace:*"
+    "@ecfjs/config": "workspace:*",
+    "@ecfjs/events": "workspace:*",
+    "@ecfjs/validation": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/config": { "optional": true },
-    "@ecf/events": { "optional": true },
-    "@ecf/validation": { "optional": true }
+    "@ecf/config": {
+      "optional": true
+    },
+    "@ecf/events": {
+      "optional": true
+    },
+    "@ecf/validation": {
+      "optional": true
+    }
   }
 }

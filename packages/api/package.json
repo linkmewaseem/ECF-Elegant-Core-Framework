@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/api",
+  "name": "@ecfjs/api",
   "version": "1.0.0-rc.1",
   "description": "ECF API platform with automated OpenAPI generation, JSON:API resources, versioning, and rate limiting",
   "type": "module",
@@ -14,7 +14,15 @@
   "scripts": {
     "test": "node --test tests/**/*.test.js"
   },
-  "keywords": ["ecf", "framework", "api", "openapi", "rest", "json-api", "versioning"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "api",
+    "openapi",
+    "rest",
+    "json-api",
+    "versioning"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,24 +33,36 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/contracts": "workspace:*",
-    "@ecf/core": "workspace:*",
-    "@ecf/support": "workspace:*"
+    "@ecfjs/contracts": "workspace:*",
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/support": "workspace:*"
   },
   "peerDependencies": {
-    "@ecf/auth": "workspace:*",
-    "@ecf/cache": "workspace:*",
-    "@ecf/config": "workspace:*",
-    "@ecf/http": "workspace:*",
-    "@ecf/observability": "workspace:*",
-    "@ecf/devtools": "workspace:*"
+    "@ecfjs/auth": "workspace:*",
+    "@ecfjs/cache": "workspace:*",
+    "@ecfjs/config": "workspace:*",
+    "@ecfjs/http": "workspace:*",
+    "@ecfjs/observability": "workspace:*",
+    "@ecfjs/devtools": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/auth": { "optional": true },
-    "@ecf/cache": { "optional": true },
-    "@ecf/config": { "optional": true },
-    "@ecf/http": { "optional": true },
-    "@ecf/observability": { "optional": true },
-    "@ecf/devtools": { "optional": true }
+    "@ecf/auth": {
+      "optional": true
+    },
+    "@ecf/cache": {
+      "optional": true
+    },
+    "@ecf/config": {
+      "optional": true
+    },
+    "@ecf/http": {
+      "optional": true
+    },
+    "@ecf/observability": {
+      "optional": true
+    },
+    "@ecf/devtools": {
+      "optional": true
+    }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/storage",
+  "name": "@ecfjs/storage",
   "version": "1.0.0-rc.1",
   "description": "ECF file storage system with local, S3, and cloud driver support, stream handling, and URL signing",
   "type": "module",
@@ -14,7 +14,15 @@
   "scripts": {
     "test": "node --test tests/**/*.test.js"
   },
-  "keywords": ["ecf", "framework", "storage", "s3", "filesystem", "disk", "cloud-storage"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "storage",
+    "s3",
+    "filesystem",
+    "disk",
+    "cloud-storage"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,17 +33,23 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/core": "workspace:*",
-    "@ecf/support": "workspace:*"
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/support": "workspace:*"
   },
   "peerDependencies": {
-    "@ecf/config": "workspace:*",
-    "@ecf/events": "workspace:*",
-    "@ecf/cache": "workspace:*"
+    "@ecfjs/config": "workspace:*",
+    "@ecfjs/events": "workspace:*",
+    "@ecfjs/cache": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/config": { "optional": true },
-    "@ecf/events": { "optional": true },
-    "@ecf/cache": { "optional": true }
+    "@ecf/config": {
+      "optional": true
+    },
+    "@ecf/events": {
+      "optional": true
+    },
+    "@ecf/cache": {
+      "optional": true
+    }
   }
 }

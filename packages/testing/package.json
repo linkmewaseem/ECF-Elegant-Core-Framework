@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/testing",
+  "name": "@ecfjs/testing",
   "version": "1.0.0-rc.1",
   "description": "ECF testing toolkit with DI contexts, HTTP assertions, model factories, time travel, snapshots, and benchmarks",
   "type": "module",
@@ -18,7 +18,15 @@
   "scripts": {
     "test": "node --test tests/**/*.test.js"
   },
-  "keywords": ["ecf", "framework", "testing", "test-helpers", "factory", "assertions", "benchmarks"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "testing",
+    "test-helpers",
+    "factory",
+    "assertions",
+    "benchmarks"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -29,36 +37,60 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/contracts": "workspace:*",
-    "@ecf/core": "workspace:*",
-    "@ecf/support": "workspace:*"
+    "@ecfjs/contracts": "workspace:*",
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/support": "workspace:*"
   },
   "peerDependencies": {
-    "@ecf/api": "workspace:*",
-    "@ecf/auth": "workspace:*",
-    "@ecf/broadcast": "workspace:*",
-    "@ecf/database": "workspace:*",
-    "@ecf/events": "workspace:*",
-    "@ecf/http": "workspace:*",
-    "@ecf/logging": "workspace:*",
-    "@ecf/mail": "workspace:*",
-    "@ecf/notifications": "workspace:*",
-    "@ecf/queue": "workspace:*",
-    "@ecf/search": "workspace:*",
-    "@ecf/storage": "workspace:*"
+    "@ecfjs/api": "workspace:*",
+    "@ecfjs/auth": "workspace:*",
+    "@ecfjs/broadcast": "workspace:*",
+    "@ecfjs/database": "workspace:*",
+    "@ecfjs/events": "workspace:*",
+    "@ecfjs/http": "workspace:*",
+    "@ecfjs/logging": "workspace:*",
+    "@ecfjs/mail": "workspace:*",
+    "@ecfjs/notifications": "workspace:*",
+    "@ecfjs/queue": "workspace:*",
+    "@ecfjs/search": "workspace:*",
+    "@ecfjs/storage": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/api": { "optional": true },
-    "@ecf/auth": { "optional": true },
-    "@ecf/broadcast": { "optional": true },
-    "@ecf/database": { "optional": true },
-    "@ecf/events": { "optional": true },
-    "@ecf/http": { "optional": true },
-    "@ecf/logging": { "optional": true },
-    "@ecf/mail": { "optional": true },
-    "@ecf/notifications": { "optional": true },
-    "@ecf/queue": { "optional": true },
-    "@ecf/search": { "optional": true },
-    "@ecf/storage": { "optional": true }
+    "@ecf/api": {
+      "optional": true
+    },
+    "@ecf/auth": {
+      "optional": true
+    },
+    "@ecf/broadcast": {
+      "optional": true
+    },
+    "@ecf/database": {
+      "optional": true
+    },
+    "@ecf/events": {
+      "optional": true
+    },
+    "@ecf/http": {
+      "optional": true
+    },
+    "@ecf/logging": {
+      "optional": true
+    },
+    "@ecf/mail": {
+      "optional": true
+    },
+    "@ecf/notifications": {
+      "optional": true
+    },
+    "@ecf/queue": {
+      "optional": true
+    },
+    "@ecf/search": {
+      "optional": true
+    },
+    "@ecf/storage": {
+      "optional": true
+    }
   }
 }

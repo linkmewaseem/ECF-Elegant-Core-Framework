@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/skeleton",
+  "name": "@ecfjs/skeleton",
   "version": "1.0.0-rc.1",
   "description": "ECF application skeleton — starter bootstrap structure for new ECF projects",
   "type": "module",
@@ -7,7 +7,13 @@
   "scripts": {
     "test": "node --test"
   },
-  "keywords": ["ecf", "framework", "skeleton", "starter", "boilerplate"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "skeleton",
+    "starter",
+    "boilerplate"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -18,11 +24,11 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/auth": "workspace:*",
-    "@ecf/core": "workspace:*",
-    "@ecf/database": "workspace:*",
-    "@ecf/http": "workspace:*",
-    "@ecf/validation": "workspace:*",
-    "@ecf/view": "workspace:*"
+    "@ecfjs/auth": "workspace:*",
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/database": "workspace:*",
+    "@ecfjs/http": "workspace:*",
+    "@ecfjs/validation": "workspace:*",
+    "@ecfjs/view": "workspace:*"
   }
 }

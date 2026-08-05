@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/ai",
+  "name": "@ecfjs/ai",
   "version": "1.0.0-rc.1",
   "description": "ECF AI engine with 8 drivers (OpenAI, Anthropic, Gemini, Ollama, Groq), streaming, RAG pipeline, and MCP abstraction",
   "type": "module",
@@ -14,7 +14,17 @@
   "scripts": {
     "test": "node --test tests/**/*.test.js"
   },
-  "keywords": ["ecf", "framework", "ai", "llm", "openai", "anthropic", "gemini", "rag", "mcp"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "ai",
+    "llm",
+    "openai",
+    "anthropic",
+    "gemini",
+    "rag",
+    "mcp"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,20 +35,28 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/contracts": "workspace:*",
-    "@ecf/core": "workspace:*",
-    "@ecf/support": "workspace:*"
+    "@ecfjs/contracts": "workspace:*",
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/support": "workspace:*"
   },
   "peerDependencies": {
-    "@ecf/devtools": "workspace:*",
-    "@ecf/logging": "workspace:*",
-    "@ecf/media": "workspace:*",
-    "@ecf/search": "workspace:*"
+    "@ecfjs/devtools": "workspace:*",
+    "@ecfjs/logging": "workspace:*",
+    "@ecfjs/media": "workspace:*",
+    "@ecfjs/search": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/devtools": { "optional": true },
-    "@ecf/logging": { "optional": true },
-    "@ecf/media": { "optional": true },
-    "@ecf/search": { "optional": true }
+    "@ecf/devtools": {
+      "optional": true
+    },
+    "@ecf/logging": {
+      "optional": true
+    },
+    "@ecf/media": {
+      "optional": true
+    },
+    "@ecf/search": {
+      "optional": true
+    }
   }
 }

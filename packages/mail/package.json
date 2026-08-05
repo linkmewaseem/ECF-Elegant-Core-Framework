@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/mail",
+  "name": "@ecfjs/mail",
   "version": "1.0.0-rc.1",
   "description": "ECF mail system with Resend REST API, SMTP transport, Mailable classes, queued delivery, and template rendering",
   "type": "module",
@@ -14,7 +14,15 @@
   "scripts": {
     "test": "node --test tests/**/*.test.js"
   },
-  "keywords": ["ecf", "framework", "mail", "email", "resend", "smtp", "mailer"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "mail",
+    "email",
+    "resend",
+    "smtp",
+    "mailer"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,20 +33,28 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/core": "workspace:*",
-    "@ecf/support": "workspace:*",
-    "@ecf/queue": "workspace:*"
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/support": "workspace:*",
+    "@ecfjs/queue": "workspace:*"
   },
   "peerDependencies": {
-    "@ecf/config": "workspace:*",
-    "@ecf/events": "workspace:*",
-    "@ecf/view": "workspace:*",
-    "@ecf/storage": "workspace:*"
+    "@ecfjs/config": "workspace:*",
+    "@ecfjs/events": "workspace:*",
+    "@ecfjs/view": "workspace:*",
+    "@ecfjs/storage": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/config": { "optional": true },
-    "@ecf/events": { "optional": true },
-    "@ecf/view": { "optional": true },
-    "@ecf/storage": { "optional": true }
+    "@ecf/config": {
+      "optional": true
+    },
+    "@ecf/events": {
+      "optional": true
+    },
+    "@ecf/view": {
+      "optional": true
+    },
+    "@ecf/storage": {
+      "optional": true
+    }
   }
 }

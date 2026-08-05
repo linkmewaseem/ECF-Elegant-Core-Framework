@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/validation",
+  "name": "@ecfjs/validation",
   "version": "1.0.0-rc.1",
   "description": "ECF validation engine with pipe-based rules, fluent builder API, nested fields, and custom rule registration",
   "type": "module",
@@ -14,7 +14,14 @@
   "scripts": {
     "test": "node --test"
   },
-  "keywords": ["ecf", "framework", "validation", "rules", "validator", "pipe"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "validation",
+    "rules",
+    "validator",
+    "pipe"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",

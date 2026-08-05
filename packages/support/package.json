@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/support",
+  "name": "@ecfjs/support",
   "version": "1.0.0-rc.1",
   "description": "ECF utility library — Arr, Str, Collection, LazyCollection, Fluent, and Macroable helpers",
   "type": "module",
@@ -14,7 +14,14 @@
   "scripts": {
     "test": "node --test"
   },
-  "keywords": ["ecf", "framework", "support", "helpers", "collection", "utilities"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "support",
+    "helpers",
+    "collection",
+    "utilities"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",

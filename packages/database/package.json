@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/database",
+  "name": "@ecfjs/database",
   "version": "1.0.0-rc.1",
   "description": "ECF database ORM with Eloquent-style Active Record models, schema builder, migrations, and seeders",
   "type": "module",
@@ -14,7 +14,15 @@
   "scripts": {
     "test": "node --test"
   },
-  "keywords": ["ecf", "framework", "database", "orm", "active-record", "migrations", "query-builder"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "database",
+    "orm",
+    "active-record",
+    "migrations",
+    "query-builder"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,6 +33,6 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/core": "workspace:*"
+    "@ecfjs/core": "workspace:*"
   }
 }

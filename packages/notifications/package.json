@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/notifications",
+  "name": "@ecfjs/notifications",
   "version": "1.0.0-rc.1",
   "description": "ECF multi-channel notification system for email, SMS, Slack, push, and in-app notifications",
   "type": "module",
@@ -14,7 +14,15 @@
   "scripts": {
     "test": "node --test tests/**/*.test.js"
   },
-  "keywords": ["ecf", "framework", "notifications", "email", "sms", "push", "alerts"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "notifications",
+    "email",
+    "sms",
+    "push",
+    "alerts"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,21 +33,29 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/core": "workspace:*",
-    "@ecf/support": "workspace:*",
-    "@ecf/mail": "workspace:*",
-    "@ecf/queue": "workspace:*"
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/support": "workspace:*",
+    "@ecfjs/mail": "workspace:*",
+    "@ecfjs/queue": "workspace:*"
   },
   "peerDependencies": {
-    "@ecf/config": "workspace:*",
-    "@ecf/events": "workspace:*",
-    "@ecf/database": "workspace:*",
-    "@ecf/cache": "workspace:*"
+    "@ecfjs/config": "workspace:*",
+    "@ecfjs/events": "workspace:*",
+    "@ecfjs/database": "workspace:*",
+    "@ecfjs/cache": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/config": { "optional": true },
-    "@ecf/events": { "optional": true },
-    "@ecf/database": { "optional": true },
-    "@ecf/cache": { "optional": true }
+    "@ecf/config": {
+      "optional": true
+    },
+    "@ecf/events": {
+      "optional": true
+    },
+    "@ecf/database": {
+      "optional": true
+    },
+    "@ecf/cache": {
+      "optional": true
+    }
   }
 }

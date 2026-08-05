@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/view",
+  "name": "@ecfjs/view",
   "version": "1.0.0-rc.1",
   "description": "ECF template rendering engine with server-side view compilation and HTTP response integration",
   "type": "module",
@@ -14,7 +14,14 @@
   "scripts": {
     "test": "node --test"
   },
-  "keywords": ["ecf", "framework", "view", "template", "ssr", "rendering"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "view",
+    "template",
+    "ssr",
+    "rendering"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,7 +32,7 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/core": "workspace:*",
-    "@ecf/http": "workspace:*"
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/http": "workspace:*"
   }
 }

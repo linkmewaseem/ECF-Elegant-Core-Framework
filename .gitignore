@@ -10,3 +10,4 @@ dist/
 storage/logs/
 tmp/
 *.log
+rename-scope.js

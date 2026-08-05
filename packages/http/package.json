@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/http",
+  "name": "@ecfjs/http",
   "version": "1.0.0-rc.1",
   "description": "ECF HTTP kernel, router, request/response pipeline, middleware, controllers, and HTTP adapters",
   "type": "module",
@@ -14,7 +14,15 @@
   "scripts": {
     "test": "node --test"
   },
-  "keywords": ["ecf", "framework", "http", "router", "middleware", "request", "response"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "http",
+    "router",
+    "middleware",
+    "request",
+    "response"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,8 +33,8 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/auth": "workspace:*",
-    "@ecf/core": "workspace:*",
-    "@ecf/validation": "workspace:*"
+    "@ecfjs/auth": "workspace:*",
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/validation": "workspace:*"
   }
 }

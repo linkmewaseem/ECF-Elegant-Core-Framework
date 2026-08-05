@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/cli",
+  "name": "@ecfjs/cli",
   "version": "1.0.0-rc.1",
   "description": "ECF command-line interface — ecf new, ecf make:*, ecf migrate, and scaffold tooling",
   "type": "module",
@@ -10,7 +10,13 @@
   "scripts": {
     "test": "node --test"
   },
-  "keywords": ["ecf", "framework", "cli", "scaffold", "codegen"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "cli",
+    "scaffold",
+    "codegen"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -21,10 +27,10 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/core": "workspace:*",
-    "@ecf/database": "workspace:*",
-    "@ecf/http": "workspace:*",
-    "@ecf/skeleton": "workspace:*",
-    "@ecf/view": "workspace:*"
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/database": "workspace:*",
+    "@ecfjs/http": "workspace:*",
+    "@ecfjs/skeleton": "workspace:*",
+    "@ecfjs/view": "workspace:*"
   }
 }

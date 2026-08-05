@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/config",
+  "name": "@ecfjs/config",
   "version": "1.0.0-rc.1",
   "description": "ECF configuration manager with dot-notation access, environment layering, and reactive config events",
   "type": "module",
@@ -14,7 +14,14 @@
   "scripts": {
     "test": "node --test"
   },
-  "keywords": ["ecf", "framework", "config", "configuration", "dotenv", "env"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "config",
+    "configuration",
+    "dotenv",
+    "env"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,8 +32,8 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/core": "workspace:*",
-    "@ecf/events": "workspace:*",
-    "@ecf/support": "workspace:*"
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/events": "workspace:*",
+    "@ecfjs/support": "workspace:*"
   }
 }

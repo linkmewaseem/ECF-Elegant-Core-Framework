@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/queue",
+  "name": "@ecfjs/queue",
   "version": "1.0.0-rc.1",
   "description": "ECF job queue system with Sync, Memory, Database, and Redis drivers, retries, delayed jobs, and batch processing",
   "type": "module",
@@ -14,7 +14,14 @@
   "scripts": {
     "test": "node --test tests/**/*.test.js"
   },
-  "keywords": ["ecf", "framework", "queue", "jobs", "workers", "background-jobs"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "queue",
+    "jobs",
+    "workers",
+    "background-jobs"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,19 +32,27 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/core": "workspace:*",
-    "@ecf/support": "workspace:*"
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/support": "workspace:*"
   },
   "peerDependencies": {
-    "@ecf/config": "workspace:*",
-    "@ecf/events": "workspace:*",
-    "@ecf/cache": "workspace:*",
-    "@ecf/database": "workspace:*"
+    "@ecfjs/config": "workspace:*",
+    "@ecfjs/events": "workspace:*",
+    "@ecfjs/cache": "workspace:*",
+    "@ecfjs/database": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/config": { "optional": true },
-    "@ecf/events": { "optional": true },
-    "@ecf/cache": { "optional": true },
-    "@ecf/database": { "optional": true }
+    "@ecf/config": {
+      "optional": true
+    },
+    "@ecf/events": {
+      "optional": true
+    },
+    "@ecf/cache": {
+      "optional": true
+    },
+    "@ecf/database": {
+      "optional": true
+    }
   }
 }

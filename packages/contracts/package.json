@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/contracts",
+  "name": "@ecfjs/contracts",
   "version": "1.0.0-rc.1",
   "description": "ECF interface contracts and type definitions for building interoperable ECF packages",
   "type": "module",
@@ -14,7 +14,13 @@
   "scripts": {
     "test": "node --test tests/**/*.test.js"
   },
-  "keywords": ["ecf", "framework", "contracts", "interfaces", "types"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "contracts",
+    "interfaces",
+    "types"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/console",
+  "name": "@ecfjs/console",
   "version": "1.0.0-rc.1",
   "description": "ECF console kernel with Artisan-style commands, argument parsing, and interactive prompts",
   "type": "module",
@@ -14,7 +14,15 @@
   "scripts": {
     "test": "node --test"
   },
-  "keywords": ["ecf", "framework", "console", "commands", "artisan", "cli", "terminal"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "console",
+    "commands",
+    "artisan",
+    "cli",
+    "terminal"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,7 +33,7 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/core": "workspace:*",
-    "@ecf/support": "workspace:*"
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/support": "workspace:*"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/search",
+  "name": "@ecfjs/search",
   "version": "1.0.0-rc.1",
   "description": "ECF search platform with vector embeddings, full-text search, faceting, and ReRanker pipeline",
   "type": "module",
@@ -14,7 +14,15 @@
   "scripts": {
     "test": "node --test tests/**/*.test.js"
   },
-  "keywords": ["ecf", "framework", "search", "vector-search", "full-text", "elasticsearch", "meilisearch"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "search",
+    "vector-search",
+    "full-text",
+    "elasticsearch",
+    "meilisearch"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,30 +33,48 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/contracts": "workspace:*",
-    "@ecf/core": "workspace:*",
-    "@ecf/support": "workspace:*"
+    "@ecfjs/contracts": "workspace:*",
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/support": "workspace:*"
   },
   "peerDependencies": {
-    "@ecf/cache": "workspace:*",
-    "@ecf/config": "workspace:*",
-    "@ecf/database": "workspace:*",
-    "@ecf/events": "workspace:*",
-    "@ecf/queue": "workspace:*",
-    "@ecf/broadcast": "workspace:*",
-    "@ecf/notifications": "workspace:*",
-    "@ecf/observability": "workspace:*",
-    "@ecf/devtools": "workspace:*"
+    "@ecfjs/cache": "workspace:*",
+    "@ecfjs/config": "workspace:*",
+    "@ecfjs/database": "workspace:*",
+    "@ecfjs/events": "workspace:*",
+    "@ecfjs/queue": "workspace:*",
+    "@ecfjs/broadcast": "workspace:*",
+    "@ecfjs/notifications": "workspace:*",
+    "@ecfjs/observability": "workspace:*",
+    "@ecfjs/devtools": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/cache": { "optional": true },
-    "@ecf/config": { "optional": true },
-    "@ecf/database": { "optional": true },
-    "@ecf/events": { "optional": true },
-    "@ecf/queue": { "optional": true },
-    "@ecf/broadcast": { "optional": true },
-    "@ecf/notifications": { "optional": true },
-    "@ecf/observability": { "optional": true },
-    "@ecf/devtools": { "optional": true }
+    "@ecf/cache": {
+      "optional": true
+    },
+    "@ecf/config": {
+      "optional": true
+    },
+    "@ecf/database": {
+      "optional": true
+    },
+    "@ecf/events": {
+      "optional": true
+    },
+    "@ecf/queue": {
+      "optional": true
+    },
+    "@ecf/broadcast": {
+      "optional": true
+    },
+    "@ecf/notifications": {
+      "optional": true
+    },
+    "@ecf/observability": {
+      "optional": true
+    },
+    "@ecf/devtools": {
+      "optional": true
+    }
   }
 }

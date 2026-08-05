@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/cache",
+  "name": "@ecfjs/cache",
   "version": "1.0.0-rc.1",
   "description": "ECF cache layer with stampede protection, multi-driver support, and tagged cache invalidation",
   "type": "module",
@@ -14,7 +14,14 @@
   "scripts": {
     "test": "node --test"
   },
-  "keywords": ["ecf", "framework", "cache", "redis", "memory-cache", "stampede"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "cache",
+    "redis",
+    "memory-cache",
+    "stampede"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,9 +32,9 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/config": "workspace:*",
-    "@ecf/core": "workspace:*",
-    "@ecf/events": "workspace:*",
-    "@ecf/support": "workspace:*"
+    "@ecfjs/config": "workspace:*",
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/events": "workspace:*",
+    "@ecfjs/support": "workspace:*"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@ecf/logging",
+  "name": "@ecfjs/logging",
   "version": "1.0.0-rc.1",
   "description": "ECF logging system with 12 drivers, multi-channel rotation, gzip compression, OpenTelemetry tracing, and PII redaction",
   "type": "module",
@@ -14,7 +14,16 @@
   "scripts": {
     "test": "node --test tests/**/*.test.js"
   },
-  "keywords": ["ecf", "framework", "logging", "logger", "winston", "pino", "opentelemetry", "tracing"],
+  "keywords": [
+    "ecf",
+    "framework",
+    "logging",
+    "logger",
+    "winston",
+    "pino",
+    "opentelemetry",
+    "tracing"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,28 +34,44 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ecf/contracts": "workspace:*",
-    "@ecf/core": "workspace:*",
-    "@ecf/support": "workspace:*"
+    "@ecfjs/contracts": "workspace:*",
+    "@ecfjs/core": "workspace:*",
+    "@ecfjs/support": "workspace:*"
   },
   "peerDependencies": {
-    "@ecf/config": "workspace:*",
-    "@ecf/devtools": "workspace:*",
-    "@ecf/events": "workspace:*",
-    "@ecf/mail": "workspace:*",
-    "@ecf/observability": "workspace:*",
-    "@ecf/queue": "workspace:*",
-    "@ecf/search": "workspace:*",
-    "@ecf/storage": "workspace:*"
+    "@ecfjs/config": "workspace:*",
+    "@ecfjs/devtools": "workspace:*",
+    "@ecfjs/events": "workspace:*",
+    "@ecfjs/mail": "workspace:*",
+    "@ecfjs/observability": "workspace:*",
+    "@ecfjs/queue": "workspace:*",
+    "@ecfjs/search": "workspace:*",
+    "@ecfjs/storage": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@ecf/config": { "optional": true },
-    "@ecf/devtools": { "optional": true },
-    "@ecf/events": { "optional": true },
-    "@ecf/mail": { "optional": true },
-    "@ecf/observability": { "optional": true },
-    "@ecf/queue": { "optional": true },
-    "@ecf/search": { "optional": true },
-    "@ecf/storage": { "optional": true }
+    "@ecf/config": {
+      "optional": true
+    },
+    "@ecf/devtools": {
+      "optional": true
+    },
+    "@ecf/events": {
+      "optional": true
+    },
+    "@ecf/mail": {
+      "optional": true
+    },
+    "@ecf/observability": {
+      "optional": true
+    },
+    "@ecf/queue": {
+      "optional": true
+    },
+    "@ecf/search": {
+      "optional": true
+    },
+    "@ecf/storage": {
+      "optional": true
+    }
   }
 }

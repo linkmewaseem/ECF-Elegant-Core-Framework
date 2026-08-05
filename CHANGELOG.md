@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Core Subsystem**: `@ecf/core`, `@ecf/support`, `@ecf/config`, `@ecf/events`, `@ecf/contracts` (PSR-11 IoC Container, Dot-Notation Config, Lifecycle Event Bus).
 - **HTTP Subsystem**: `@ecf/http`, `@ecf/validation`, `@ecf/view` (Express/Fastify/PSR-7 Router, Pipeline Validation Engine, Template Rendering).
 - **Database & ORM**: `@ecf/database` (Eloquent Active Record Models, Schema Builder, Timestamped Migrations, Seeders).
-- **Enterprise Services**: `@ecf/auth`, `@ecf/queue`, `@ecf/cache`, `@ecf/mail`, `@ecf/storage`, `@ecf/media`, `@ecf/broadcast`, `@ecf/notifications`, `@ecf/scheduler` (Guards, JWT, BullMQ Queue, Stampede Protection Cache, Nodemailer, Local/S3 Storage, Image/Audio/Video Processing, Realtime WebSockets, Multi-channel Alerts, Cron Scheduler).
+- **Enterprise Services**: `@ecf/auth`, `@ecf/queue`, `@ecf/cache`, `@ecf/mail`, `@ecf/storage`, `@ecf/media`, `@ecf/broadcast`, `@ecf/notifications`, `@ecf/scheduler` (Guards, JWT, Sync/Memory/Database/Redis Queue, Stampede Protection Cache, Resend REST API & SMTP Mail, Local/S3 Storage, Image/Audio/Video Processing, Realtime WebSockets, Multi-channel Alerts, Cron Scheduler).
 - **API Platform & Search**: `@ecf/api`, `@ecf/search` (Automated OpenAPI Generator, API Resources, Vector/Full-text Search Engine).
 - **Logging Subsystem**: `@ecf/logging` (12 Drivers, Multi-channel Rotation, Gzip Compression, OpenTelemetry Tracing, Sensitive Data Redaction).
 - **Testing Infrastructure**: `@ecf/testing` (DI Test Context Runner, Transaction Sandbox, HTTP/DB Assertions, Model Factories, Time Travel, Playwright Browser Agent, Performance Benchmark Engine, Snapshot Testing, Single-Source Fake Orchestrator).

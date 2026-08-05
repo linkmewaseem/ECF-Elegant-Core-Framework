@@ -1,7 +1,7 @@
 {
   "name": "@ecf/queue",
   "version": "1.0.0-rc.1",
-  "description": "ECF job queue system with BullMQ-compatible drivers, retries, delayed jobs, and batch processing",
+  "description": "ECF job queue system with Sync, Memory, Database, and Redis drivers, retries, delayed jobs, and batch processing",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -14,7 +14,7 @@
   "scripts": {
     "test": "node --test tests/**/*.test.js"
   },
-  "keywords": ["ecf", "framework", "queue", "jobs", "workers", "bullmq", "background-jobs"],
+  "keywords": ["ecf", "framework", "queue", "jobs", "workers", "background-jobs"],
   "license": "MIT",
   "repository": {
     "type": "git",

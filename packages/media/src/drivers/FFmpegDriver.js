@@ -16,34 +16,52 @@ export class FFmpegDriver {
     this.#mockMode = mockMode || !FFmpegDriver.isFFmpegAvailable(ffmpegPath);
   }
 
+  static #availableCache = new Map();
+
   static isFFmpegAvailable(bin = 'ffmpeg') {
+    if (FFmpegDriver.#availableCache.has(bin)) {
+      return FFmpegDriver.#availableCache.get(bin);
+    }
     try {
-      // Check if ffmpeg binary exists or is on PATH
-      return false; // Safely default to mock mode in standard environments unless explicitly present
+      execSync(`${bin} -version`, { stdio: 'ignore' });
+      FFmpegDriver.#availableCache.set(bin, true);
+      return true;
     } catch {
+      FFmpegDriver.#availableCache.set(bin, false);
       return false;
     }
   }
 
   async transcode(inputPath, outputPath, format = 'mp4', options = {}) {
+    mkdirSync(dirname(outputPath), { recursive: true });
     if (this.#mockMode) {
-      mkdirSync(dirname(outputPath), { recursive: true });
       writeFileSync(outputPath, Buffer.from(`MOCK_TRANSCODED_VIDEO_${format.toUpperCase()}`));
       return { outputPath, format, durationMs: 120, mock: true };
     }
 
-    // FFmpeg CLI execution if available
-    return { outputPath, format, durationMs: 250, mock: false };
+    try {
+      execSync(`"${this.#ffmpegPath}" -y -i "${inputPath}" "${outputPath}"`, { stdio: 'ignore' });
+      return { outputPath, format, durationMs: 250, mock: false };
+    } catch (err) {
+      writeFileSync(outputPath, Buffer.from(`MOCK_TRANSCODED_VIDEO_${format.toUpperCase()}`));
+      return { outputPath, format, durationMs: 120, mock: true, error: err.message };
+    }
   }
 
   async extractThumbnail(inputPath, outputPath, atSec = 1, size = '640x360') {
+    mkdirSync(dirname(outputPath), { recursive: true });
     if (this.#mockMode) {
-      mkdirSync(dirname(outputPath), { recursive: true });
       writeFileSync(outputPath, Buffer.from('MOCK_VIDEO_THUMBNAIL_JPEG'));
       return { outputPath, atSec, size, mock: true };
     }
 
-    return { outputPath, atSec, size, mock: false };
+    try {
+      execSync(`"${this.#ffmpegPath}" -y -ss ${atSec} -i "${inputPath}" -vframes 1 -s ${size} "${outputPath}"`, { stdio: 'ignore' });
+      return { outputPath, atSec, size, mock: false };
+    } catch (err) {
+      writeFileSync(outputPath, Buffer.from('MOCK_VIDEO_THUMBNAIL_JPEG'));
+      return { outputPath, atSec, size, mock: true, error: err.message };
+    }
   }
 
   async generateSprite(inputPath, outputDir, intervalSec = 10, tileSize = '160x90') {

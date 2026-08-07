@@ -9,17 +9,27 @@
     "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git"
   },
   "license": "MIT",
-  "keywords": ["ecf", "framework", "enterprise", "node", "monorepo"],
-
+  "keywords": [
+    "ecf",
+    "framework",
+    "enterprise",
+    "node",
+    "monorepo"
+  ],
   "scripts": {
     "test": "pnpm -r test",
     "lint": "pnpm exec tsc --noEmit",
     "typecheck": "pnpm exec tsc --noEmit",
-    "build:dry-run": "pnpm -r --filter \"@ecfjs/*\" pack --dry-run"
+    "build:dry-run": "pnpm -r --filter \"@ecfjs/*\" pack --dry-run",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.31.1",
     "@types/node": "^26.1.2",
     "typescript": "^5.8.3"
   },
-  "packageManager": "pnpm@11.17.0"
+  "packageManager": "pnpm@11.17.0",
+  "author": "Muhammad Waseem"
 }

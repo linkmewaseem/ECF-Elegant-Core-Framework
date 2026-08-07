@@ -29,8 +29,15 @@
     "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
     "directory": "packages/observability"
   },
-  "files": ["src", "README.md", "ARCHITECTURE.md", "LICENSE"],
-  "publishConfig": { "access": "public" },
+  "files": [
+    "src",
+    "README.md",
+    "ARCHITECTURE.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=22"
   },
@@ -45,5 +52,6 @@
     "@ecfjs/events": {
       "optional": true
     }
-  }
+  },
+  "author": "Muhammad Waseem"
 }

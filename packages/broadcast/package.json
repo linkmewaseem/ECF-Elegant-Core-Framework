@@ -29,8 +29,15 @@
     "url": "https://github.com/linkmewaseem/ECF-Elegant-Core-Framework.git",
     "directory": "packages/broadcast"
   },
-  "files": ["src", "README.md", "ARCHITECTURE.md", "LICENSE"],
-  "publishConfig": { "access": "public" },
+  "files": [
+    "src",
+    "README.md",
+    "ARCHITECTURE.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=22"
   },
@@ -66,5 +73,6 @@
     "@ecfjs/devtools": {
       "optional": true
     }
-  }
+  },
+  "author": "Muhammad Waseem"
 }

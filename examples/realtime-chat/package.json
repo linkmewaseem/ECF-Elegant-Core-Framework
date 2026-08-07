@@ -13,5 +13,6 @@
     "@ecfjs/events": "workspace:*",
     "@ecfjs/http": "workspace:*",
     "@ecfjs/testing": "workspace:*"
-  }
+  },
+  "author": "Muhammad Waseem"
 }

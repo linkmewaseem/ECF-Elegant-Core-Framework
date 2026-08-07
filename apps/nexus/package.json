@@ -12,5 +12,6 @@
   },
   "scripts": {
     "start": "node app.js"
-  }
+  },
+  "author": "Muhammad Waseem"
 }

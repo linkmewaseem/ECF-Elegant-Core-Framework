@@ -12,5 +12,6 @@
     "@ecfjs/core": "workspace:*",
     "@ecfjs/search": "workspace:*",
     "@ecfjs/testing": "workspace:*"
-  }
+  },
+  "author": "Muhammad Waseem"
 }

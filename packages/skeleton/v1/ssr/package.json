@@ -16,5 +16,6 @@
     "@ecfjs/auth": "^1.0.0-rc.1",
     "@ecfjs/validation": "^1.0.0-rc.1",
     "pg": "^8.11.0"
-  }
+  },
+  "author": "Muhammad Waseem"
 }

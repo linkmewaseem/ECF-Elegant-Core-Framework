@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/testing",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.5",
   "description": "ECF testing toolkit with DI contexts, HTTP assertions, model factories, time travel, snapshots, and benchmarks",
   "type": "module",
   "main": "./src/index.js",

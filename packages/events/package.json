@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/events",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.5",
   "description": "ECF event bus with typed event classes, listeners, wildcards, and deferred dispatch",
   "type": "module",
   "main": "./src/index.js",

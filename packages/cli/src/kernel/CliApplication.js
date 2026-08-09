@@ -1,6 +1,6 @@
 import { CommandRegistry } from './CommandRegistry.js';
 import { Input } from './Input.js';
-import { Output } from './Output.js';
+import { Output } from '../output/Output.js';
 
 export class CliApplication {
   constructor(name = 'ECF CLI Framework', version = '1.0.0-alpha.1') {

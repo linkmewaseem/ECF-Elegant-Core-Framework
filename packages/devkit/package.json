@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/devkit",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0-rc.5",
   "description": "ECF developer toolkit with AST code injection, YAML blueprint compiler, and ecf doctor/validate commands",
   "type": "module",
   "main": "./src/index.js",

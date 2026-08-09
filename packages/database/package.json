@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/database",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.5",
   "description": "ECF database ORM with Eloquent-style Active Record models, schema builder, migrations, and seeders",
   "type": "module",
   "main": "./src/index.js",

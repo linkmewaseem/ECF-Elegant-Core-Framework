@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/view",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.5",
   "description": "ECF template rendering engine with server-side view compilation and HTTP response integration",
   "type": "module",
   "main": "./src/index.js",

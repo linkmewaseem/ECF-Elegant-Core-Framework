@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/console",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.5",
   "description": "ECF console kernel with Artisan-style commands, argument parsing, and interactive prompts",
   "type": "module",
   "main": "./src/index.js",

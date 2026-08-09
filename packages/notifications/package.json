@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/notifications",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0-rc.5",
   "description": "ECF multi-channel notification system for email, SMS, Slack, push, and in-app notifications",
   "type": "module",
   "main": "./src/index.js",

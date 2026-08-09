@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/mail",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0-rc.5",
   "description": "ECF mail system with Resend REST API, SMTP transport, Mailable classes, queued delivery, and template rendering",
   "type": "module",
   "main": "./src/index.js",

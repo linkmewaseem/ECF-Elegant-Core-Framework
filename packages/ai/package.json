@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/ai",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.5",
   "description": "ECF AI engine with 8 drivers (OpenAI, Anthropic, Gemini, Ollama, Groq), streaming, RAG pipeline, and MCP abstraction",
   "type": "module",
   "main": "./src/index.js",

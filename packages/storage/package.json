@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/storage",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0-rc.5",
   "description": "ECF file storage system with local, S3, and cloud driver support, stream handling, and URL signing",
   "type": "module",
   "main": "./src/index.js",

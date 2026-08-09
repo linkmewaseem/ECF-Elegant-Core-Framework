@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/auth",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.5",
   "description": "ECF authentication system with guards, JWT, session management, and multi-driver auth pipelines",
   "type": "module",
   "main": "./src/index.js",

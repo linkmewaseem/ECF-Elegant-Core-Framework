@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/config",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.5",
   "description": "ECF configuration manager with dot-notation access, environment layering, and reactive config events",
   "type": "module",
   "main": "./src/index.js",

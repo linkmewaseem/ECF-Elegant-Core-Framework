@@ -1,6 +1,7 @@
 {
   "name": "ecf-example-ai-agent-rag",
   "version": "1.0.0-rc.2",
+  "private": true,
   "type": "module",
   "main": "app.js",
   "scripts": {

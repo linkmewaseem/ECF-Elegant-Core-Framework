@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/scheduler",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.5",
   "description": "ECF cron scheduler with fluent job definitions, overlapping prevention, and distributed locking",
   "type": "module",
   "main": "./src/index.js",

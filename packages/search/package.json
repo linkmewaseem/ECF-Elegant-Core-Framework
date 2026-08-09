@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/search",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.5",
   "description": "ECF search platform with vector embeddings, full-text search, faceting, and ReRanker pipeline",
   "type": "module",
   "main": "./src/index.js",

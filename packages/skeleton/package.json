@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/skeleton",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0-rc.5",
   "description": "ECF application skeleton — starter bootstrap structure for new ECF projects",
   "type": "module",
   "main": "./index.js",

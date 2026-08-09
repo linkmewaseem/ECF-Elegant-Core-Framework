@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/logging",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.3",
   "description": "ECF logging system with 12 drivers, multi-channel rotation, gzip compression, OpenTelemetry tracing, and PII redaction",
   "type": "module",
   "main": "./src/index.js",

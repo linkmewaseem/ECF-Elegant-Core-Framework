@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/soft-deletes",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.2",
   "description": "ECF ORM plugin that adds soft-delete behavior to models with deleted_at timestamps",
   "type": "module",
   "main": "index.js",

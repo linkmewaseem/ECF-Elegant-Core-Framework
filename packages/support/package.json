@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/support",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.3",
   "description": "ECF utility library — Arr, Str, Collection, LazyCollection, Fluent, and Macroable helpers",
   "type": "module",
   "main": "./src/index.js",

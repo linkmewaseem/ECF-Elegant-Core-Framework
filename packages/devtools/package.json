@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/devtools",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "description": "ECF interactive developer dashboard — Telescope-style query inspector, log viewer, and job monitor",
   "type": "module",
   "main": "./src/index.js",

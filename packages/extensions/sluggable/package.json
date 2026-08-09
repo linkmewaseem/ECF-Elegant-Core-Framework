@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/sluggable",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.2",
   "description": "ECF ORM plugin that automatically generates URL-friendly slugs from model fields",
   "type": "module",
   "main": "index.js",

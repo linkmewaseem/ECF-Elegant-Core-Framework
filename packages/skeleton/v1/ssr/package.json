@@ -1,6 +1,6 @@
 {
   "name": "my-ecf-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "private": true,
   "scripts": {
@@ -9,12 +9,12 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@ecfjs/core": "^1.0.0-rc.1",
-    "@ecfjs/http": "^1.0.0-rc.1",
-    "@ecfjs/view": "^1.0.0-rc.1",
-    "@ecfjs/database": "^1.0.0-rc.1",
-    "@ecfjs/auth": "^1.0.0-rc.1",
-    "@ecfjs/validation": "^1.0.0-rc.1",
+    "@ecfjs/core": "^1.0.0-rc.2",
+    "@ecfjs/http": "^1.0.0-rc.2",
+    "@ecfjs/view": "^1.0.0-rc.2",
+    "@ecfjs/database": "^1.0.0-rc.2",
+    "@ecfjs/auth": "^1.0.0-rc.2",
+    "@ecfjs/validation": "^1.0.0-rc.2",
     "pg": "^8.11.0"
   },
   "author": "Muhammad Waseem"

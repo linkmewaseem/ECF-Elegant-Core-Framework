@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/validation",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.3",
   "description": "ECF validation engine with pipe-based rules, fluent builder API, nested fields, and custom rule registration",
   "type": "module",
   "main": "./src/index.js",

@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/upload",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.3",
   "description": "ECF file upload middleware with multipart parsing, MIME validation, size limits, and storage routing",
   "type": "module",
   "main": "./src/index.js",

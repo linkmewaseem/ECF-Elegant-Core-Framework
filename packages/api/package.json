@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/api",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "description": "ECF API platform with automated OpenAPI generation, JSON:API resources, versioning, and rate limiting",
   "type": "module",
   "main": "./src/index.js",

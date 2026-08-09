@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/audit",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "description": "ECF ORM plugin that automatically tracks and logs all model changes with full audit trail",
   "type": "module",
   "main": "index.js",

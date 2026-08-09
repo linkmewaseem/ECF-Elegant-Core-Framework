@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/media",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.3",
   "description": "ECF media processing package for image resizing, audio/video transcoding, and responsive variants",
   "type": "module",
   "main": "./src/index.js",

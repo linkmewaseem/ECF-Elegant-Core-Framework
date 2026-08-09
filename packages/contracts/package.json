@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/contracts",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.3",
   "description": "ECF interface contracts and type definitions for building interoperable ECF packages",
   "type": "module",
   "main": "./src/index.js",

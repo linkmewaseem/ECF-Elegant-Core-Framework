@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/observability",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.3",
   "description": "ECF OpenTelemetry observability package for distributed tracing, metrics, and span instrumentation",
   "type": "module",
   "main": "./src/index.js",

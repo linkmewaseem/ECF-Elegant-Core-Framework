@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/timestamps",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "description": "ECF ORM plugin that automatically manages created_at and updated_at timestamps on models",
   "type": "module",
   "main": "index.js",

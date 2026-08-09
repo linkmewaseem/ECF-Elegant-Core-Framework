@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/uuids",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.2",
   "description": "ECF ORM plugin that automatically assigns UUIDs as primary keys to models",
   "type": "module",
   "main": "index.js",

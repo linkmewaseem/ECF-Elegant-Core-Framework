@@ -402,7 +402,7 @@
     <div class="brand">
       <div class="brand-logo">E</div>
       <span>ECF DevTools</span>
-      <span class="badge">v1.0.0-rc.1</span>
+      <span class="badge">v1.0.0-rc.5</span>
     </div>
     <div class="header-actions">
       <button class="btn" id="pauseBtn" onclick="toggleAutoRefresh()">
@@ -490,8 +490,10 @@
             <div class="stat-card"><div class="stat-value" id="httpStatusVal">200</div><div class="stat-label">Status</div></div>
             <div class="stat-card"><div class="stat-value" id="httpDurationVal">0ms</div><div class="stat-label">Response Time</div></div>
           </div>
-          <h4>Headers</h4>
+          <h4 style="margin-top: 1rem; margin-bottom: 0.5rem;">Request Headers</h4>
           <div class="code-block" id="httpHeadersBlock">{}</div>
+          <h4 style="margin-top: 1rem; margin-bottom: 0.5rem;">Response Headers</h4>
+          <div class="code-block" id="httpResHeadersBlock">{}</div>
         </div>
 
         <div id="panel-db" class="panel-view">
@@ -607,10 +609,61 @@
         renderRequestList();
         if (entries.length > 0 && !activeRecord) {
           selectRecord(entries[0].id);
+        } else if (activeRecord) {
+          const fresh = entries.find(e => e.id === activeRecord.id);
+          if (fresh) {
+            activeRecord = fresh;
+            // Update counts without resetting tab selection
+            updateActiveRecordDetails();
+          }
         }
       } catch (err) {
         console.error('Failed to fetch DevTools entries:', err);
       }
+    }
+
+    function updateActiveRecordDetails() {
+      if (!activeRecord) return;
+
+      document.getElementById('noSelection').style.display = 'none';
+      document.getElementById('requestDetail').style.display = 'block';
+
+      // Header
+      document.getElementById('detailMethod').className = `req-method method-${activeRecord.method}`;
+      document.getElementById('detailMethod').innerText = activeRecord.method || 'GET';
+      document.getElementById('detailUrl').innerText = activeRecord.url || '/';
+      document.getElementById('detailStatus').className = `status-${String(activeRecord.status || 200)[0]}xx`;
+      document.getElementById('detailStatus').innerText = `${activeRecord.status || 200}`;
+      document.getElementById('detailDuration').innerText = `${activeRecord.durationMs || 0}ms`;
+      document.getElementById('detailIp').innerText = activeRecord.ip || '127.0.0.1';
+
+      // Counts with safe optional chaining
+      const p = activeRecord.panels || {};
+      document.getElementById('countDb').innerText = p.db?.totalQueries || 0;
+      document.getElementById('countCache').innerText = ((p.cache?.hits || 0) + (p.cache?.misses || 0));
+      document.getElementById('countQueue').innerText = p.queue?.totalJobs || 0;
+      document.getElementById('countMail').innerText = p.mail?.totalMails || 0;
+      document.getElementById('countNotifications').innerText = p.notifications?.sent?.length || 0;
+      document.getElementById('countEvents').innerText = p.events?.totalEvents || 0;
+      document.getElementById('countStorage').innerText = p.storage?.totalOps || 0;
+      document.getElementById('countUpload').innerText = p.upload?.files?.length || 0;
+      document.getElementById('countMedia').innerText = p.media?.totalFiles || 0;
+      document.getElementById('countExceptions').innerText = (Array.isArray(p.exceptions) ? p.exceptions.length : 0);
+
+      // Render Tab Contents
+      renderTimelineTab();
+      renderHttpTab();
+      renderDbTab();
+      renderCacheTab();
+      renderQueueTab();
+      renderMailTab();
+      renderNotificationsTab();
+      renderEventsTab();
+      renderStorageTab();
+      renderUploadTab();
+      renderMediaTab();
+      renderExceptionsTab();
+      renderPerformanceTab();
     }
 
     function filterRequests() {
@@ -736,6 +789,7 @@
       document.getElementById('httpStatusVal').innerText = activeRecord.status || 200;
       document.getElementById('httpDurationVal').innerText = `${activeRecord.durationMs || 0}ms`;
       document.getElementById('httpHeadersBlock').innerText = JSON.stringify(p.headers || {}, null, 2);
+      document.getElementById('httpResHeadersBlock').innerText = JSON.stringify(p.responseHeaders || {}, null, 2);
     }
 
     function renderDbTab() {

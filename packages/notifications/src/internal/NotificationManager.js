@@ -9,6 +9,7 @@ import PreferenceEngine from "../preferences/PreferenceEngine.js";
 import NotificationPipeline from "../middleware/NotificationPipeline.js";
 import NotificationTestingFake from "../testing/NotificationTestingFake.js";
 import SendQueuedNotificationJob from "../notification/SendQueuedNotificationJob.js";
+import { Container } from "@ecfjs/core";
 
 export class NotificationManager extends INotificationManager {
   constructor(app = null) {
@@ -19,6 +20,17 @@ export class NotificationManager extends INotificationManager {
     this.fakeHarness = null;
 
     this.registerDefaultChannels();
+  }
+
+  #getEvents() {
+    if (this.app && typeof this.app.make === "function" && this.app.has("events")) {
+      return this.app.make("events");
+    }
+    const app = globalThis.__ECF_APP__;
+    if (app && typeof app.make === "function" && app.has("events")) {
+      return app.make("events");
+    }
+    return null;
   }
 
   registerDefaultChannels() {
@@ -68,8 +80,34 @@ export class NotificationManager extends INotificationManager {
 
         const channel = this.registry.get(channelName);
         if (channel) {
-          const res = await channel.send(notifiable, notification);
-          results.push({ channel: channelName, result: res });
+          const startTime = Date.now();
+          try {
+            const res = await channel.send(notifiable, notification);
+            results.push({ channel: channelName, result: res });
+
+            const events = this.#getEvents();
+            if (events) {
+              const notificationName = notification?.constructor?.name || "Notification";
+              events.dispatch("NotificationSent", {
+                notificationName,
+                channel: channelName,
+                recipient: notifiable,
+                durationMs: Date.now() - startTime
+              });
+            }
+          } catch (err) {
+            const events = this.#getEvents();
+            if (events) {
+              const notificationName = notification?.constructor?.name || "Notification";
+              events.dispatch("NotificationFailed", {
+                notificationName,
+                channel: channelName,
+                recipient: notifiable,
+                error: err
+              });
+            }
+            throw err;
+          }
         }
       }
     }

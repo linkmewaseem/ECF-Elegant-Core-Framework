@@ -32,12 +32,48 @@ export class QueueManager extends IQueueManager {
     throw new Error(`Queue connection driver '${name}' is not configured.`);
   }
 
+  #getEvents() {
+    if (this.app && typeof this.app.make === "function" && this.app.has("events")) {
+      return this.app.make("events");
+    }
+    const app = globalThis.__ECF_APP__;
+    if (app && typeof app.make === "function" && app.has("events")) {
+      return app.make("events");
+    }
+    return null;
+  }
+
   push(jobInstance, data, queue) {
-    return this.connection().push(jobInstance, data, queue);
+    const res = this.connection().push(jobInstance, data, queue);
+    const events = this.#getEvents();
+    if (events) {
+      try {
+        const jobName = typeof jobInstance === "string" ? jobInstance : (jobInstance?.constructor?.name || "Job");
+        events.dispatch("JobDispatched", {
+          jobName,
+          queue: queue || jobInstance?.queue || "default",
+          payload: data || jobInstance?.data || {}
+        });
+      } catch {}
+    }
+    return res;
   }
 
   later(delayInSeconds, jobInstance, data, queue) {
-    return this.connection().later(delayInSeconds, jobInstance, data, queue);
+    const res = this.connection().later(delayInSeconds, jobInstance, data, queue);
+    const events = this.#getEvents();
+    if (events) {
+      try {
+        const jobName = typeof jobInstance === "string" ? jobInstance : (jobInstance?.constructor?.name || "Job");
+        events.dispatch("JobDispatched", {
+          jobName,
+          queue: queue || jobInstance?.queue || "default",
+          payload: data || jobInstance?.data || {},
+          delaySeconds: delayInSeconds
+        });
+      } catch {}
+    }
+    return res;
   }
 
   fake() {

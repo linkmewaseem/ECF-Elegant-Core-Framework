@@ -77,7 +77,45 @@ export class MailManager extends IMailManager {
         const attachments = instance.attachments ? instance.attachments() : [];
 
         const message = new MailMessage({ envelope, content, attachments });
-        return transport.send(message);
+        const startTime = Date.now();
+
+        const getEvents = () => {
+          if (this.app && typeof this.app.make === "function" && this.app.has("events")) {
+            return this.app.make("events");
+          }
+          const app = globalThis.__ECF_APP__;
+          if (app && typeof app.make === "function" && app.has("events")) {
+            return app.make("events");
+          }
+          return null;
+        };
+
+        try {
+          const res = await transport.send(message);
+          const events = getEvents();
+          if (events) {
+            try {
+              events.dispatch("MailSent", {
+                to: envelope.to || recipients,
+                subject: envelope.subject || content.subject || instance.subjectStr || mailable.subject || "Mailable",
+                durationMs: Date.now() - startTime
+              });
+            } catch {}
+          }
+          return res;
+        } catch (err) {
+          const events = getEvents();
+          if (events) {
+            try {
+              events.dispatch("MailFailed", {
+                to: envelope.to || recipients,
+                subject: envelope.subject || content.subject || instance.subjectStr || mailable.subject || "Mailable",
+                error: err
+              });
+            } catch {}
+          }
+          throw err;
+        }
       },
       queue: async (mailable, queueName) => {
         let instance = mailable;

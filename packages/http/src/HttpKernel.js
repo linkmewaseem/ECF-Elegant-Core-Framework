@@ -133,7 +133,10 @@ export default class HttpKernel {
             await this.terminateMiddleware([...globalMiddleware, ...routeMiddleware], request, normalizedRes);
             return normalizedRes;
         } catch (error) {
-            return await this.handleException(error, request, response);
+            if (this.exceptionHandler) {
+                return await this.handleException(error, request, response);
+            }
+            throw error;
         }
     }
 
@@ -148,6 +151,19 @@ export default class HttpKernel {
 
         if (typeof result === "string" || typeof result === "number" || typeof result === "boolean") {
             defaultResponse.html(String(result));
+            return defaultResponse;
+        }
+
+        // Fix #2B: Buffer must be sent raw, not JSON-serialized
+        if (Buffer.isBuffer(result)) {
+            defaultResponse.send(result);
+            return defaultResponse;
+        }
+
+        // Fix #2C: View-like objects (has render()) should produce text/html
+        if (result !== null && typeof result === "object" && typeof result.render === "function") {
+            const html = await result.render();
+            defaultResponse.html(html);
             return defaultResponse;
         }
 
@@ -196,7 +212,12 @@ export default class HttpKernel {
             if (mw && typeof mw.terminate === "function") {
                 try {
                     await mw.terminate(request, response);
-                } catch {}
+                } catch (err) {
+                    // Fix #2D: report terminating middleware errors instead of silently swallowing them
+                    if (this.exceptionHandler && typeof this.exceptionHandler.report === "function") {
+                        this.exceptionHandler.report(err);
+                    }
+                }
             }
         }
     }

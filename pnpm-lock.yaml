@@ -641,18 +641,66 @@ importers:
 
   packages/skeleton:
     dependencies:
+      '@ecfjs/ai':
+        specifier: workspace:*
+        version: link:../ai
+      '@ecfjs/api':
+        specifier: workspace:*
+        version: link:../api
       '@ecfjs/auth':
         specifier: workspace:*
         version: link:../auth
+      '@ecfjs/broadcast':
+        specifier: workspace:*
+        version: link:../broadcast
+      '@ecfjs/cache':
+        specifier: workspace:*
+        version: link:../cache
       '@ecfjs/core':
         specifier: workspace:*
         version: link:../core
       '@ecfjs/database':
         specifier: workspace:*
         version: link:../database
+      '@ecfjs/events':
+        specifier: workspace:*
+        version: link:../events
       '@ecfjs/http':
         specifier: workspace:*
         version: link:../http
+      '@ecfjs/mail':
+        specifier: workspace:*
+        version: link:../mail
+      '@ecfjs/media':
+        specifier: workspace:*
+        version: link:../media
+      '@ecfjs/notifications':
+        specifier: workspace:*
+        version: link:../notifications
+      '@ecfjs/observability':
+        specifier: workspace:*
+        version: link:../observability
+      '@ecfjs/queue':
+        specifier: workspace:*
+        version: link:../queue
+      '@ecfjs/scheduler':
+        specifier: workspace:*
+        version: link:../scheduler
+      '@ecfjs/search':
+        specifier: workspace:*
+        version: link:../search
+      '@ecfjs/storage':
+        specifier: workspace:*
+        version: link:../storage
+      '@ecfjs/timestamps':
+        specifier: workspace:*
+        version: link:../extensions/timestamps
+      '@ecfjs/upload':
+        specifier: workspace:*
+        version: link:../upload
+      '@ecfjs/uuids':
+        specifier: workspace:*
+        version: link:../extensions/uuids
       '@ecfjs/validation':
         specifier: workspace:*
         version: link:../validation

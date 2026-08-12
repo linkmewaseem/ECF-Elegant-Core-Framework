@@ -101,6 +101,46 @@ export default class ModelRepository {
         return model;
     }
 
+    /**
+     * Fire the 'retrieved' event for a freshly hydrated model.
+     * @param {Object} model
+     */
+    fireRetrievedEvent(model) {
+        ModelEventBus.dispatch(new EventContext({
+            event: "retrieved",
+            model,
+            connection: null,
+            inTransaction: false
+        }));
+    }
+
+    /**
+     * Expand profile names (e.g. 'dashboard') into concrete relation name arrays,
+     * recursively resolving @otherProfile references.
+     * @param {string[]} profileNames
+     * @param {Object} profileMap  e.g. { basic: ['roles'], dashboard: ['@basic', 'posts'] }
+     * @param {Set} [seen]
+     * @returns {string[]}
+     */
+    resolveProfiles(profileNames, profileMap, seen = new Set()) {
+        const result = [];
+        for (const name of profileNames) {
+            if (seen.has(name)) continue;
+            seen.add(name);
+            const entries = profileMap[name] || [];
+            for (const entry of entries) {
+                if (typeof entry === "string" && entry.startsWith("@")) {
+                    // @reference — expand the referenced profile
+                    const refName = entry.slice(1);
+                    result.push(...this.resolveProfiles([refName], profileMap, seen));
+                } else {
+                    result.push(entry);
+                }
+            }
+        }
+        return result;
+    }
+
     async get(queryBuilder = null) {
         const qb = queryBuilder || this.query();
         const compiled = typeof qb.applyScopes === "function" ? qb.applyScopes() : qb;
@@ -110,7 +150,59 @@ export default class ModelRepository {
         const rows = Array.isArray(res) ? res : (res?.rows || []);
 
         const models = rows.map(r => this.instantiateModel(r));
-        return new ModelCollection(models);
+
+        // Fix #3A — fire 'retrieved' event for each freshly hydrated model
+        for (const model of models) {
+            this.fireRetrievedEvent(model);
+        }
+
+        const collection = new ModelCollection(models);
+
+        // Fix #3C — resolve profile names into concrete relation names
+        const profileNames = qb._ast?.profiles || [];
+        if (profileNames.length > 0) {
+            const profileMap = this.#modelClass.profiles || {};
+            const resolvedRelations = this.resolveProfiles(profileNames, profileMap);
+            for (const rel of resolvedRelations) {
+                if (!qb._ast.eagerLoads.includes(rel)) {
+                    qb._ast.eagerLoads.push(rel);
+                }
+            }
+        }
+
+        // Eager-load relations (with, nested, constrained)
+        if (qb._ast?.eagerLoads?.length > 0) {
+            await RelationLoader.load(collection, qb._ast.eagerLoads);
+        }
+
+        // Fix #3B — run aggregate loaders registered via withCount / withExists / withSum etc.
+        const modelArray = [...collection];
+        if (modelArray.length > 0) {
+            const withCounts = qb._ast?.withCounts || [];
+            for (const rel of withCounts) {
+                await AggregateLoader.loadCount(modelArray, rel);
+            }
+
+            const withExists = qb._ast?.withExists || [];
+            for (const rel of withExists) {
+                await AggregateLoader.loadExists(modelArray, rel);
+            }
+
+            const withAggregates = qb._ast?.withAggregates || [];
+            for (const agg of withAggregates) {
+                await AggregateLoader.loadAggregate(modelArray, agg.relation, agg.column, agg.type, agg.alias);
+            }
+        }
+
+        // Debug report (if .debug() was used)
+        if (qb._ast?.isDebug) {
+            collection._debugReport = {
+                queries: 1 + (qb._ast.eagerLoads?.length || 0),
+                hydratedModels: models.length
+            };
+        }
+
+        return collection;
     }
 
     async all() {

@@ -22,14 +22,40 @@ export default class MySQLDriver extends Driver {
             return;
         }
 
+        let mysqlModule;
         try {
-            const mysql = await import("mysql2/promise");
-            this.#client = await mysql.createConnection(this.config);
-            this.connected = true;
+            mysqlModule = await import("mysql2/promise");
         } catch {
-            // Mock connection for zero-dependency environment when client library is absent
-            this.#client = this.createMockClient();
+            try {
+                const { createRequire } = await import("node:module");
+                const { pathToFileURL } = await import("node:url");
+                const path = await import("node:path");
+                const req = createRequire(path.join(process.cwd(), "package.json"));
+                const resolved = req.resolve("mysql2/promise");
+                mysqlModule = await import(pathToFileURL(resolved).href);
+            } catch {
+                if (this.config.useMock || process.env.NODE_ENV === "test") {
+                    this.#client = this.createMockClient();
+                    this.connected = true;
+                    return;
+                }
+                throw new ConnectionException('MySQL client library "mysql2" is not installed. Please run `npm install mysql2`.');
+            }
+        }
+
+        try {
+            this.#client = await mysqlModule.createConnection(this.config);
             this.connected = true;
+        } catch (err) {
+            if (this.config.useMock) {
+                this.#client = this.createMockClient();
+                this.connected = true;
+                return;
+            }
+            const host = this.config.host || "127.0.0.1";
+            const port = this.config.port || 3306;
+            const db = this.config.database || "";
+            throw new ConnectionException(`Failed to connect to MySQL database "${db}" at ${host}:${port}: ${err.message}`, err);
         }
     }
 

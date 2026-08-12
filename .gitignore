@@ -11,3 +11,5 @@ storage/logs/
 tmp/
 *.log
 rename-scope.js
+apps
+app

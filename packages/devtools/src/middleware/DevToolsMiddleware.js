@@ -20,20 +20,24 @@ export class DevToolsMiddleware {
     const record = new RequestRecord({
       id: traceCtx.requestId,
       traceId: traceCtx.traceId,
-      method: req.method ?? 'GET',
-      url: req.url ?? '/',
+      method: req.method ?? req.raw?.method ?? 'GET',
+      url: req.url ?? req.raw?.url ?? '/',
       ip: req.ip ?? req.socket?.remoteAddress ?? '127.0.0.1',
     });
 
     req.devToolsRecord = record;
 
+    const targetRes = res?.raw || res;
+
     const finishHandler = () => {
-      res.removeListener('finish', finishHandler);
-      res.removeListener('close', finishHandler);
+      if (typeof targetRes?.removeListener === 'function') {
+        targetRes.removeListener('finish', finishHandler);
+        targetRes.removeListener('close', finishHandler);
+      }
 
       const memoryAfter = this.#perfCollector.captureMemory();
       record.seal({
-        status: res.statusCode ?? 200,
+        status: res.statusCode ?? targetRes?.statusCode ?? 200,
         memoryBefore,
         memoryAfter,
       });
@@ -41,7 +45,10 @@ export class DevToolsMiddleware {
       this.#store.add(record);
     };
 
-    res.on('finish', finishHandler);
+    if (typeof targetRes?.on === 'function') {
+      targetRes.on('finish', finishHandler);
+      targetRes.on('close', finishHandler);
+    }
 
     if (typeof next === 'function') {
       return Tracer.runWithContext(traceCtx, next);

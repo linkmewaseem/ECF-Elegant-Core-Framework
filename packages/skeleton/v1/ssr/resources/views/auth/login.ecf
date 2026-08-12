@@ -1,0 +1,49 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="max-w-md mx-auto py-12">
+    <div class="bg-slate-800/60 backdrop-blur p-8 rounded-2xl border border-slate-700/60 shadow-2xl space-y-6">
+        <div class="text-center space-y-2">
+            <h2 class="text-2xl font-bold text-white tracking-tight">Welcome Back</h2>
+            <p class="text-sm text-slate-400">Sign in to your {{ appName }} account</p>
+        </div>
+
+        @if(success)
+        <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm flex items-center gap-2">
+            <span>✅</span> <span>{{ success }}</span>
+        </div>
+        @endif
+
+        @if(error)
+        <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm flex items-center gap-2">
+            <span>⚠️</span> <span>{{ error }}</span>
+        </div>
+        @endif
+
+        <form action="/login" method="POST" class="space-y-4">
+            <div>
+                <label for="email" class="block text-sm font-medium text-slate-300 mb-1">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="you@example.com"
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition">
+            </div>
+
+            <div>
+                <div class="flex items-center justify-between mb-1">
+                    <label for="password" class="block text-sm font-medium text-slate-300">Password</label>
+                    <a href="/forgot-password" class="text-xs text-indigo-400 hover:text-indigo-300 transition">Forgot password?</a>
+                </div>
+                <input type="password" id="password" name="password" required placeholder="••••••••"
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition">
+            </div>
+
+            <button type="submit" class="w-full py-3 px-4 rounded-xl font-bold text-white bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 transition shadow-lg shadow-indigo-500/25">
+                Sign In
+            </button>
+        </form>
+
+        <p class="text-center text-sm text-slate-400">
+            Don't have an account yet? <a href="/register" class="text-indigo-400 hover:text-indigo-300 font-semibold transition">Register now</a>
+        </p>
+    </div>
+</div>
+@endsection

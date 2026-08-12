@@ -23,6 +23,11 @@ export class EventManager {
     return this;
   }
 
+  use(middlewareFn) {
+    this.dispatcher.use(middlewareFn);
+    return this;
+  }
+
   forget(eventName) {
     this.dispatcher.forget(eventName);
     return this;

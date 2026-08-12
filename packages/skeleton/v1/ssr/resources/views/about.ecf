@@ -1,6 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>{{ title }}</h1>
-    <p>This is an ECF SSR application.</p>
+<div class="max-w-3xl mx-auto py-12 space-y-6">
+    <h1 class="text-3xl font-extrabold text-white">About {{ appName }}</h1>
+    <p class="text-slate-300 leading-relaxed">
+        ECF (Elegant Core Framework) is built to combine high performance with clean developer ergonomics. 
+        Everything from authentication, routing, and database models to view templating and AI integrations is designed to work seamlessly together.
+    </p>
+    <div class="p-6 rounded-2xl bg-slate-800/40 border border-slate-700/60 space-y-3">
+        <h2 class="text-xl font-bold text-indigo-400">Included Stack Features</h2>
+        <ul class="list-disc list-inside text-slate-300 space-y-2">
+            <li>User Registration with automated email verification link & welcome notification</li>
+            <li>Forgot password request & Reset password workflow</li>
+            <li>Authenticated User Dashboard</li>
+            <li>Tailwind CSS UI styling</li>
+            <li>Custom 404 & Database connection error pages</li>
+        </ul>
+    </div>
+</div>
 @endsection

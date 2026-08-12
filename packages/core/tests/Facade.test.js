@@ -32,7 +32,7 @@ describe("Config Facade - full integration", () => {
     });
 
     test("Config facade should throw if Facade.app is not set", () => {
-        Facade.app = null; // reset
+        Facade.setApplication(null); // reset
 
         assert.throws(() => {
             Config.get("app.name");

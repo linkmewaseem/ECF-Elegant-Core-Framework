@@ -70,8 +70,13 @@ export class AiManager extends IAiManager {
   }
 
   async *stream(prompt, options = {}) {
+    const drv = this.driver(options.driver);
+    if (typeof drv.stream === 'function') {
+      yield* drv.stream(prompt, options);
+      return;
+    }
     const res = await this.chat(prompt, options);
-    const words = res.text.split(' ');
+    const words = (res.text || '').split(' ');
     for (const word of words) {
       yield word + ' ';
     }

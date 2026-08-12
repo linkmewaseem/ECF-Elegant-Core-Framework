@@ -9,12 +9,11 @@ const port = config.get("http.port", 3000);
 // Only start listening when this file is run directly (e.g. `node public/index.js`
 // or via a process manager). If createApp() is imported elsewhere — tests, CLI
 // commands, queue workers — no server is started.
-if (
-    process.argv[1] &&
-    (process.argv[1].endsWith("index.js") || process.argv[1].endsWith("public/index.js"))
-) {
+const entryFile = process.argv[1] ? process.argv[1].replace(/\\/g, "/") : "";
+
+if (entryFile && (entryFile.endsWith("index.js") || entryFile.endsWith("public/index.js"))) {
     app.listen(port, host, () => {
-        console.log(`🚀 ECF SSR app running on http://${host}:${port}`);
+        console.log(`🚀 ECF API running on http://${host}:${port}`);
     });
 }
 

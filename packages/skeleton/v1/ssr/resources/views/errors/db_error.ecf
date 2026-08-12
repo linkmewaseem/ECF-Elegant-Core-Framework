@@ -1,0 +1,44 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="max-w-2xl mx-auto py-12">
+    <div class="bg-rose-950/40 border border-rose-500/40 rounded-3xl p-8 space-y-6 shadow-2xl backdrop-blur">
+        <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-3xl font-bold">
+                🔌
+            </div>
+            <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-rose-400">Database Connection Failed</span>
+                <h2 class="text-2xl font-extrabold text-white">Cannot Connect to Database</h2>
+            </div>
+        </div>
+
+        <p class="text-slate-300 text-sm leading-relaxed">
+            The application encountered a database connection error. Please ensure your database server is running and your <code class="px-2 py-1 rounded bg-slate-900 text-amber-300 font-mono text-xs">.env</code> configuration details are correct.
+        </p>
+
+        @if(errorMessage)
+        <div class="p-4 rounded-xl bg-slate-900/90 border border-rose-500/30 text-rose-300 font-mono text-xs overflow-x-auto">
+            <p class="font-bold text-rose-400 mb-1">Details:</p>
+            <code>{{ errorMessage }}</code>
+        </div>
+        @endif
+
+        <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3 text-xs text-slate-300">
+            <h4 class="font-bold text-white text-sm">💡 Quick Troubleshooting Checklist:</h4>
+            <ol class="list-decimal list-inside space-y-1.5 text-slate-400">
+                <li>Check <code class="text-indigo-300">DB_CONNECTION</code> in your <code class="text-indigo-300">.env</code> file (<code class="text-emerald-400">postgres</code>, <code class="text-emerald-400">sqlite</code>, <code class="text-emerald-400">mysql</code>).</li>
+                <li>Verify <code class="text-indigo-300">DB_HOST</code>, <code class="text-indigo-300">DB_PORT</code>, <code class="text-indigo-300">DB_DATABASE</code>, <code class="text-indigo-300">DB_USERNAME</code>, and <code class="text-indigo-300">DB_PASSWORD</code>.</li>
+                <li>Ensure your PostgreSQL / MySQL database daemon service is active and listening.</li>
+                <li>Run <code class="text-indigo-300">ecf migrate</code> or <code class="text-indigo-300">ecf migrate:fresh</code> to set up tables.</li>
+            </ol>
+        </div>
+
+        <div class="pt-2 flex justify-end">
+            <a href="/" class="px-5 py-2.5 rounded-xl font-bold text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 transition text-sm">
+                Reload Application
+            </a>
+        </div>
+    </div>
+</div>
+@endsection

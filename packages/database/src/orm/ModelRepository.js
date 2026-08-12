@@ -85,110 +85,32 @@ export default class ModelRepository {
         return this.query().profile(...profileNames);
     }
 
-    resolveProfiles(profileNames = []) {
-        const profilesDef = this.#modelClass.profiles || {};
-        const result = {
-            eagerLoads: [],
-            withCounts: [],
-            withExists: [],
-            withAggregates: []
-        };
-
-        const resolveName = (name, visited = new Set()) => {
-            const cleanName = name.startsWith("@") ? name.slice(1) : name;
-            if (visited.has(cleanName)) return;
-            visited.add(cleanName);
-
-            const def = profilesDef[cleanName];
-            if (!def) return;
-
-            if (Array.isArray(def)) {
-                for (const item of def) {
-                    if (typeof item === "string" && item.startsWith("@")) {
-                        resolveName(item, visited);
-                    } else {
-                        result.eagerLoads.push(item);
-                    }
-                }
-            } else if (typeof def === "object" && def !== null) {
-                if (def.relations) result.eagerLoads.push(def.relations);
-                if (def.counts) result.withCounts.push(...def.counts);
-                if (def.exists) result.withExists.push(...def.exists);
-                if (def.aggregates) result.withAggregates.push(...def.aggregates);
-            }
-        };
-
-        for (const p of profileNames) {
-            resolveName(p);
+    instantiateModel(row) {
+        if (!row) return null;
+        const mgr = row.getAttributeManager ? row.getAttributeManager() : null;
+        if (mgr) {
+            mgr.syncOriginal();
+            row._exists = true;
+            row.exists = true;
+            return row;
         }
-
-        return result;
+        const model = new this.#modelClass(row);
+        model.getAttributeManager().syncOriginal();
+        model._exists = true;
+        model.exists = true;
+        return model;
     }
 
     async get(queryBuilder = null) {
-        let q = queryBuilder || this.query();
-        q = await q.applyScopes();
-
-        // Smart Profile Composition & Inheritance
-        if (q.ast.profiles && q.ast.profiles.length > 0) {
-            const prof = this.resolveProfiles(q.ast.profiles);
-            if (prof.eagerLoads.length > 0) q = q.with(prof.eagerLoads);
-            if (prof.withCounts.length > 0) q = q.withCount(prof.withCounts);
-            if (prof.withExists.length > 0) q = q.withExists(prof.withExists);
-            for (const agg of prof.withAggregates) {
-                q = q.withSum(agg.relation, agg.column, agg.alias);
-            }
-        }
-
-        const ast = q.ast;
-
-        // Execute raw query bypassing recursion
-        const rawQ = q.clone();
-        rawQ._modelRepository = null;
-        const rows = await rawQ.get();
+        const qb = queryBuilder || this.query();
+        const compiled = typeof qb.applyScopes === "function" ? qb.applyScopes() : qb;
+        const { sql, bindings } = compiled.toSql();
+        const conn = compiled._connection || this.getConnection();
+        const res = await conn.select(sql, bindings);
+        const rows = Array.isArray(res) ? res : (res?.rows || []);
 
         const models = rows.map(r => this.instantiateModel(r));
-        const collection = new ModelCollection(models);
-
-        if (models.length === 0) {
-            return collection;
-        }
-
-        // RelationLoader batch eager loading
-        if (ast.eagerLoads && ast.eagerLoads.length > 0) {
-            await RelationLoader.load(collection, ast.eagerLoads);
-        }
-
-        // AggregateLoader for withCount
-        if (ast.withCounts && ast.withCounts.length > 0) {
-            for (const name of ast.withCounts) {
-                await AggregateLoader.loadCount(models, name);
-            }
-        }
-
-        // AggregateLoader for withExists
-        if (ast.withExists && ast.withExists.length > 0) {
-            for (const name of ast.withExists) {
-                await AggregateLoader.loadExists(models, name);
-            }
-        }
-
-        // AggregateLoader for withAggregates
-        if (ast.withAggregates && ast.withAggregates.length > 0) {
-            for (const agg of ast.withAggregates) {
-                await AggregateLoader.loadAggregate(models, agg.relation, agg.column, agg.type, agg.alias);
-            }
-        }
-
-        if (ast.isDebug) {
-            collection._debugReport = {
-                queries: 1 + (ast.eagerLoads.length > 0 ? 1 : 0) + ast.withCounts.length + ast.withExists.length + ast.withAggregates.length,
-                hydratedModels: models.length,
-                profilesApplied: ast.profiles
-            };
-        }
-
-        return collection;
+        return new ModelCollection(models);
     }
 
     async all() {
@@ -211,13 +133,15 @@ export default class ModelRepository {
 
     async create(attributes = {}) {
         const model = new this.#modelClass(attributes);
+        model._exists = false;
+        model.exists = false;
         await this.save(model);
         return model;
     }
 
     async save(model) {
         const pk = this.getPrimaryKey();
-        const isNew = !model.getAttribute(pk);
+        const isNew = !(model._exists || model.exists);
         const conn = this.getConnection();
         const inTx = conn ? conn.inTransaction() : false;
         const original = model.getOriginal() || {};
@@ -256,6 +180,8 @@ export default class ModelRepository {
                 if (insertRes && insertRes.insertId && !model.getAttribute(pk)) {
                     model.setAttribute(pk, insertRes.insertId);
                 }
+                model._exists = true;
+                model.exists = true;
             } else {
                 await conn.table(this.getTable()).where(pk, model.getAttribute(pk)).update(changes);
             }
@@ -286,7 +212,7 @@ export default class ModelRepository {
         });
         await ModelEventBus.dispatch(savedCtx);
 
-        return model;
+        return true;
     }
 
     async delete(model) {
@@ -296,13 +222,10 @@ export default class ModelRepository {
 
         const conn = this.getConnection();
         const inTx = conn ? conn.inTransaction() : false;
-        const original = model.getAttributeManager().getRawAttributes();
 
         const deletingCtx = new EventContext({
             event: "deleting",
             model,
-            changes: {},
-            original,
             connection: conn,
             inTransaction: inTx
         });
@@ -311,38 +234,17 @@ export default class ModelRepository {
 
         await conn.table(this.getTable()).where(pk, id).delete();
 
+        model._exists = false;
+        model.exists = false;
+
         const deletedCtx = new EventContext({
             event: "deleted",
             model,
-            changes: {},
-            original,
             connection: conn,
             inTransaction: inTx
         });
         await ModelEventBus.dispatch(deletedCtx);
 
         return true;
-    }
-
-    instantiateModel(row) {
-        if (!row) return null;
-        if (typeof row.getAttribute === "function") {
-            return row;
-        }
-        const instance = new this.#modelClass(row, true);
-        instance.getAttributeManager().syncOriginal();
-
-        const conn = this.getConnection();
-        const ctx = new EventContext({
-            event: "retrieved",
-            model: instance,
-            changes: {},
-            original: instance.getAttributeManager().getRawAttributes(),
-            connection: conn,
-            inTransaction: conn ? conn.inTransaction() : false
-        });
-        ModelEventBus.dispatch(ctx);
-
-        return instance;
     }
 }

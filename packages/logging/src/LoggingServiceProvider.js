@@ -1,13 +1,10 @@
+import { ServiceProvider } from '@ecfjs/core';
 import { LogManager } from './LogManager.js';
 
 /**
  * Service Provider for registering @ecfjs/logging in IoC container.
  */
-export class LoggingServiceProvider {
-  constructor(app) {
-    this.app = app;
-  }
-
+export class LoggingServiceProvider extends ServiceProvider {
   register() {
     this.app.singleton('log', (container) => {
       const config = container.make('config')?.get('logging') || {};

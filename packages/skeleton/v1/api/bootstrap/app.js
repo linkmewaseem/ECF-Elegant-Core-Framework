@@ -2,6 +2,7 @@ import {
     Application,
     Facade,
     CoreServiceProvider,
+    ConfigServiceProvider,
     LoggerServiceProvider,
 } from "@ecfjs/core";
 import { HttpServiceProvider } from "@ecfjs/http";
@@ -21,6 +22,7 @@ export function createApp() {
     const app = new Application();
 
     app.register(CoreServiceProvider);
+    app.register(ConfigServiceProvider);
     app.register(LoggerServiceProvider);
     app.register(DatabaseServiceProvider);
     app.register(AuthServiceProvider); // JWT guard by default — see config/auth.js

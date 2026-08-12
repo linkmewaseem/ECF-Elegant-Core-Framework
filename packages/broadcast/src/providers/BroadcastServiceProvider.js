@@ -1,27 +1,28 @@
+import { ServiceProvider } from "@ecfjs/core";
 import BroadcastManager from "../BroadcastManager.js";
 import BroadcastFacade from "../facades/Broadcast.js";
 import BroadcastEventSubscriber from "../events/BroadcastEventSubscriber.js";
 
-export class BroadcastServiceProvider {
-  constructor(container) {
-    this.container = container;
-  }
-
-  register() {
-    this.container.singleton("broadcast", () => {
-      const config = this.container.has("config") ? this.container.make("config").get("broadcast", {}) : {};
-      const manager = new BroadcastManager(config, this.container);
+export class BroadcastServiceProvider extends ServiceProvider {
+  register(app = this.app) {
+    const container = app || this.app;
+    if (!container) return;
+    container.singleton("broadcast", (c) => {
+      const config = c.has("config") ? c.make("config").get("broadcast", {}) : {};
+      const manager = new BroadcastManager(config, c);
       BroadcastFacade.setInstance(manager);
       return manager;
     });
   }
 
-  boot() {
-    if (this.container.has("events")) {
-      const broadcastManager = this.container.make("broadcast");
-      const queueManager = this.container.has("queue") ? this.container.make("queue") : null;
+  boot(app = this.app) {
+    const container = app || this.app;
+    if (!container) return;
+    if (container.has("events")) {
+      const broadcastManager = container.make("broadcast");
+      const queueManager = container.has("queue") ? container.make("queue") : null;
       const subscriber = new BroadcastEventSubscriber(broadcastManager, queueManager);
-      subscriber.subscribe(this.container.make("events"));
+      subscriber.subscribe(container.make("events"));
     }
   }
 }

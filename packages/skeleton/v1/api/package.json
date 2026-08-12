@@ -9,11 +9,11 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@ecfjs/core": "^1.0.0-rc.2",
-    "@ecfjs/http": "^1.0.0-rc.2",
-    "@ecfjs/database": "^1.0.0-rc.2",
-    "@ecfjs/auth": "^1.0.0-rc.2",
-    "@ecfjs/validation": "^1.0.0-rc.2",
+    "@ecfjs/core": "^1.0.0-rc.7",
+    "@ecfjs/http": "^1.0.0-rc.6",
+    "@ecfjs/database": "^1.0.0-rc.6",
+    "@ecfjs/auth": "^1.0.0-rc.5",
+    "@ecfjs/validation": "^1.0.0-rc.5",
     "pg": "^8.11.0"
   },
   "author": "Muhammad Waseem"

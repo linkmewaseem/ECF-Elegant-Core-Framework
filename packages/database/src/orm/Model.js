@@ -49,6 +49,7 @@ export default class Model {
     static profiles = {};
 
     #attributeManager;
+    _exists = false;
 
     constructor(attributes = {}, force = false) {
         this.#attributeManager = new AttributeManager(this, attributes, force);
@@ -56,6 +57,10 @@ export default class Model {
         // Wrap instance in ES6 Proxy for seamless property access & mutation
         return new Proxy(this, {
             get(target, prop, receiver) {
+                if (prop === "exists" || prop === "_exists") {
+                    return target._exists ?? false;
+                }
+
                 if (typeof prop === "symbol" || prop.startsWith("#")) {
                     return Reflect.get(target, prop);
                 }
@@ -75,7 +80,7 @@ export default class Model {
                     return createCallableRelationProxy(fn, () => mgr.getAttribute(prop));
                 }
 
-                // 2. Base Model methods & constructor
+                // 2. Base Model methods, properties & constructor
                 if (prop in target) {
                     if (prop === "constructor") {
                         return target.constructor;
@@ -84,6 +89,7 @@ export default class Model {
                     if (typeof val === "function") {
                         return val.bind(target);
                     }
+                    return val;
                 }
 
                 // 3. Loaded relation precedence for non-method properties
@@ -100,6 +106,11 @@ export default class Model {
                 return target.getAttribute(prop);
             },
             set(target, prop, value, receiver) {
+                if (prop === "exists" || prop === "_exists") {
+                    target._exists = Boolean(value);
+                    return true;
+                }
+
                 if (prop in target && typeof target[prop] !== "function") {
                     return Reflect.set(target, prop, value, receiver);
                 }
@@ -137,7 +148,7 @@ export default class Model {
     }
 
     isClean(key = null) {
-        return this.#attributeManager.isClean(key);
+        return !this.isDirty(key);
     }
 
     getOriginal(key = null, defaultValue = null) {

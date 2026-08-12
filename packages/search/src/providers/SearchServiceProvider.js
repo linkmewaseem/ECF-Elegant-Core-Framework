@@ -1,26 +1,25 @@
+import { ServiceProvider } from "@ecfjs/core";
 import SearchManager from "../SearchManager.js";
 import SearchFacade from "../facades/Search.js";
 
-export class SearchServiceProvider {
-  constructor(container) {
-    this.container = container;
-  }
+export class SearchServiceProvider extends ServiceProvider {
+  register(app = this.app) {
+    const container = app || this.app;
+    if (!container) return;
+    container.singleton("search", (c) => {
+      const config = c.has("config") ? c.make("config").get("search", {}) : {};
 
-  register() {
-    this.container.singleton("search", () => {
-      const config = this.container.has("config") ? this.container.make("config").get("search", {}) : {};
-
-      if (this.container.has("cache")) {
-        config.cacheDriver = this.container.make("cache");
+      if (c.has("cache")) {
+        config.cacheDriver = c.make("cache");
       }
-      if (this.container.has("database")) {
-        config.dbClient = this.container.make("database");
+      if (c.has("database")) {
+        config.dbClient = c.make("database");
       }
 
-      const manager = new SearchManager(config, this.container);
+      const manager = new SearchManager(config, c);
 
-      if (this.container.has("broadcast")) {
-        manager.broadcastManager = this.container.make("broadcast");
+      if (c.has("broadcast")) {
+        manager.broadcastManager = c.make("broadcast");
       }
 
       SearchFacade.setInstance(manager);

@@ -1,7 +1,7 @@
 {
   "name": "@ecfjs/ai",
-  "version": "1.0.0-rc.5",
-  "description": "ECF AI engine with 8 drivers (OpenAI, Anthropic, Gemini, Ollama, Groq), streaming, RAG pipeline, and MCP abstraction",
+  "version": "1.0.0",
+  "description": "ECF Enterprise AI Platform — Multi-driver LLM engine (OpenAI, Anthropic, Gemini, Groq, Ollama, OpenRouter), streaming, RAG pipeline, Model Context Protocol (MCP), and testing fakes.",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -22,6 +22,9 @@
     "openai",
     "anthropic",
     "gemini",
+    "groq",
+    "ollama",
+    "openrouter",
     "rag",
     "mcp"
   ],

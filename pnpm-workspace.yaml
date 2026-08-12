@@ -9,4 +9,15 @@ packages:
   - "examples/*"
 
 allowBuilds:
+  bufferutil: set this to true or false
   sharp: true
+  utf-8-validate: set this to true or false
+
+minimumReleaseAgeExclude:
+  - '@ecfjs/auth@1.0.0-rc.5'
+  - '@ecfjs/core@1.0.0-rc.5 || 1.0.0-rc.6'
+  - '@ecfjs/database@1.0.0-rc.6'
+  - '@ecfjs/http@1.0.0-rc.5 || 1.0.0-rc.6'
+  - '@ecfjs/support@1.0.0-rc.5'
+  - '@ecfjs/validation@1.0.0-rc.5'
+  - '@ecfjs/view@1.0.0-rc.5'

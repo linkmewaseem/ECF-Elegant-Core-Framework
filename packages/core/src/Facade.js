@@ -1,11 +1,16 @@
 export default class Facade {
-    static app = null;
+    static app = globalThis.__ECF_APP__ || null;
 
     /**
      * Set the application instance.
      */
     static setApplication(app) {
         this.app = app;
+        if (app === null) {
+            delete globalThis.__ECF_APP__;
+        } else {
+            globalThis.__ECF_APP__ = app;
+        }
     }
 
     /**
@@ -20,7 +25,11 @@ export default class Facade {
      * Resolve the real object from the container.
      */
     static getRoot() {
-        return this.app.make(this.accessor());
+        const app = this.app || globalThis.__ECF_APP__;
+        if (!app) {
+            throw new Error(`Facade [${this.name || 'Anonymous'}] has no application instance set.`);
+        }
+        return app.make(this.accessor());
     }
 
     /**

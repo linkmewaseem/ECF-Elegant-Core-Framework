@@ -22,10 +22,13 @@ export default class SQLiteDriver extends Driver {
             const sqlite = await import("node:sqlite");
             this.#db = new sqlite.DatabaseSync(this.filename);
             this.connected = true;
-        } catch {
-            // Fallback in-memory mock engine for environments without native node:sqlite
-            this.#db = this.createMockEngine();
-            this.connected = true;
+        } catch (err) {
+            if (this.config.useMock || process.env.NODE_ENV === "test" || !this.filename) {
+                this.#db = this.createMockEngine();
+                this.connected = true;
+                return;
+            }
+            throw new ConnectionException(`Failed to connect SQLite database "${this.filename}": ${err.message}`, err);
         }
     }
 

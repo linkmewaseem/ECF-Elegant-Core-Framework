@@ -1,3 +1,11 @@
-<footer>
-    <p>&copy; 2026 {{ appName }}</p>
+<footer class="bg-slate-950 border-t border-slate-800 py-8 text-center text-sm text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p>&copy; 2026 ECF Framework. Built with speed, performance, and modern developer experience.</p>
+        <div class="flex space-x-4">
+            <a href="/" class="hover:text-slate-200 transition">Home</a>
+            <a href="/about" class="hover:text-slate-200 transition">About</a>
+            <a href="/login" class="hover:text-slate-200 transition">Login</a>
+            <a href="/register" class="hover:text-slate-200 transition">Register</a>
+        </div>
+    </div>
 </footer>

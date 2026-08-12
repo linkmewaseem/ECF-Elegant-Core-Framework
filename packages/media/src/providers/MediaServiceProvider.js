@@ -1,50 +1,33 @@
+import { ServiceProvider } from '@ecfjs/core';
 import { MediaManager } from '../internal/MediaManager.js';
 import { MediaFacade } from '../facades/MediaFacade.js';
 import { BuiltInProfiles } from '../profiles/MediaProfile.js';
 
-/**
- * MediaServiceProvider — Registers @ecfjs/media into the ECF container.
- *
- * Boot sequence:
- *  1. Instantiate MediaManager
- *  2. Register built-in drivers (sharp, null)
- *  3. Register built-in profiles (product, avatar, hero, banner)
- *  4. Wire optional @ecfjs/storage, @ecfjs/queue, @ecfjs/events integrations
- *  5. Bind MediaFacade
- *  6. Register container alias: "media"
- */
-export class MediaServiceProvider {
-  #app;
-
-  constructor(app) {
-    this.#app = app;
-  }
-
-  register() {
-    this.#app.singleton("media", () => {
+export class MediaServiceProvider extends ServiceProvider {
+  register(app = this.app) {
+    const container = app || this.app;
+    if (!container) return;
+    container.singleton("media", (c) => {
       const manager = new MediaManager();
 
-      // Wire @ecfjs/storage if available
-      if (this.#app.has("storage")) {
-        manager.setStorage(this.#app.make("storage"));
+      if (c.has("storage")) {
+        manager.setStorage(c.make("storage"));
       }
-
-      // Wire @ecfjs/queue if available
-      if (this.#app.has("queue")) {
-        manager.setQueue(this.#app.make("queue"));
+      if (c.has("queue")) {
+        manager.setQueue(c.make("queue"));
       }
-
-      // Wire @ecfjs/events if available
-      if (this.#app.has("events")) {
-        manager.setEvents(this.#app.make("events"));
+      if (c.has("events")) {
+        manager.setEvents(c.make("events"));
       }
 
       return manager;
     });
   }
 
-  boot() {
-    const manager = this.#app.make("media");
+  boot(app = this.app) {
+    const container = app || this.app;
+    if (!container) return;
+    const manager = container.make("media");
     MediaFacade.bind(manager);
   }
 }

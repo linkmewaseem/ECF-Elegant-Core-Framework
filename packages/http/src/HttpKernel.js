@@ -1,7 +1,25 @@
+import fs from "node:fs";
+import path from "node:path";
 import HttpKernelError from "./errors/HttpKernelError.js";
 import Request from "./Request.js";
 import Response from "./Response.js";
 import Pipeline from "./Pipeline.js";
+
+const STATIC_MIME_TYPES = {
+    ".css": "text/css; charset=utf-8",
+    ".js": "text/javascript; charset=utf-8",
+    ".json": "application/json; charset=utf-8",
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".gif": "image/gif",
+    ".svg": "image/svg+xml",
+    ".ico": "image/x-icon",
+    ".woff": "font/woff",
+    ".woff2": "font/woff2",
+    ".ttf": "font/ttf",
+    ".map": "application/json"
+};
 
 export default class HttpKernel {
     #bootstrapped = false;
@@ -68,6 +86,21 @@ export default class HttpKernel {
         const request = new Request(rawRequest, this.bodyParserManager);
         const response = new Response(rawResponse, this.responseContext);
 
+        // Serve static assets from public/ directory if available
+        const reqPath = request.path;
+        if (reqPath && reqPath !== "/" && !reqPath.endsWith("index.js")) {
+            const relativePath = reqPath.replace(/^\//, "");
+            const publicDir = path.resolve(process.cwd(), "public");
+            const publicPath = path.resolve(publicDir, relativePath);
+            if (publicPath.startsWith(publicDir) && fs.existsSync(publicPath) && fs.statSync(publicPath).isFile()) {
+                const ext = path.extname(publicPath).toLowerCase();
+                const contentType = STATIC_MIME_TYPES[ext] || "application/octet-stream";
+                const fileContent = fs.readFileSync(publicPath);
+                response.status(200).header("Content-Type", contentType).send(fileContent);
+                return response;
+            }
+        }
+
         const globalMiddleware = this.getGlobalMiddleware();
         let route = null;
         let routeMiddleware = [];
@@ -98,91 +131,97 @@ export default class HttpKernel {
             }
 
             await this.terminateMiddleware([...globalMiddleware, ...routeMiddleware], request, normalizedRes);
-
             return normalizedRes;
         } catch (error) {
-            if (this.exceptionHandler) {
-                return this.exceptionHandler.handle(error, request, response);
-            }
-            throw error;
+            return await this.handleException(error, request, response);
         }
     }
 
-    /**
-     * Normalize controller/closure return values into a standard Response instance.
-     */
-    async normalizeResponse(result, request, response) {
+    async normalizeResponse(result, request, defaultResponse) {
+        if (result === defaultResponse) {
+            return defaultResponse;
+        }
+
         if (result instanceof Response) {
             return result;
         }
 
-        if (response.headersSent) {
-            return response;
+        if (typeof result === "string" || typeof result === "number" || typeof result === "boolean") {
+            defaultResponse.html(String(result));
+            return defaultResponse;
         }
 
-        if (typeof result === "string") {
-            response.html(result);
-            return response;
+        if (result !== null && typeof result === "object") {
+            defaultResponse.json(result);
+            return defaultResponse;
         }
 
-        if (Buffer.isBuffer(result)) {
-            response.send(result);
-            return response;
-        }
+        return defaultResponse;
+    }
 
-        if (typeof result === "object" && result !== null) {
-            if (typeof result.render === "function") {
-                const html = await result.render();
-                response.html(html);
-                return response;
+    async handleException(error, request, response) {
+        if (this.exceptionHandler) {
+            try {
+                const handledRes = await this.exceptionHandler.handle(error, request, response);
+                if (handledRes instanceof Response) {
+                    if (!handledRes.headersSent) {
+                        handledRes.send();
+                    }
+                    return handledRes;
+                }
+            } catch (innerErr) {
+                return this.fallbackErrorResponse(innerErr, response);
             }
-            response.json(result);
-            return response;
+        }
+
+        return this.fallbackErrorResponse(error, response);
+    }
+
+    fallbackErrorResponse(error, response) {
+        const statusCode = error.statusCode || 500;
+        const message = error.message || "Internal Server Error";
+
+        response.status(statusCode);
+        response.html(`<h1>Error ${statusCode}</h1><p>${message}</p>`);
+
+        if (!response.headersSent) {
+            response.send();
         }
 
         return response;
     }
 
-    /**
-     * Execute terminating middleware hooks after response delivery.
-     */
-    async terminateMiddleware(middlewares, request, response) {
-        for (const mw of middlewares) {
-            try {
-                if (mw && typeof mw.terminate === "function") {
+    async terminateMiddleware(middlewareList, request, response) {
+        for (const mw of middlewareList) {
+            if (mw && typeof mw.terminate === "function") {
+                try {
                     await mw.terminate(request, response);
-                }
-            } catch (err) {
-                if (this.exceptionHandler && typeof this.exceptionHandler.report === "function") {
-                    this.exceptionHandler.report(err);
-                }
+                } catch {}
             }
         }
     }
 
-    // ---- Validation ----
-
     validateRouter(router) {
         if (!router || typeof router.match !== "function") {
-            throw new HttpKernelError("HttpKernel requires a Router with a match() method.");
+            throw new HttpKernelError("HttpKernel requires a valid Router instance.");
         }
     }
 
-    validateBodyParserManager(bodyParserManager) {
-        if (!bodyParserManager || typeof bodyParserManager.parse !== "function") {
-            throw new HttpKernelError("HttpKernel requires a BodyParserManager with a parse() method.");
+    validateBodyParserManager(manager) {
+        if (!manager || typeof manager.parse !== "function") {
+            throw new HttpKernelError("HttpKernel requires a valid BodyParserManager instance.");
         }
     }
 
-    validateMiddlewareResolver(middlewareResolver) {
-        if (!middlewareResolver || typeof middlewareResolver.resolve !== "function") {
-            throw new HttpKernelError("HttpKernel requires a MiddlewareResolver with a resolve() method.");
+    validateMiddlewareResolver(resolver) {
+        if (!resolver || typeof resolver.resolve !== "function") {
+            throw new HttpKernelError("HttpKernel requires a valid MiddlewareResolver instance.");
         }
     }
 
-    validateExceptionHandler(exceptionHandler) {
-        if (exceptionHandler && typeof exceptionHandler.handle !== "function") {
-            throw new HttpKernelError("HttpKernel requires an ExceptionHandler with a handle() method.");
+    validateExceptionHandler(handler) {
+        if (handler !== null && typeof handler.handle !== "function") {
+            throw new HttpKernelError("ExceptionHandler must have a handle(err, req, res) method.");
         }
     }
 }

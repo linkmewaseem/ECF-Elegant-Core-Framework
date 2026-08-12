@@ -1,12 +1,22 @@
+import { Facade } from '@ecfjs/core';
 import { AiManager } from '../AiManager.js';
 
-let instance = null;
+let fallbackInstance = null;
 
 function getInstance() {
-  if (!instance) {
-    instance = new AiManager();
+  try {
+    const container = typeof Facade?.getContainer === 'function' ? Facade.getContainer() : null;
+    if (container && typeof container.has === 'function' && container.has('ai')) {
+      return container.make('ai');
+    }
+  } catch {
+    // Fall back to standalone instance if Facade is uninitialized
   }
-  return instance;
+
+  if (!fallbackInstance) {
+    fallbackInstance = new AiManager();
+  }
+  return fallbackInstance;
 }
 
 export const AiFacade = new Proxy(
@@ -25,4 +35,3 @@ export const AiFacade = new Proxy(
 export const AI = AiFacade;
 globalThis.__ECF_AI__ = AiFacade;
 export default AiFacade;
-

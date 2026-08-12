@@ -39,6 +39,14 @@ export default class Connection {
         return this.#driver;
     }
 
+    get driverName() {
+        const clsName = this.#driver?.constructor?.name?.toLowerCase() || "";
+        if (clsName.includes("postgres")) return "postgres";
+        if (clsName.includes("mysql")) return "mysql";
+        if (clsName.includes("sqlite")) return "sqlite";
+        return this.#name;
+    }
+
     get grammar() {
         return this.#grammar;
     }

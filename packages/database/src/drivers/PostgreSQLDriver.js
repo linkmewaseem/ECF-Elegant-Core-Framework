@@ -22,16 +22,47 @@ export default class PostgreSQLDriver extends Driver {
             return;
         }
 
+        let pgModule;
         try {
-            const pg = await import("pg");
-            const Client = pg.default?.Client || pg.Client;
-            this.#client = new Client(this.config);
+            pgModule = await import("pg");
+        } catch {
+            try {
+                const { createRequire } = await import("node:module");
+                const { pathToFileURL } = await import("node:url");
+                const path = await import("node:path");
+                const req = createRequire(path.join(process.cwd(), "package.json"));
+                const resolved = req.resolve("pg");
+                pgModule = await import(pathToFileURL(resolved).href);
+            } catch {
+                if (this.config.useMock || process.env.NODE_ENV === "test") {
+                    this.#client = this.createMockClient();
+                    this.connected = true;
+                    return;
+                }
+                throw new ConnectionException('PostgreSQL client library "pg" is not installed. Please run `npm install pg`.');
+            }
+        }
+
+        try {
+            const Client = pgModule.default?.Client || pgModule.Client;
+            const pgConfig = {
+                ...this.config,
+                user: this.config.user || this.config.username || "postgres",
+                password: String(this.config.password ?? ""),
+            };
+            this.#client = new Client(pgConfig);
             await this.#client.connect();
             this.connected = true;
-        } catch {
-            // Mock connection for zero-dependency environment when client library is absent
-            this.#client = this.createMockClient();
-            this.connected = true;
+        } catch (err) {
+            if (this.config.useMock) {
+                this.#client = this.createMockClient();
+                this.connected = true;
+                return;
+            }
+            const host = this.config.host || "127.0.0.1";
+            const port = this.config.port || 5432;
+            const db = this.config.database || "";
+            throw new ConnectionException(`Failed to connect to PostgreSQL database "${db}" at ${host}:${port}: ${err.message}`, err);
         }
     }
 

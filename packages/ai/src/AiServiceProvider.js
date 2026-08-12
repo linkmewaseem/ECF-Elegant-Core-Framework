@@ -1,17 +1,18 @@
+import { ServiceProvider } from '@ecfjs/core';
 import { AiManager } from './AiManager.js';
 
-export class AiServiceProvider {
-  constructor(app) {
-    this.app = app;
-  }
-
-  register() {
-    this.app.singleton('ai', (container) => {
-      const config = container.has('config') ? container.make('config').get('ai') || {} : {};
+export class AiServiceProvider extends ServiceProvider {
+  register(app = this.app) {
+    const container = app || this.app;
+    if (!container) return;
+    container.singleton('ai', (c) => {
+      const config = c.has('config') ? c.make('config').get('ai') || {} : {};
       return new AiManager(config);
     });
 
-    this.app.alias('ai', AiManager);
+    if (typeof container.alias === 'function') {
+      container.alias('ai', AiManager);
+    }
   }
 
   boot() {

@@ -1,5 +1,4 @@
 // Contracts
-export * from "./contracts/IUploadedFile.js";
 export * from "./contracts/IUploadPipelineStep.js";
 export * from "./contracts/IChunkedUploadSession.js";
 export * from "./contracts/IVirusScanner.js";

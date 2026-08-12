@@ -1,6 +1,6 @@
 {
   "name": "@ecfjs/core",
-  "version": "1.0.0-rc.5",
+  "version": "1.0.0-rc.7",
   "description": "ECF core IoC container, application lifecycle, service providers, facades, and foundation subsystems",
   "type": "module",
   "main": "./src/index.js",

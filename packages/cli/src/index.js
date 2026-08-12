@@ -9,4 +9,6 @@ export { StubCompiler } from './generators/StubCompiler.js';
 export { CodeGenerator } from './generators/CodeGenerator.js';
 export { EcfDoctorCommand } from './commands/EcfDoctorCommand.js';
 export { EcfNewCommand } from './commands/EcfNewCommand.js';
+export * from './commands/EcfMakeCommands.js';
+export * from './commands/EcfMigrateCommands.js';
 export { PluginDiscovery } from './plugins/PluginDiscovery.js';

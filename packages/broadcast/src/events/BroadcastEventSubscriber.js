@@ -25,12 +25,15 @@ export class BroadcastEventSubscriber {
 
   subscribe(eventDispatcher) {
     if (!eventDispatcher) return;
-    eventDispatcher.use(async (context, next) => {
-      await next();
-      if (context && context.eventInstance) {
-        await this.handleEvent(context.eventInstance);
-      }
-    });
+    const target = eventDispatcher.dispatcher || eventDispatcher;
+    if (typeof target.use === "function") {
+      target.use(async (context, next) => {
+        await next();
+        if (context && context.eventInstance) {
+          await this.handleEvent(context.eventInstance);
+        }
+      });
+    }
   }
 }
 

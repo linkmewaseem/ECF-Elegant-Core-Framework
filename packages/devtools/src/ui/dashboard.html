@@ -597,7 +597,8 @@
     let entries = [];
     let activeRecord = null;
     let autoRefresh = true;
-    let timer = null;
+    let currentFilter = 'ALL';
+    let searchQuery = '';
 
     async function fetchEntries() {
       try {
@@ -612,14 +613,46 @@
       }
     }
 
+    function filterRequests() {
+      const input = document.getElementById('searchInput');
+      searchQuery = input ? input.value.trim().toLowerCase() : '';
+      renderRequestList();
+    }
+
+    function setFilter(filterType, el) {
+      document.querySelectorAll('.filter-pills .pill').forEach(p => p.classList.remove('active'));
+      if (el) el.classList.add('active');
+      currentFilter = filterType;
+      renderRequestList();
+    }
+
     function renderRequestList() {
       const list = document.getElementById('requestList');
-      if (entries.length === 0) {
-        list.innerHTML = '<div class="empty-state">No request entries recorded yet.</div>';
+      let filtered = entries || [];
+
+      if (searchQuery) {
+        filtered = filtered.filter(r => (r.url || '').toLowerCase().includes(searchQuery) || (r.method || '').toLowerCase().includes(searchQuery));
+      }
+
+      if (currentFilter !== 'ALL') {
+        filtered = filtered.filter(r => {
+          const statusStr = String(r.status || 200);
+          if (currentFilter === '2XX') return statusStr.startsWith('2');
+          if (currentFilter === '4XX') return statusStr.startsWith('4');
+          if (currentFilter === '5XX') return statusStr.startsWith('5');
+          if (currentFilter === 'DB') return (r.panels?.db?.totalQueries || 0) > 0;
+          if (currentFilter === 'CACHE') return ((r.panels?.cache?.hits || 0) + (r.panels?.cache?.misses || 0)) > 0;
+          if (currentFilter === 'QUEUE') return (r.panels?.queue?.totalJobs || 0) > 0;
+          return true;
+        });
+      }
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="empty-state">No matching request entries.</div>';
         return;
       }
 
-      list.innerHTML = entries.map(r => `
+      list.innerHTML = filtered.map(r => `
         <div class="request-item ${activeRecord && activeRecord.id === r.id ? 'active' : ''}" onclick="selectRecord('${r.id}')">
           <div style="display: flex; align-items: center; gap: 0.5rem;">
             <span class="req-method method-${r.method}">${r.method}</span>
@@ -634,7 +667,7 @@
     }
 
     function selectRecord(id) {
-      activeRecord = entries.find(e => e.id === id);
+      activeRecord = (entries || []).find(e => e.id === id);
       if (!activeRecord) return;
 
       renderRequestList();
@@ -643,25 +676,25 @@
 
       // Header
       document.getElementById('detailMethod').className = `req-method method-${activeRecord.method}`;
-      document.getElementById('detailMethod').innerText = activeRecord.method;
-      document.getElementById('detailUrl').innerText = activeRecord.url;
-      document.getElementById('detailStatus').className = `status-${String(activeRecord.status)[0]}xx`;
-      document.getElementById('detailStatus').innerText = `${activeRecord.status}`;
-      document.getElementById('detailDuration').innerText = `${activeRecord.durationMs}ms`;
-      document.getElementById('detailIp').innerText = activeRecord.ip;
+      document.getElementById('detailMethod').innerText = activeRecord.method || 'GET';
+      document.getElementById('detailUrl').innerText = activeRecord.url || '/';
+      document.getElementById('detailStatus').className = `status-${String(activeRecord.status || 200)[0]}xx`;
+      document.getElementById('detailStatus').innerText = `${activeRecord.status || 200}`;
+      document.getElementById('detailDuration').innerText = `${activeRecord.durationMs || 0}ms`;
+      document.getElementById('detailIp').innerText = activeRecord.ip || '127.0.0.1';
 
-      // Counts
-      const p = activeRecord.panels;
-      document.getElementById('countDb').innerText = p.db.totalQueries;
-      document.getElementById('countCache').innerText = (p.cache.hits + p.cache.misses);
-      document.getElementById('countQueue').innerText = p.queue.totalJobs;
-      document.getElementById('countMail').innerText = p.mail.totalMails;
-      document.getElementById('countNotifications').innerText = p.notifications.sent.length;
-      document.getElementById('countEvents').innerText = p.events.totalEvents;
-      document.getElementById('countStorage').innerText = p.storage.totalOps;
-      document.getElementById('countUpload').innerText = p.upload.files.length;
-      document.getElementById('countMedia').innerText = p.media.totalFiles;
-      document.getElementById('countExceptions').innerText = p.exceptions.length;
+      // Counts with safe optional chaining
+      const p = activeRecord.panels || {};
+      document.getElementById('countDb').innerText = p.db?.totalQueries || 0;
+      document.getElementById('countCache').innerText = ((p.cache?.hits || 0) + (p.cache?.misses || 0));
+      document.getElementById('countQueue').innerText = p.queue?.totalJobs || 0;
+      document.getElementById('countMail').innerText = p.mail?.totalMails || 0;
+      document.getElementById('countNotifications').innerText = p.notifications?.sent?.length || 0;
+      document.getElementById('countEvents').innerText = p.events?.totalEvents || 0;
+      document.getElementById('countStorage').innerText = p.storage?.totalOps || 0;
+      document.getElementById('countUpload').innerText = p.upload?.files?.length || 0;
+      document.getElementById('countMedia').innerText = p.media?.totalFiles || 0;
+      document.getElementById('countExceptions').innerText = (Array.isArray(p.exceptions) ? p.exceptions.length : 0);
 
       // Render Active Tab Data
       renderTimelineTab();
@@ -681,7 +714,7 @@
 
     function renderTimelineTab() {
       const tbody = document.getElementById('timelineTableBody');
-      const timeline = activeRecord.timeline || [];
+      const timeline = activeRecord?.timeline || [];
       if (timeline.length === 0) {
         tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No timeline events logged.</td></tr>';
         return;
@@ -698,46 +731,49 @@
     }
 
     function renderHttpTab() {
-      document.getElementById('httpMethodVal').innerText = activeRecord.method;
-      document.getElementById('httpStatusVal').innerText = activeRecord.status;
-      document.getElementById('httpDurationVal').innerText = `${activeRecord.durationMs}ms`;
-      document.getElementById('httpHeadersBlock').innerText = JSON.stringify(activeRecord.panels.http.headers, null, 2);
+      const p = activeRecord?.panels?.http || {};
+      document.getElementById('httpMethodVal').innerText = activeRecord.method || 'GET';
+      document.getElementById('httpStatusVal').innerText = activeRecord.status || 200;
+      document.getElementById('httpDurationVal').innerText = `${activeRecord.durationMs || 0}ms`;
+      document.getElementById('httpHeadersBlock').innerText = JSON.stringify(p.headers || {}, null, 2);
     }
 
     function renderDbTab() {
-      const p = activeRecord.panels.db;
-      document.getElementById('dbTotalVal').innerText = p.totalQueries;
-      document.getElementById('dbSlowVal').innerText = p.slowQueries;
-      document.getElementById('dbDupVal').innerText = p.duplicateQueries;
+      const p = activeRecord?.panels?.db || { totalQueries: 0, slowQueries: 0, duplicateQueries: 0, queries: [] };
+      document.getElementById('dbTotalVal').innerText = p.totalQueries || 0;
+      document.getElementById('dbSlowVal').innerText = p.slowQueries || 0;
+      document.getElementById('dbDupVal').innerText = p.duplicateQueries || 0;
 
       const tbody = document.getElementById('dbTableBody');
-      if (p.queries.length === 0) {
+      const queries = p.queries || [];
+      if (queries.length === 0) {
         tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No DB queries executed.</td></tr>';
         return;
       }
-      tbody.innerHTML = p.queries.map(q => `
+      tbody.innerHTML = queries.map(q => `
         <tr>
           <td><div class="code-block">${q.sql}</div>${q.durationMs >= 100 ? '<span class="warning-tag">SLOW</span>' : ''}</td>
-          <td>${JSON.stringify(q.bindings)}</td>
+          <td>${JSON.stringify(q.bindings || [])}</td>
           <td>${q.durationMs}ms</td>
-          <td>${q.connection}</td>
+          <td>${q.connection || 'default'}</td>
         </tr>
       `).join('');
     }
 
     function renderCacheTab() {
-      const p = activeRecord.panels.cache;
-      document.getElementById('cacheHitsVal').innerText = p.hits;
-      document.getElementById('cacheMissesVal').innerText = p.misses;
+      const p = activeRecord?.panels?.cache || { hits: 0, misses: 0, operations: [] };
+      document.getElementById('cacheHitsVal').innerText = p.hits || 0;
+      document.getElementById('cacheMissesVal').innerText = p.misses || 0;
 
       const tbody = document.getElementById('cacheTableBody');
-      if (p.operations.length === 0) {
+      const ops = p.operations || [];
+      if (ops.length === 0) {
         tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No cache operations.</td></tr>';
         return;
       }
-      tbody.innerHTML = p.operations.map(op => `
+      tbody.innerHTML = ops.map(op => `
         <tr>
-          <td><span class="badge">${op.type.toUpperCase()}</span></td>
+          <td><span class="badge">${(op.type || 'GET').toUpperCase()}</span></td>
           <td><code>${op.key}</code></td>
           <td>${op.ttl ?? 'N/A'}</td>
           <td>${op.driver ?? 'default'}</td>
@@ -746,8 +782,12 @@
     }
 
     function renderQueueTab() {
-      const p = activeRecord.panels.queue;
-      const all = [...p.dispatched.map(j => ({ ...j, st: 'dispatched' })), ...p.processed.map(j => ({ ...j, st: 'processed' })), ...p.failed.map(j => ({ ...j, st: 'failed' }))];
+      const p = activeRecord?.panels?.queue || { dispatched: [], processed: [], failed: [] };
+      const all = [
+        ...(p.dispatched || []).map(j => ({ ...j, st: 'dispatched' })),
+        ...(p.processed || []).map(j => ({ ...j, st: 'processed' })),
+        ...(p.failed || []).map(j => ({ ...j, st: 'failed' }))
+      ];
       const tbody = document.getElementById('queueTableBody');
       if (all.length === 0) {
         tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No queue jobs.</td></tr>';
@@ -756,7 +796,7 @@
       tbody.innerHTML = all.map(j => `
         <tr>
           <td><strong>${j.jobName}</strong></td>
-          <td>${j.queue}</td>
+          <td>${j.queue || 'default'}</td>
           <td><span class="badge">${j.st}</span></td>
           <td><div class="code-block">${JSON.stringify(j.payload || j.error || {})}</div></td>
         </tr>
@@ -764,8 +804,11 @@
     }
 
     function renderMailTab() {
-      const p = activeRecord.panels.mail;
-      const all = [...p.sent.map(m => ({ ...m, st: 'sent' })), ...p.failed.map(m => ({ ...m, st: 'failed' }))];
+      const p = activeRecord?.panels?.mail || { sent: [], failed: [] };
+      const all = [
+        ...(p.sent || []).map(m => ({ ...m, st: 'sent' })),
+        ...(p.failed || []).map(m => ({ ...m, st: 'failed' }))
+      ];
       const tbody = document.getElementById('mailTableBody');
       if (all.length === 0) {
         tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No mail sent.</td></tr>';
@@ -773,8 +816,8 @@
       }
       tbody.innerHTML = all.map(m => `
         <tr>
-          <td>${JSON.stringify(m.to)}</td>
-          <td>${m.subject}</td>
+          <td>${JSON.stringify(m.to || '')}</td>
+          <td>${m.subject || ''}</td>
           <td><span class="badge">${m.st}</span></td>
           <td>${m.durationMs ?? 0}ms</td>
         </tr>
@@ -782,13 +825,14 @@
     }
 
     function renderNotificationsTab() {
-      const p = activeRecord.panels.notifications;
+      const p = activeRecord?.panels?.notifications || { sent: [] };
       const tbody = document.getElementById('notificationsTableBody');
-      if (p.sent.length === 0) {
+      const sent = p.sent || [];
+      if (sent.length === 0) {
         tbody.innerHTML = '<tr><td colspan="3" class="empty-state">No notifications.</td></tr>';
         return;
       }
-      tbody.innerHTML = p.sent.map(n => `
+      tbody.innerHTML = sent.map(n => `
         <tr>
           <td><strong>${n.notification}</strong></td>
           <td><span class="badge">${n.channel}</span></td>
@@ -798,101 +842,105 @@
     }
 
     function renderEventsTab() {
-      const p = activeRecord.panels.events;
+      const p = activeRecord?.panels?.events || { dispatched: [] };
       const tbody = document.getElementById('eventsTableBody');
-      if (p.dispatched.length === 0) {
+      const dispatched = p.dispatched || [];
+      if (dispatched.length === 0) {
         tbody.innerHTML = '<tr><td colspan="3" class="empty-state">No events.</td></tr>';
         return;
       }
-      tbody.innerHTML = p.dispatched.map(e => `
+      tbody.innerHTML = dispatched.map(e => `
         <tr>
           <td><strong>${e.name}</strong></td>
-          <td>${e.listenersCount}</td>
-          <td>+${e.at}ms</td>
+          <td>${e.listenersCount || 0}</td>
+          <td>+${e.at || 0}ms</td>
         </tr>
       `).join('');
     }
 
     function renderStorageTab() {
-      const p = activeRecord.panels.storage;
+      const p = activeRecord?.panels?.storage || { operations: [] };
       const tbody = document.getElementById('storageTableBody');
-      if (p.operations.length === 0) {
+      const ops = p.operations || [];
+      if (ops.length === 0) {
         tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No storage operations.</td></tr>';
         return;
       }
-      tbody.innerHTML = p.operations.map(o => `
+      tbody.innerHTML = ops.map(o => `
         <tr>
           <td><span class="badge">${o.operation}</span></td>
           <td><code>${o.path}</code></td>
-          <td>${o.disk}</td>
-          <td>${o.durationMs}ms</td>
+          <td>${o.disk || 'local'}</td>
+          <td>${o.durationMs || 0}ms</td>
         </tr>
       `).join('');
     }
 
     function renderUploadTab() {
-      const p = activeRecord.panels.upload;
+      const p = activeRecord?.panels?.upload || { files: [] };
       const tbody = document.getElementById('uploadTableBody');
-      if (p.files.length === 0) {
+      const files = p.files || [];
+      if (files.length === 0) {
         tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No file uploads.</td></tr>';
         return;
       }
-      tbody.innerHTML = p.files.map(f => `
+      tbody.innerHTML = files.map(f => `
         <tr>
           <td><strong>${f.name}</strong></td>
-          <td>${Math.round(f.size / 1024)} KB</td>
-          <td>${f.mimeType}</td>
+          <td>${Math.round((f.size || 0) / 1024)} KB</td>
+          <td>${f.mimeType || 'unknown'}</td>
           <td><span class="badge">${f.isClean ? 'CLEAN' : 'THREAT'}</span></td>
         </tr>
       `).join('');
     }
 
     function renderMediaTab() {
-      const p = activeRecord.panels.media;
+      const p = activeRecord?.panels?.media || { processed: [] };
       const tbody = document.getElementById('mediaTableBody');
-      if (p.processed.length === 0) {
+      const processed = p.processed || [];
+      if (processed.length === 0) {
         tbody.innerHTML = '<tr><td colspan="3" class="empty-state">No media processed.</td></tr>';
         return;
       }
-      tbody.innerHTML = p.processed.map(m => `
+      tbody.innerHTML = processed.map(m => `
         <tr>
           <td><strong>${m.originalName}</strong></td>
-          <td>${m.variantsCount} variants</td>
+          <td>${m.variantsCount || 0} variants</td>
           <td><code>${m.storedPath ?? 'N/A'}</code></td>
         </tr>
       `).join('');
     }
 
     function renderExceptionsTab() {
-      const p = activeRecord.panels.exceptions;
+      const p = activeRecord?.panels?.exceptions || [];
       const container = document.getElementById('exceptionsContent');
-      if (p.length === 0) {
+      if (!Array.isArray(p) || p.length === 0) {
         container.innerHTML = '<div class="empty-state">No exceptions caught for this request.</div>';
         return;
       }
       container.innerHTML = p.map(e => `
         <div style="margin-bottom: 1.5rem;">
-          <h4 style="color: var(--color-error);">${e.name}: ${e.message}</h4>
-          <div class="code-block" style="margin-top: 0.5rem; max-height: 300px; overflow-y: auto;">${e.stack}</div>
+          <h4 style="color: var(--color-error);">${e.name || 'Error'}: ${e.message || ''}</h4>
+          <div class="code-block" style="margin-top: 0.5rem; max-height: 300px; overflow-y: auto;">${e.stack || ''}</div>
         </div>
       `).join('');
     }
 
     function renderPerformanceTab() {
-      const p = activeRecord.panels.performance;
+      const p = activeRecord?.panels?.performance || {};
       const heapMb = p.memoryAfter ? Math.round(p.memoryAfter.heapUsed / 1024 / 1024) : 0;
       const rssMb = p.memoryAfter ? Math.round(p.memoryAfter.rss / 1024 / 1024) : 0;
 
       document.getElementById('perfRss').innerText = `${rssMb} MB`;
       document.getElementById('perfHeap').innerText = `${heapMb} MB`;
-      document.getElementById('perfDuration').innerText = `${activeRecord.durationMs}ms`;
+      document.getElementById('perfDuration').innerText = `${activeRecord?.durationMs || 0}ms`;
     }
 
     function switchTab(name, btn) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.panel-view').forEach(p => p.classList.remove('active'));
 
-      btn.classList.add('active');
+      if (btn) btn.classList.add('active');
       const target = document.getElementById(`panel-${name}`);
       if (target) target.classList.add('active');
     }

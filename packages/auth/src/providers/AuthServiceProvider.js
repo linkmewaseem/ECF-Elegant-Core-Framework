@@ -10,6 +10,7 @@ import TotpProvider from "../mfa/TotpProvider.js";
 import RecoveryCodeProvider from "../mfa/RecoveryCodeProvider.js";
 
 export class AuthServiceProvider extends ServiceProvider {
+  
   register(app) {
     app.singleton("auth.hasher", () => new PasswordHasher());
     app.singleton("auth.policy_manager", () => new PolicyManager());

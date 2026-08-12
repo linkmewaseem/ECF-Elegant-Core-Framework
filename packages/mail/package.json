@@ -1,7 +1,7 @@
 {
   "name": "@ecfjs/mail",
-  "version": "1.0.0-rc.5",
-  "description": "ECF mail system with Resend REST API, SMTP transport, Mailable classes, queued delivery, and template rendering",
+  "version": "1.0.0",
+  "description": "ECF Enterprise Mail Platform — SMTP socket transport, Resend REST API, Mailable classes, queued delivery, CSS-inlined Markdown templates, attachments, and testing fakes.",
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -19,9 +19,11 @@
     "framework",
     "mail",
     "email",
-    "resend",
     "smtp",
-    "mailer"
+    "resend",
+    "mailer",
+    "mailable",
+    "nodemailer"
   ],
   "license": "MIT",
   "repository": {

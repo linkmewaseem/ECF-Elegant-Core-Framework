@@ -13,5 +13,5 @@ tmp/
 rename-scope.js
 apps
 app
-.changeset
-.github
+.changeset/
+.github/

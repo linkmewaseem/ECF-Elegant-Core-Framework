@@ -33,6 +33,10 @@ export class DevToolsServer {
 
       this.#server.listen(this.#port, this.#host, () => {
         this.#isListening = true;
+        const addr = this.#server.address();
+        if (addr && typeof addr === "object") {
+          this.#port = addr.port;
+        }
         resolve(this.getUrl());
       });
     });
@@ -42,6 +46,9 @@ export class DevToolsServer {
     if (!this.#server || !this.#isListening) return Promise.resolve();
 
     return new Promise((resolve, reject) => {
+      if (typeof this.#server.closeAllConnections === "function") {
+        this.#server.closeAllConnections();
+      }
       this.#server.close((err) => {
         this.#isListening = false;
         if (err) reject(err);

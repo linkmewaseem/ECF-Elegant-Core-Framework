@@ -1,6 +1,4 @@
 import { Model } from "@ecfjs/database";
-import TimestampsPlugin from "@ecfjs/timestamps";
-import UuidsPlugin from "@ecfjs/uuids";
 import { PasswordHasher } from "@ecfjs/auth";
 
 const passwordHasher = new PasswordHasher();
@@ -8,11 +6,8 @@ const passwordHasher = new PasswordHasher();
 export class User extends Model {
     static table = "users";
     static primaryKey = "id";
-    static keyType = "string";
-    static incrementing = false;
 
     static fillable = [
-        "id",
         "name",
         "email",
         "password",
@@ -35,8 +30,5 @@ export class User extends Model {
         return await passwordHasher.check(plainPassword, hashedPassword);
     }
 }
-
-User.use(TimestampsPlugin);
-User.use(UuidsPlugin);
 
 export default User;

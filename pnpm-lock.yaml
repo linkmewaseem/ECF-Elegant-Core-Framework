@@ -692,15 +692,9 @@ importers:
       '@ecfjs/storage':
         specifier: workspace:*
         version: link:../storage
-      '@ecfjs/timestamps':
-        specifier: workspace:*
-        version: link:../extensions/timestamps
       '@ecfjs/upload':
         specifier: workspace:*
         version: link:../upload
-      '@ecfjs/uuids':
-        specifier: workspace:*
-        version: link:../extensions/uuids
       '@ecfjs/validation':
         specifier: workspace:*
         version: link:../validation

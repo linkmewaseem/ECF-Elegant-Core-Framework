@@ -230,6 +230,11 @@ export default class Response {
         return this.html(html);
     }
 
+    buffer(body, contentType = "application/octet-stream") {
+        this.contentType(contentType);
+        return this.send(body);
+    }
+
     send(body = null) {
         this.assertNotSent();
         this.validateBody(body);
@@ -238,7 +243,7 @@ export default class Response {
             return this.sendRaw(body);
         }
 
-        if (Buffer.isBuffer(body)) {
+        if (Buffer.isBuffer(body) || ArrayBuffer.isView(body) || body instanceof ArrayBuffer) {
             return this.sendRaw(body);
         }
 

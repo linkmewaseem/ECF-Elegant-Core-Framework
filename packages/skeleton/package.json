@@ -51,9 +51,7 @@
     "@ecfjs/scheduler": "workspace:*",
     "@ecfjs/search": "workspace:*",
     "@ecfjs/storage": "workspace:*",
-    "@ecfjs/timestamps": "workspace:*",
     "@ecfjs/upload": "workspace:*",
-    "@ecfjs/uuids": "workspace:*",
     "@ecfjs/validation": "workspace:*",
     "@ecfjs/view": "workspace:*"
   },

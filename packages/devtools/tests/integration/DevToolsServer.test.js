@@ -17,9 +17,9 @@ describe('@ecfjs/devtools — DevToolsServer Integration Tests', () => {
     record.seal({ status: 200 });
     store.add(record);
 
-    server = new DevToolsServer(store, { port: 8788 });
+    server = new DevToolsServer(store, { port: 0 });
     const url = await server.start();
-    assert.equal(url, 'http://127.0.0.1:8788');
+    assert.ok(url.startsWith('http://127.0.0.1:'));
 
     // Test GET /dashboard HTML
     const htmlRes = await fetch(`${url}/`);

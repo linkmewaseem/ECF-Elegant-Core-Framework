@@ -154,8 +154,8 @@ export default class HttpKernel {
             return defaultResponse;
         }
 
-        // Fix #2B: Buffer must be sent raw, not JSON-serialized
-        if (Buffer.isBuffer(result)) {
+        // Fix #2B: Buffer and TypedArray/ArrayBuffer must be sent raw, not JSON-serialized
+        if (Buffer.isBuffer(result) || ArrayBuffer.isView(result) || result instanceof ArrayBuffer) {
             defaultResponse.send(result);
             return defaultResponse;
         }

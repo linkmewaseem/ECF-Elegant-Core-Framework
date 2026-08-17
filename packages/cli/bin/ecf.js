@@ -31,6 +31,7 @@ import {
 const app = new CliApplication('ECF Enterprise CLI Framework', '1.0.0-alpha.1');
 app
   .register(EcfDoctorCommand)
+  .register(EcfServeCommand)
   .register(EcfNewCommand)
   .register(EcfMakeControllerCommand)
   .register(EcfMakeModelCommand)

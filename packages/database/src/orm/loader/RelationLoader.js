@@ -38,9 +38,9 @@ export default class RelationLoader {
 
         for (const childNode of parentNode.children.values()) {
             const relationName = childNode.name;
-            const sample = parentModels[0];
+            const sample = parentModels.find(m => m && typeof m[relationName] === "function");
 
-            if (!sample || typeof sample[relationName] !== "function") continue;
+            if (!sample) continue;
 
             const relation = sample[relationName]();
             metrics.recordQuery();

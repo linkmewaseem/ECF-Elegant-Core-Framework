@@ -9,12 +9,15 @@ export default class Hydrator extends IHydrator {
             const instance = new modelClass({}, true);
             if (connection) instance.setConnection(connection);
             instance.exists = true;
+            instance._exists = true;
 
-            const attributeManager = instance.attributeManager;
-            for (const [key, value] of Object.entries(row)) {
-                attributeManager.setAttribute(key, value);
+            const attributeManager = typeof instance.getAttributeManager === "function" ? instance.getAttributeManager() : instance.attributeManager;
+            if (attributeManager) {
+                for (const [key, value] of Object.entries(row)) {
+                    attributeManager.setAttribute(key, value);
+                }
+                attributeManager.syncOriginal();
             }
-            attributeManager.syncOriginal();
             return instance;
         });
     }

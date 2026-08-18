@@ -94,7 +94,7 @@ export default class ModelRepository {
             row.exists = true;
             return row;
         }
-        const model = new this.#modelClass(row);
+        const model = new this.#modelClass(row, true);
         model.getAttributeManager().syncOriginal();
         model._exists = true;
         model.exists = true;

@@ -124,6 +124,10 @@ export default class Model {
         return this.#attributeManager;
     }
 
+    get attributeManager() {
+        return this.#attributeManager;
+    }
+
     getAttribute(key, defaultValue = null) {
         return this.#attributeManager.getAttribute(key, defaultValue);
     }

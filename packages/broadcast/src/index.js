@@ -14,6 +14,7 @@ export { RedisDriver } from "./drivers/RedisDriver.js";
 export { PusherDriver } from "./drivers/PusherDriver.js";
 export { AblyDriver } from "./drivers/AblyDriver.js";
 export { SocketIODriver } from "./drivers/SocketIODriver.js";
+export { WebSocketDriver } from "./drivers/WebSocketDriver.js";
 
 export { BroadcasterAuthorizer } from "./security/BroadcasterAuthorizer.js";
 

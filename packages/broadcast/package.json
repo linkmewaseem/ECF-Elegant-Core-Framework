@@ -44,7 +44,8 @@
   "dependencies": {
     "@ecfjs/contracts": "workspace:*",
     "@ecfjs/core": "workspace:*",
-    "@ecfjs/support": "workspace:*"
+    "@ecfjs/support": "workspace:*",
+    "ws": "^8.18.0"
   },
   "peerDependencies": {
     "@ecfjs/config": "workspace:*",

@@ -5,6 +5,7 @@ import RedisDriver from "./drivers/RedisDriver.js";
 import PusherDriver from "./drivers/PusherDriver.js";
 import AblyDriver from "./drivers/AblyDriver.js";
 import SocketIODriver from "./drivers/SocketIODriver.js";
+import WebSocketDriver from "./drivers/WebSocketDriver.js";
 import Channel from "./channels/Channel.js";
 import PrivateChannel from "./channels/PrivateChannel.js";
 import PresenceChannel from "./channels/PresenceChannel.js";
@@ -38,6 +39,7 @@ export class BroadcastManager {
     this.driverRegistry.register("pusher", () => new PusherDriver(this.config.pusher || {}));
     this.driverRegistry.register("ably", () => new AblyDriver(this.config.ably || {}));
     this.driverRegistry.register("socket.io", () => new SocketIODriver(this.config.ioServer));
+    this.driverRegistry.register("websocket", () => new WebSocketDriver(this.config.wsOptions || this.config));
   }
 
   driver(name = null) {

@@ -23,5 +23,5 @@
   "devDependencies": {
     "tailwindcss": "^3.4.17"
   },
-  "author": "Muhammad Waseem"
+  "license": "MIT"
 }

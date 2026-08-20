@@ -48,14 +48,19 @@ export default class SQLiteDriver extends Driver {
 
         try {
             const isSelect = /^\s*(SELECT|PRAGMA|EXPLAIN)/i.test(sql);
+            const normalizedBindings = bindings.map((val) => {
+                if (typeof val === "boolean") return val ? 1 : 0;
+                if (val instanceof Date) return val.toISOString();
+                return val;
+            });
 
             if (typeof this.#db.prepare === "function") {
                 const stmt = this.#db.prepare(sql);
                 if (isSelect) {
-                    const rows = stmt.all(...bindings);
+                    const rows = stmt.all(...normalizedBindings);
                     return this.normalizeResult({ rows, rowCount: rows.length });
                 } else {
-                    const info = stmt.run(...bindings);
+                    const info = stmt.run(...normalizedBindings);
                     return this.normalizeResult({
                         rows: [],
                         insertId: info.lastInsertRowid ?? null,
